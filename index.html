@@ -232,15 +232,11 @@
 
             <!-- Botões no Cabeçalho -->
             <div class="flex items-center flex-wrap justify-center sm:justify-end gap-2 w-full sm:w-auto">
-                <button type="button" onclick="openAboutModal()" class="bg-slate-900 hover:bg-slate-800 text-brand-400 border border-brand-500/30 px-3 py-2 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 shadow-lg shadow-brand-500/5">
-                    <i class="fa-solid fa-circle-info"></i> Sobre
+                <button type="button" onclick="openAboutModal()" class="bg-slate-900 hover:bg-slate-800 text-brand-400 border border-brand-500/30 px-3.5 py-2 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 shadow-lg shadow-brand-500/5">
+                    <i class="fa-solid fa-circle-info"></i> Sobre a Calculadora
                 </button>
-                
-                <a href="https://t.me/+jHLCI-JnhL5lNGQ5" target="_blank" rel="noopener noreferrer" class="text-xs bg-sky-600 hover:bg-sky-500 text-white px-3 py-2 rounded-xl font-medium transition flex items-center gap-1.5 shadow-md shadow-sky-600/20">
-                    <i class="fa-brands fa-telegram text-sm"></i> Telegram
-                </a>
 
-                <button onclick="location.reload()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-2 rounded-xl font-medium transition flex items-center gap-1.5 border border-slate-700">
+                <button onclick="location.reload()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3.5 py-2 rounded-xl font-medium transition flex items-center gap-1.5 border border-slate-700">
                     <i class="fa-solid fa-rotate-left"></i> Limpar
                 </button>
             </div>
@@ -385,7 +381,7 @@
             </div>
         </section>
 
-        <!-- Simulador Visual da Seringa (Corrigido para alinhar exatamente com os traços) -->
+        <!-- Simulador Visual da Seringa (Alinhado) -->
         <section class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl p-4 sm:p-8 flex flex-col items-center justify-center text-center page-break-pdf">
             <h2 class="text-base font-bold text-slate-300 mb-4 flex items-center gap-2" id="seringa-titulo">
                 <i class="fa-solid fa-eye text-brand-400"></i> Resultado visual (Seringa Normal - 3 ml)
@@ -489,7 +485,7 @@
 
     </main>
 
-    <!-- POPUP MODAL: SOBRE -->
+    <!-- POPUP MODAL: SOBRE (Com botão do Telegram compacto na marcação solicitada) -->
     <div id="about-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden no-print">
         <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full p-5 sm:p-8 shadow-2xl space-y-4 relative max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between border-b border-slate-800 pb-3">
@@ -525,7 +521,12 @@
                 </div>
             </div>
 
-            <div class="pt-2 border-t border-slate-800 flex justify-end">
+            <!-- Rodapé do Modal com o Botão do Telegram compacto ao lado do "Entendido" -->
+            <div class="pt-3 border-t border-slate-800 flex items-center justify-between gap-3">
+                <a href="https://t.me/+jHLCI-JnhL5lNGQ5" target="_blank" rel="noopener noreferrer" class="bg-sky-600 hover:bg-sky-500 text-white font-medium px-4 py-2 rounded-xl text-xs transition flex items-center gap-1.5 shadow-md shadow-sky-600/20">
+                    <i class="fa-brands fa-telegram text-sm"></i> Grupo Telegram
+                </a>
+                
                 <button onclick="closeAboutModal()" class="bg-brand-600 hover:bg-brand-500 text-white font-medium px-6 py-2 rounded-xl text-xs transition">
                     Entendido
                 </button>
@@ -584,7 +585,7 @@
         </div>
     </footer>
 
-    <!-- Script de Lógica Corrigido para Alinhamento Preciso da Seringa -->
+    <!-- Script de Lógica -->
     <script>
         const tipoMedida = document.getElementById('tipo-medida');
         const inputConcMg = document.getElementById('conc-mg');
@@ -713,8 +714,6 @@
                 aviso.classList.add('hidden');
             }
 
-            // CORREÇÃO DA LARGURA: ajustado para preencher exatamente até o traço proporcional na régua
-            const larguraUtilPct = 500 / 540 * 100; // compensação do espaço interno das marcações
             const larguraFinal = percentual * (500 / 540);
             liquidReal.style.width = `${larguraFinal}%`;
 
