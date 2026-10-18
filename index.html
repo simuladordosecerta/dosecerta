@@ -37,20 +37,23 @@
             font-family: 'Inter', sans-serif;
             background-color: #0f172a;
             color: #f8fafc;
+            overflow-x: hidden;
         }
         .syringe-wrapper {
             position: relative;
             width: 100%;
-            max-width: 580px;
+            max-width: 100%;
             height: 90px;
             margin: 0 auto;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow-x: auto;
         }
         .syringe-img-container {
             position: relative;
             width: 540px;
+            min-width: 540px;
             height: 75px;
             background: rgba(240, 245, 250, 0.95);
             border: 2px solid #94a3b8;
@@ -212,30 +215,32 @@
 </head>
 <body class="min-h-full flex flex-col bg-slate-950 text-slate-100">
 
-    <!-- Header Reposicionado -->
+    <!-- Header Responsivo -->
     <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50 no-print">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-brand-400 flex items-center justify-center shadow-lg shadow-brand-500/20">
-                    <i class="fa-solid fa-syringe text-white text-lg"></i>
-                </div>
-                <div>
-                    <h1 class="font-bold text-base sm:text-lg leading-tight tracking-tight text-white">Dose Certa</h1>
-                    <p class="text-xs text-slate-400">Calculadora de via subcutânea e intramuscular</p>
+        <div class="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 h-auto sm:h-16 py-3 sm:py-0 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="flex items-center space-x-3 w-full sm:w-auto justify-between sm:justify-start">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-brand-400 flex items-center justify-center shadow-lg shadow-brand-500/20 shrink-0">
+                        <i class="fa-solid fa-syringe text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-base sm:text-lg leading-tight tracking-tight text-white">Dose Certa</h1>
+                        <p class="text-xs text-slate-400">Calculadora de via subcutânea e intramuscular</p>
+                    </div>
                 </div>
             </div>
 
-            <!-- Botões no Cabeçalho (Sobre, Telegram e Limpar) -->
-            <div class="flex items-center space-x-3">
-                <button type="button" onclick="openAboutModal()" class="bg-slate-900 hover:bg-slate-800 text-brand-400 border border-brand-500/30 px-3.5 py-2 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 shadow-lg shadow-brand-500/5">
+            <!-- Botões no Cabeçalho (Empilhados no telemóvel, lado a lado no PC) -->
+            <div class="flex items-center flex-wrap justify-center sm:justify-end gap-2 w-full sm:w-auto">
+                <button type="button" onclick="openAboutModal()" class="bg-slate-900 hover:bg-slate-800 text-brand-400 border border-brand-500/30 px-3 py-2 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 shadow-lg shadow-brand-500/5">
                     <i class="fa-solid fa-circle-info"></i> Sobre
                 </button>
                 
-                <a href="https://t.me/+jHLCI-JnhL5lNGQ5" target="_blank" rel="noopener noreferrer" class="text-xs bg-sky-600 hover:bg-sky-500 text-white px-3.5 py-2 rounded-xl font-medium transition flex items-center gap-1.5 shadow-md shadow-sky-600/20">
-                    <i class="fa-brands fa-telegram text-sm"></i> Grupo Telegram
+                <a href="https://t.me/+jHLCI-JnhL5lNGQ5" target="_blank" rel="noopener noreferrer" class="text-xs bg-sky-600 hover:bg-sky-500 text-white px-3 py-2 rounded-xl font-medium transition flex items-center gap-1.5 shadow-md shadow-sky-600/20">
+                    <i class="fa-brands fa-telegram text-sm"></i> Telegram
                 </a>
 
-                <button onclick="location.reload()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3.5 py-2 rounded-xl font-medium transition flex items-center gap-1.5 border border-slate-700">
+                <button onclick="location.reload()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-2 rounded-xl font-medium transition flex items-center gap-1.5 border border-slate-700">
                     <i class="fa-solid fa-rotate-left"></i> Limpar
                 </button>
             </div>
@@ -243,19 +248,18 @@
     </header>
 
     <!-- Main Container -->
-    <main class="flex-grow max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+    <main class="flex-grow max-w-5xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-6">
 
         <!-- Card Principal de Controles -->
-        <section class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden p-6 sm:p-8 space-y-6">
+        <section class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden p-4 sm:p-8 space-y-6">
             
             <div class="border-b border-slate-800 pb-4">
                 <div class="inline-block px-3 py-1 rounded-full bg-brand-500/10 text-brand-400 text-xs font-semibold mb-2 uppercase tracking-wider">Preencha conforme o rótulo e sua prescrição</div>
-                <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-white"></h2>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Bloco 1: Concentração e Tipo de Medida com Botão de Info -->
-                <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 space-y-4">
+                <!-- Bloco 1: Concentração e Tipo de Medida -->
+                <div class="bg-slate-950 p-4 sm:p-5 rounded-xl border border-slate-800 space-y-4">
                     <div class="flex justify-between items-center">
                         <label class="block text-sm font-semibold text-brand-400 flex items-center gap-2">
                             <i class="fa-solid fa-flask"></i> Concentração
@@ -285,8 +289,8 @@
                     </div>
                 </div>
 
-                <!-- Bloco 2: Tipo de Seringa e Via de Aplicação com Botão de Popup -->
-                <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 flex flex-col justify-between space-y-4">
+                <!-- Bloco 2: Tipo de Seringa e Via de Aplicação -->
+                <div class="bg-slate-950 p-4 sm:p-5 rounded-xl border border-slate-800 flex flex-col justify-between space-y-4">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                             <label class="block text-sm font-semibold text-brand-400 flex items-center gap-2 mb-2">
@@ -381,8 +385,8 @@
             </div>
         </section>
 
-        <!-- PÁGINA 2 NO PDF (Simulador Visual da Seringa e Planejamento) -->
-        <section class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl p-6 sm:p-8 flex flex-col items-center justify-center text-center page-break-pdf">
+        <!-- Simulador Visual da Seringa -->
+        <section class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl p-4 sm:p-8 flex flex-col items-center justify-center text-center page-break-pdf">
             <h2 class="text-base font-bold text-slate-300 mb-4 flex items-center gap-2" id="seringa-titulo">
                 <i class="fa-solid fa-eye text-brand-400"></i> Resultado visual (Seringa Normal - 3 ml)
             </h2>
@@ -390,7 +394,7 @@
                 Via: SUBCUTÂNEA (SC)
             </div>
             
-            <!-- Simulador Visual Realista -->
+            <!-- Simulador Visual com rolagem lateral se necessário em telas minúsculas -->
             <div class="syringe-wrapper my-4">
                 <div class="syringe-img-container">
                     <div class="syringe-plunger-left"></div>
@@ -409,12 +413,11 @@
             </div>
         </section>
 
-        <!-- Seção: Planejamento por Intervalo (7, 15 e 30 Dias) -->
-        <section class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl p-6 sm:p-8 space-y-4">
+        <!-- Seção: Planejamento por Intervalo -->
+        <section class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl p-4 sm:p-8 space-y-4">
             <div class="border-b border-slate-800 pb-3">
                 <div class="inline-block px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-semibold mb-1 uppercase tracking-wider">Cronograma de Aplicações</div>
-                <h2 class="text-lg sm:text-xl font-bold tracking-tight text-white"></h2>
-                <p class="text-xs text-slate-400 mt-0.5">Calcule a quantidade total estimada com base na dose por aplicação e nos dias da semana selecionados. Visualize as projeções de consumo para 7, 15 e 30 dias</p>
+                <p class="text-xs text-slate-400 mt-0.5">Calcule a quantidade total estimada com base na dose por aplicação e nos dias da semana selecionados.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -465,21 +468,21 @@
             </div>
 
             <!-- Gráfico de Comparação de Picos -->
-            <div class="mt-6 bg-slate-950 p-5 rounded-xl border border-slate-800 space-y-3">
-                <div class="flex items-center justify-between">
+            <div class="mt-6 bg-slate-950 p-4 sm:p-5 rounded-xl border border-slate-800 space-y-3">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1">
                     <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-chart-line text-brand-400"></i> Gráfico de Comparação de Picos e Níveis Plasmáticos (14 Dias)
+                        <i class="fa-solid fa-chart-line text-brand-400"></i> Gráfico de Picos (14 Dias)
                     </h3>
                     <span class="text-xs text-slate-400">Baseado nos dias marcados</span>
                 </div>
-                <div class="relative w-full h-64">
+                <div class="relative w-full h-56 sm:h-64">
                     <canvas id="picosChart"></canvas>
                 </div>
             </div>
 
             <!-- Botão de Salvar em PDF -->
             <div class="pt-2 flex justify-center no-print">
-                <button onclick="window.print()" class="bg-brand-600 hover:bg-brand-500 text-white font-semibold px-8 py-3 rounded-xl shadow-lg shadow-brand-600/20 transition flex items-center gap-2">
+                <button onclick="window.print()" class="bg-brand-600 hover:bg-brand-500 text-white font-semibold px-6 py-3 rounded-xl shadow-lg shadow-brand-600/20 transition flex items-center gap-2 text-sm">
                     <i class="fa-solid fa-file-pdf"></i> Salvar Resultados em PDF
                 </button>
             </div>
@@ -487,14 +490,14 @@
 
     </main>
 
-    <!-- POPUP MODAL: SOBRE O DOSE CERTA -->
-    <div id="about-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden no-print">
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-4 relative max-h-[90vh] overflow-y-auto">
+    <!-- POPUP MODAL: SOBRE -->
+    <div id="about-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden no-print">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full p-5 sm:p-8 shadow-2xl space-y-4 relative max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between border-b border-slate-800 pb-3">
                 <h3 class="text-lg font-bold text-white flex items-center gap-2">
                     <i class="fa-solid fa-circle-info text-brand-400"></i> Sobre o Dose Certa
                 </h3>
-                <button onclick="closeAboutModal()" class="text-slate-400 hover:text-white text-lg">
+                <button onclick="closeAboutModal()" class="text-slate-400 hover:text-white text-lg p-2">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
@@ -502,16 +505,15 @@
             <div class="space-y-3 text-sm text-slate-300 leading-relaxed">
                 <p><strong class="text-white">💉 Nunca mais erre a dose dos seus hormônios!</strong></p>
                 <p>Tenha mais clareza e controle na hora de calcular suas doses.</p>
-                <p><strong class="text-white">🧮 Simulador e calculadora de seringas</strong> com visualização gráfica, conversão de unidades e identificação das marcações, com suporte para diferentes concentrações e volumes.</p>
+                <p><strong class="text-white">🧮 Simulador e calculadora de seringas</strong> com visualização gráfica, conversão de unidades e identificação das marcações.</p>
                 
                 <div>
                     <strong class="text-brand-400 block mb-1.5">📍 Recursos disponíveis:</strong>
                     <ul class="list-disc pl-5 space-y-1 text-slate-400 text-xs sm:text-sm">
                         <li>Visualização gráfica das seringas e suas marcações.</li>
-                        <li>Cálculos de volume e concentração para ajudar a conferir a dose prescrita.</li>
-                        <li>Informações sobre as vias de administração subcutânea (SC) e intramuscular (IM).</li>
-                        <li>Planejamento detalhado para 7, 15 e 30 dias com marcação personalizada dos dias da semana.</li>
-                        <li>Organização do consumo previsto e da quantidade necessária para o período.</li>
+                        <li>Cálculos de volume e concentração para a dose prescrita.</li>
+                        <li>Informações sobre vias subcutânea (SC) e intramuscular (IM).</li>
+                        <li>Planejamento detalhado para 7, 15 e 30 dias.</li>
                     </ul>
                 </div>
 
@@ -519,7 +521,7 @@
                     <i class="fa-solid fa-triangle-exclamation text-amber-400 text-base mt-0.5"></i>
                     <div>
                         <strong class="block font-semibold mb-0.5">Atenção:</strong>
-                        Este simulador é educativo e não substitui orientação médica, farmacêutica ou a bula do medicamento. Não altere sua dose por conta própria.
+                        Este simulador é educativo e não substitui orientação médica ou farmacêutica.
                     </div>
                 </div>
             </div>
@@ -532,22 +534,20 @@
         </div>
     </div>
 
-    <!-- POPUP MODAL COM O GUIA DE CONCENTRAÇÃO -->
-    <div id="conc-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden no-print">
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-3xl w-full p-6 sm:p-8 shadow-2xl space-y-4 relative max-h-[90vh] overflow-y-auto">
+    <!-- POPUP MODAL: GUIA DE CONCENTRAÇÃO -->
+    <div id="conc-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden no-print">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-3xl w-full p-5 sm:p-8 shadow-2xl space-y-4 relative max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between border-b border-slate-800 pb-3">
                 <h3 class="text-lg font-bold text-white flex items-center gap-2">
                     <i class="fa-solid fa-flask text-brand-400"></i> Guia de Concentração / Medida
                 </h3>
-                <button onclick="closeConcModal()" class="text-slate-400 hover:text-white text-lg">
+                <button onclick="closeConcModal()" class="text-slate-400 hover:text-white text-lg p-2">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
-            
             <div class="flex justify-center bg-slate-950 p-4 rounded-xl border border-slate-800">
                 <img src="https://i.imgur.com/BXfI0Wq.png" alt="Guia de Concentração" class="max-w-full h-auto rounded-lg shadow-md">
             </div>
-
             <div class="pt-2 border-t border-slate-800 flex justify-end">
                 <button onclick="closeConcModal()" class="bg-brand-600 hover:bg-brand-500 text-white font-medium px-6 py-2 rounded-xl text-xs transition">
                     Entendido
@@ -556,22 +556,20 @@
         </div>
     </div>
 
-    <!-- POPUP MODAL DINÂMICO COM O INFOGRÁFICO DA VIA -->
-    <div id="info-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden no-print">
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-3xl w-full p-6 sm:p-8 shadow-2xl space-y-4 relative max-h-[90vh] overflow-y-auto">
+    <!-- POPUP MODAL: INFOGRÁFICO DA VIA -->
+    <div id="info-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden no-print">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-3xl w-full p-5 sm:p-8 shadow-2xl space-y-4 relative max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between border-b border-slate-800 pb-3">
                 <h3 class="text-lg font-bold text-white flex items-center gap-2" id="modal-title">
-                    <i class="fa-solid fa-syringe text-brand-400"></i> Infográfico de Aplicação Subcutânea (SC)
+                    <i class="fa-solid fa-syringe text-brand-400"></i> Infográfico de Aplicação
                 </h3>
-                <button onclick="closeInfoModal()" class="text-slate-400 hover:text-white text-lg">
+                <button onclick="closeInfoModal()" class="text-slate-400 hover:text-white text-lg p-2">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
-            
             <div class="flex justify-center bg-slate-950 p-4 rounded-xl border border-slate-800">
                 <img id="modal-img" src="https://i.imgur.com/7KP7dVc.png" alt="Infográfico de aplicação" class="max-w-full h-auto rounded-lg shadow-md">
             </div>
-
             <div class="pt-2 border-t border-slate-800 flex justify-end">
                 <button onclick="closeInfoModal()" class="bg-brand-600 hover:bg-brand-500 text-white font-medium px-6 py-2 rounded-xl text-xs transition">
                     Entendido
@@ -618,29 +616,12 @@
         const concModal = document.getElementById('conc-modal');
         const aboutModal = document.getElementById('about-modal');
 
-        function openAboutModal() {
-            aboutModal.classList.remove('hidden');
-        }
-
-        function closeAboutModal() {
-            aboutModal.classList.add('hidden');
-        }
-
-        function openConcModal() {
-            concModal.classList.remove('hidden');
-        }
-
-        function closeConcModal() {
-            concModal.classList.add('hidden');
-        }
-
-        function openInfoModal() {
-            infoModal.classList.remove('hidden');
-        }
-
-        function closeInfoModal() {
-            infoModal.classList.add('hidden');
-        }
+        function openAboutModal() { aboutModal.classList.remove('hidden'); }
+        function closeAboutModal() { aboutModal.classList.add('hidden'); }
+        function openConcModal() { concModal.classList.remove('hidden'); }
+        function closeConcModal() { concModal.classList.add('hidden'); }
+        function openInfoModal() { infoModal.classList.remove('hidden'); }
+        function closeInfoModal() { infoModal.classList.add('hidden'); }
 
         let capacidadeSeringa = 3.0;
         let activeInput = 'dose';
@@ -720,24 +701,19 @@
         function getFatorProporcao() {
             const val1 = parseFloat(inputConcMg.value) || 0;
             let val2 = parseFloat(inputConcMl.value);
-            if (isNaN(val2) || val2 <= 0) {
-                val2 = 1.0;
-            }
+            if (isNaN(val2) || val2 <= 0) val2 = 1.0;
             return val2 > 0 ? val1 / val2 : 0;
         }
 
         function updateVisual(volumeMl) {
             let percentual = (volumeMl / capacidadeSeringa) * 100;
-            
             if (percentual > 100) {
                 percentual = 100;
                 aviso.classList.remove('hidden');
             } else {
                 aviso.classList.add('hidden');
             }
-
             liquidReal.style.width = `${percentual}%`;
-
             const isInsulina = selectSeringa.options[selectSeringa.selectedIndex].text.includes("Insulina") || selectSeringa.value !== '3';
             if (isInsulina) {
                 const uis = (volumeMl * 100).toFixed(1);
@@ -749,9 +725,7 @@
 
         function getDiasSelecionados() {
             let selecionados = [];
-            checkboxesDias.forEach(cb => {
-                if (cb.checked) selecionados.push(parseInt(cb.value));
-            });
+            checkboxesDias.forEach(cb => { if (cb.checked) selecionados.push(parseInt(cb.value)); });
             return selecionados;
         }
 
@@ -800,7 +774,6 @@
 
         function atualizarGrafico(dose, diasMarcados) {
             const ctx = document.getElementById('picosChart').getContext('2d');
-            
             const diasLabels = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom', 'Seg (+1)', 'Ter (+1)', 'Qua (+1)', 'Qui (+1)', 'Sex (+1)', 'Sáb (+1)', 'Dom (+1)'];
             let dadosCurva = [];
             let picoMaximo = dose > 0 ? dose : 0;
@@ -821,16 +794,14 @@
                 dadosCurva.push(Math.round(nivelAtual * 10) / 10);
             }
 
-            if (picosChart) {
-                picosChart.destroy();
-            }
+            if (picosChart) picosChart.destroy();
 
             picosChart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: diasLabels,
                     datasets: [{
-                        label: `Nível Plasmático Estimado (${via})`,
+                        label: `Nível Plasmático (${via})`,
                         data: dadosCurva,
                         borderColor: '#10b981',
                         backgroundColor: 'rgba(16, 185, 129, 0.15)',
@@ -838,30 +809,16 @@
                         fill: true,
                         tension: 0.35,
                         pointBackgroundColor: '#10b981',
-                        pointRadius: 4
+                        pointRadius: 3
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: '#94a3b8',
-                                font: { size: 11 }
-                            }
-                        }
-                    },
+                    plugins: { legend: { labels: { color: '#94a3b8', font: { size: 10 } } } },
                     scales: {
-                        x: {
-                            grid: { color: 'rgba(51, 65, 85, 0.4)' },
-                            ticks: { color: '#94a3b8', font: { size: 10 } }
-                        },
-                        y: {
-                            grid: { color: 'rgba(51, 65, 85, 0.4)' },
-                            ticks: { color: '#94a3b8', font: { size: 10 } },
-                            beginAtZero: true
-                        }
+                        x: { grid: { color: 'rgba(51, 65, 85, 0.4)' }, ticks: { color: '#94a3b8', font: { size: 9 } } },
+                        y: { grid: { color: 'rgba(51, 65, 85, 0.4)' }, ticks: { color: '#94a3b8', font: { size: 9 } }, beginAtZero: true }
                     }
                 }
             });
@@ -869,13 +826,11 @@
 
         function calcular() {
             const fator = getFatorProporcao();
-
             if (fator <= 0) {
                 updateVisual(0);
                 atualizarPlanejamento(0, 0);
                 return;
             }
-
             let dose = 0;
             let ml = 0;
 
@@ -904,27 +859,15 @@
                     updateVisual(ml);
                 }
             }
-
             atualizarPlanejamento(dose, ml);
         }
 
         inputConcMg.addEventListener('input', calcular);
         inputConcMl.addEventListener('input', calcular);
-
-        inputMg.addEventListener('input', () => {
-            activeInput = 'dose';
-            calcular();
-        });
-
-        inputMl.addEventListener('input', () => {
-            activeInput = 'ml';
-            calcular();
-        });
-
-        checkboxesDias.forEach(cb => {
-            cb.addEventListener('change', calcular);
-        });
-
+        inputMg.addEventListener('input', () => { activeInput = 'dose'; calcular(); });
+        inputMl.addEventListener('input', () => { activeInput = 'ml'; calcular(); });
+        checkboxesDias.forEach(cb => { cb.addEventListener('change', calcular); });
+        
         selectSeringa.addEventListener('change', () => {
             capacidadeSeringa = parseFloat(selectSeringa.value);
             seringaTitulo.innerHTML = `<i class="fa-solid fa-eye text-brand-400"></i> Resultado visual (${selectSeringa.options[selectSeringa.selectedIndex].text})`;
