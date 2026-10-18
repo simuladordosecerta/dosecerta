@@ -457,25 +457,27 @@
         </section>
     </main>
 
-    <div id="about-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden no-print">
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-4 relative max-h-[90vh] overflow-y-auto">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-circle-info text-brand-400"></i> Sobre o Dose Certa
-                </h3>
-                <button onclick="closeAboutModal()" class="text-slate-400 hover:text-white text-lg">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            <div class="space-y-3 text-sm text-slate-300 leading-relaxed">
+    <div class="space-y-3 text-sm text-slate-300 leading-relaxed">
                 <p><strong class="text-white">💉 Nunca mais erre a dose dos seus hormônios!</strong></p>
                 <p>Tenha mais clareza e controle na hora de calcular suas doses.</p>
                 <p><strong class="text-white">🧮 Simulador e calculadora de seringas</strong> com visualização gráfica, conversão de unidades e identificação das marcações, com suporte para diferentes concentrações e volumes.</p>
+                
+                <div>
+                    <strong class="text-brand-400 block mb-1.5">📍 Recursos disponíveis:</strong>
+                    <ul class="list-disc pl-5 space-y-1 text-slate-400 text-xs sm:text-sm">
+                        <li>Visualização gráfica das seringas e suas marcações.</li>
+                        <li>Cálculos de volume e concentração para ajudar a conferir a dose prescrita.</li>
+                        <li>Informações sobre as vias de administração subcutânea (SC) e intramuscular (IM).</li>
+                        <li>Planejamento detalhado para 7, 15 e 30 dias com marcação personalizada dos dias da semana.</li>
+                        <li>Organização do consumo previsto e da quantidade necessária para o período.</li>
+                    </ul>
+                </div>
+
                 <div class="bg-amber-950/40 border border-amber-800/60 p-4 rounded-xl text-amber-200 text-xs sm:text-sm flex items-start gap-2.5 mt-4">
                     <i class="fa-solid fa-triangle-exclamation text-amber-400 text-base mt-0.5"></i>
                     <div>
                         <strong class="block font-semibold mb-0.5">Atenção:</strong>
-                        Este simulador é educativo e não substitui orientação médica, farmacêutica ou a bula do medicamento.
+                        Este simulador é educativo e não substitui orientação médica, farmacêutica ou a bula do medicamento. Não altere sua dose por conta própria.
                     </div>
                 </div>
             </div>
