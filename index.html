@@ -213,29 +213,35 @@
 </head>
 <body class="min-h-full flex flex-col bg-slate-950 text-slate-100">
 
-    <!-- POPUP OBRIGATÓRIO DO INSTAGRAM (Abre toda vez que entra no site) -->
+    <!-- POPUP OBRIGATÓRIO (Instagram e Telegram) -->
     <div id="instagram-popup" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 no-print">
         <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-5 text-center relative animate-in fade-in zoom-in duration-200">
-            <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 flex items-center justify-center mx-auto shadow-lg shadow-rose-500/20">
-                <i class="fa-brands fa-instagram text-white text-3xl"></i>
+            <div class="flex items-center justify-center gap-3 mx-auto">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 flex items-center justify-center shadow-lg shadow-rose-500/20">
+                    <i class="fa-brands fa-instagram text-white text-2xl"></i>
+                </div>
+                <div class="w-14 h-14 rounded-2xl bg-sky-600 flex items-center justify-center shadow-lg shadow-sky-600/20">
+                    <i class="fa-brands fa-telegram text-white text-2xl"></i>
+                </div>
             </div>
             
             <div class="space-y-2">
-                <h3 class="text-xl font-bold text-white tracking-tight">Siga-me no Instagram</h3>
-                <p class="text-sm text-slate-300">Fique por dentro de todas as novidades, dicas e conteúdos exclusivos!</p>
-                <div class="pt-1">
-                    <a href="https://www.instagram.com/gordaofitness" target="_blank" rel="noopener noreferrer" class="text-brand-400 text-xs font-semibold hover:underline break-all">
-                        
-                    </a>
-                </div>
+                <h3 class="text-xl font-bold text-white tracking-tight">Fique conectado!</h3>
+                <p class="text-sm text-slate-300">Siga-nos no Instagram e entre no Grupo do Telegram</p>
             </div>
 
-            <div class="grid grid-cols-2 gap-3 pt-2">
-                <button type="button" onclick="seguirInstagram()" class="bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white font-semibold py-2.5 px-4 rounded-xl text-sm transition shadow-lg shadow-rose-600/25 flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-user-plus"></i> Seguir
-                </button>
-                <button type="button" onclick="fecharInstagramPopup()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium py-2.5 px-4 rounded-xl text-sm transition border border-slate-700">
-                    Fechar
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                <a href="https://www.instagram.com/gordaofitness" target="_blank" rel="noopener noreferrer" onclick="seguirInstagram()" class="bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white font-semibold py-2.5 px-4 rounded-xl text-sm transition shadow-lg shadow-rose-600/25 flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-instagram"></i> Instagram
+                </a>
+                <a href="https://t.me/+jHLCI-JnhL5lNGQ5" target="_blank" rel="noopener noreferrer" class="bg-sky-600 hover:bg-sky-500 text-white font-semibold py-2.5 px-4 rounded-xl text-sm transition shadow-lg shadow-sky-600/25 flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-telegram"></i> Telegram
+                </a>
+            </div>
+
+            <div class="pt-1">
+                <button type="button" onclick="fecharInstagramPopup()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium py-2.5 px-4 rounded-xl text-sm transition border border-slate-700">
+                    Continuar
                 </button>
             </div>
         </div>
@@ -534,12 +540,8 @@
                 </div>
             </div>
 
-            <!-- Rodapé do Modal com o Botão do Telegram -->
-            <div class="pt-3 border-t border-slate-800 flex items-center justify-between gap-3">
-                <a href="https://t.me/+jHLCI-JnhL5lNGQ5" target="_blank" rel="noopener noreferrer" class="bg-sky-600 hover:bg-sky-500 text-white font-medium px-4 py-2 rounded-xl text-xs transition flex items-center gap-1.5 shadow-md shadow-sky-600/20">
-                    <i class="fa-brands fa-telegram text-sm"></i> Grupo Telegram
-                </a>
-                
+            <!-- Rodapé do Modal (Sem o botão do Telegram) -->
+            <div class="pt-3 border-t border-slate-800 flex justify-end">
                 <button onclick="closeAboutModal()" class="bg-brand-600 hover:bg-brand-500 text-white font-medium px-6 py-2 rounded-xl text-xs transition">
                     Entendido
                 </button>
@@ -635,8 +637,8 @@
         }
 
         function seguirInstagram() {
+            // Apenas abre o link do Instagram, o fechamento já é feito pelo botão
             window.open('https://www.instagram.com/gordaofitness', '_blank');
-            fecharInstagramPopup();
         }
 
         function openAboutModal() { aboutModal.classList.remove('hidden'); }
