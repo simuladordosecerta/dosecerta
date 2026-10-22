@@ -213,29 +213,6 @@
 </head>
 <body class="min-h-full flex flex-col bg-slate-950 text-slate-100">
 
-    <!-- POPUP OBRIGATÓRIO (Apenas Telegram) -->
-    <div id="telegram-popup" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 no-print">
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-5 text-center relative animate-in fade-in zoom-in duration-200">
-            <div class="w-16 h-16 rounded-2xl bg-sky-600 flex items-center justify-center mx-auto shadow-lg shadow-sky-600/20">
-                <i class="fa-brands fa-telegram text-white text-3xl"></i>
-            </div>
-            
-            <div class="space-y-2">
-                <h3 class="text-xl font-bold text-white tracking-tight">Entre no Grupo do Telegram</h3>
-                <p class="text-sm text-slate-300">Fique por dentro de todas as novidades, dicas e conteúdos exclusivos!</p>
-            </div>
-
-            <div class="space-y-2 pt-2">
-                <a href="https://t.me/+jHLCI-JnhL5lNGQ5" target="_blank" rel="noopener noreferrer" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-semibold py-2.5 px-4 rounded-xl text-sm transition shadow-lg shadow-sky-600/25 flex items-center justify-center gap-2">
-                    <i class="fa-brands fa-telegram text-lg"></i> Entrar no Grupo
-                </a>
-                <button type="button" onclick="fecharTelegramPopup()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium py-2.5 px-4 rounded-xl text-sm transition border border-slate-700">
-                    Continuar para a Calculadora
-                </button>
-            </div>
-        </div>
-    </div>
-
     <!-- Header Responsivo -->
     <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-40 no-print">
         <div class="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 h-auto sm:h-16 py-3 sm:py-0 flex flex-col sm:flex-row items-center justify-between gap-3">
@@ -246,7 +223,7 @@
                     </div>
                     <div>
                         <h1 class="font-bold text-base sm:text-lg leading-tight tracking-tight text-white">Dose Certa</h1>
-                        <p class="text-xs text-slate-400">Calculadora de via subcutânea</p>
+                        <p class="text-xs text-slate-400">Calculadora de via subcutânea e intramuscular</p>
                     </div>
                 </div>
             </div>
@@ -275,15 +252,20 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Bloco 1: Concentração -->
+                <!-- Bloco 1: Concentração e Tipo de Medida -->
                 <div class="bg-slate-950 p-4 sm:p-5 rounded-xl border border-slate-800 space-y-4">
                     <div class="flex justify-between items-center">
                         <label class="block text-sm font-semibold text-brand-400 flex items-center gap-2">
                             <i class="fa-solid fa-flask"></i> Concentração
                         </label>
-                        <button type="button" onclick="openConcModal()" class="text-brand-400 hover:text-brand-300 text-xs flex items-center gap-1 bg-brand-500/10 px-2 py-0.5 rounded-lg border border-brand-500/30 transition no-print" title="Ver Guia de Concentração">
-                            <i class="fa-solid fa-circle-info"></i> Info
-                        </button>
+                        <div class="flex items-center gap-2">
+                            <button type="button" onclick="openConcModal()" class="text-brand-400 hover:text-brand-300 text-xs flex items-center gap-1 bg-brand-500/10 px-2 py-0.5 rounded-lg border border-brand-500/30 transition no-print" title="Ver Guia de Concentração">
+                                <i class="fa-solid fa-circle-info"></i> Info
+                            </button>
+                            <select id="tipo-medida" class="p-1.5 border border-slate-700 rounded-lg text-xs bg-slate-900 font-semibold text-brand-400 focus:ring focus:ring-brand-500/20 focus:outline-none">
+                                <option value="mg">mg / ml</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
@@ -321,7 +303,7 @@
                                     <i class="fa-solid fa-circle-info"></i> <span id="btn-info-label">Info SC</span>
                                 </button>
                             </div>
-                            <select id="via-aplicacao" disabled class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white opacity-90 cursor-not-allowed focus:outline-none">
+                            <select id="via-aplicacao" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500">
                                 <option value="SC" selected>SC - Subcutânea</option>
                             </select>
                         </div>
@@ -480,6 +462,22 @@
                     <i class="fa-solid fa-file-pdf"></i> Salvar Resultados em PDF
                 </button>
             </div>
+
+            <!-- Redes Sociais / Comunidade (Abaixo do Salvar em PDF, sem imprimir) -->
+            <div class="pt-6 border-t border-slate-800 text-center space-y-3 no-print">
+                <div>
+                    <h4 class="text-sm font-bold text-white tracking-tight">Fique conectado!</h4>
+                    <p class="text-xs text-slate-400 mt-0.5">Siga-nos no Instagram e entre no Grupo do Telegram</p>
+                </div>
+                <div class="flex flex-wrap items-center justify-center gap-3">
+                    <a href="https://www.instagram.com/guiadatestosc" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white font-semibold py-2 px-4 rounded-xl text-xs transition shadow-lg shadow-rose-600/25 flex items-center gap-2">
+                        <i class="fa-brands fa-instagram text-sm"></i> Instagram
+                    </a>
+                    <a href="https://t.me/+jHLCI-JnhL5lNGQ5" target="_blank" rel="noopener noreferrer" class="bg-sky-600 hover:bg-sky-500 text-white font-semibold py-2 px-4 rounded-xl text-xs transition shadow-lg shadow-sky-600/25 flex items-center gap-2">
+                        <i class="fa-brands fa-telegram text-sm"></i> Telegram
+                    </a>
+                </div>
+            </div>
         </section>
 
     </main>
@@ -506,7 +504,7 @@
                     <ul class="list-disc pl-5 space-y-1 text-slate-400 text-xs sm:text-sm">
                         <li>Visualização gráfica das seringas e suas marcações.</li>
                         <li>Cálculos de volume e concentração para a dose prescrita.</li>
-                        <li>Informações sobre a via subcutânea (SC).</li>
+                        <li>Informações sobre vias subcutânea (SC).</li>
                         <li>Planejamento detalhado para 7, 15 e 30 dias.</li>
                     </ul>
                 </div>
@@ -520,7 +518,6 @@
                 </div>
             </div>
 
-            <!-- Rodapé do Modal (Sem botão do Telegram) -->
             <div class="pt-3 border-t border-slate-800 flex justify-end">
                 <button onclick="closeAboutModal()" class="bg-brand-600 hover:bg-brand-500 text-white font-medium px-6 py-2 rounded-xl text-xs transition">
                     Entendido
@@ -551,7 +548,7 @@
         </div>
     </div>
 
-    <!-- POPUP MODAL: INFOGRÁFICO DA VIA SC -->
+    <!-- POPUP MODAL: INFOGRÁFICO DA VIA -->
     <div id="info-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden no-print">
         <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-3xl w-full p-5 sm:p-8 shadow-2xl space-y-4 relative max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between border-b border-slate-800 pb-3">
@@ -563,7 +560,7 @@
                 </button>
             </div>
             <div class="flex justify-center bg-slate-950 p-4 rounded-xl border border-slate-800">
-                <img id="modal-img" src="https://i.imgur.com/7KP7dVc.png" alt="Infográfico de aplicação subcutânea" class="max-w-full h-auto rounded-lg shadow-md">
+                <img id="modal-img" src="https://i.imgur.com/7KP7dVc.png" alt="Infográfico de aplicação" class="max-w-full h-auto rounded-lg shadow-md">
             </div>
             <div class="pt-2 border-t border-slate-800 flex justify-end">
                 <button onclick="closeInfoModal()" class="bg-brand-600 hover:bg-brand-500 text-white font-medium px-6 py-2 rounded-xl text-xs transition">
@@ -582,6 +579,7 @@
 
     <!-- Script de Lógica -->
     <script>
+        const tipoMedida = document.getElementById('tipo-medida');
         const inputConcMg = document.getElementById('conc-mg');
         const inputConcMl = document.getElementById('conc-ml');
         const labelConc1 = document.getElementById('label-conc-1');
@@ -589,6 +587,9 @@
         const labelDose = document.getElementById('label-dose');
         
         const selectSeringa = document.getElementById('seringa');
+        const selectVia = document.getElementById('via-aplicacao');
+        const displayVia = document.getElementById('display-via');
+        const btnInfoLabel = document.getElementById('btn-info-label');
         const inputMg = document.getElementById('input-mg');
         const inputMl = document.getElementById('input-ml');
         const checkboxesDias = document.querySelectorAll('input[name="dias-semana"]');
@@ -601,13 +602,11 @@
         const labelVolume = document.getElementById('label-volume');
 
         const infoModal = document.getElementById('info-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalImg = document.getElementById('modal-img');
+
         const concModal = document.getElementById('conc-modal');
         const aboutModal = document.getElementById('about-modal');
-        const telegramPopup = document.getElementById('telegram-popup');
-
-        function fecharTelegramPopup() {
-            telegramPopup.classList.add('hidden');
-        }
 
         function openAboutModal() { aboutModal.classList.remove('hidden'); }
         function closeAboutModal() { aboutModal.classList.add('hidden'); }
@@ -621,11 +620,7 @@
 
         function drawRealMarkings(maxMl) {
             markingsReal.innerHTML = '';
-            let totalDivisoes = 5;
-
-            if (maxMl === 0.5) totalDivisoes = 5;
-            else if (maxMl === 1.0) totalDivisoes = 10;
-
+            let totalDivisoes = (maxMl === 0.5) ? 5 : 10;
             const subDivs = 5;
             const totalMarks = totalDivisoes * subDivs;
 
@@ -767,7 +762,6 @@
         selectSeringa.addEventListener('change', () => {
             capacidadeSeringa = parseFloat(selectSeringa.value);
             seringaTitulo.innerHTML = `<i class="fa-solid fa-eye text-brand-400"></i> Resultado visual (${selectSeringa.options[selectSeringa.selectedIndex].text})`;
-            
             drawRealMarkings(capacidadeSeringa);
             calcular();
         });
