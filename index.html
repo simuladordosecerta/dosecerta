@@ -163,10 +163,6 @@
             transform: translateX(-50%);
             text-align: center;
         }
-        .page-break-pdf {
-            break-before: page;
-            page-break-before: always;
-        }
         @media print {
             body {
                 background-color: #0f172a !important;
@@ -247,12 +243,16 @@
         <!-- Card Principal de Controles -->
         <section class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden p-4 sm:p-8 space-y-6">
             
-            <div class="border-b border-slate-800 pb-4">
-                <div class="inline-block px-3 py-1 rounded-full bg-brand-500/10 text-brand-400 text-xs font-semibold mb-2 uppercase tracking-wider">Preencha conforme o rótulo e sua prescrição</div>
+            <div class="border-b border-slate-800 pb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div class="inline-block px-3 py-1 rounded-full bg-brand-500/10 text-brand-400 text-xs font-semibold uppercase tracking-wider">Preencha conforme o rótulo e sua prescrição</div>
+                
+                <button type="button" onclick="openExamesModal()" class="bg-slate-950 hover:bg-slate-800 text-brand-400 border border-brand-500/40 px-4 py-2 rounded-xl text-xs font-semibold transition flex items-center gap-2 shadow-md">
+                    <i class="fa-solid fa-flask-vial"></i> <span id="btn-exames-status">🧪 Dados de Testo e exames</span>
+                </button>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Bloco 1: Concentração e Tipo de Medida -->
+                <!-- Bloco 1: Concentração, Éster, Marca e Tipo de Medida -->
                 <div class="bg-slate-950 p-4 sm:p-5 rounded-xl border border-slate-800 space-y-4">
                     <div class="flex justify-between items-center">
                         <label class="block text-sm font-semibold text-brand-400 flex items-center gap-2">
@@ -268,6 +268,20 @@
                         </div>
                     </div>
 
+                    <!-- Campos Éster e Marca -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1">Éster</label>
+                            <input type="text" id="input-ester" placeholder="Ex: Enantato" 
+                                class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1">Marca</label>
+                            <input type="text" id="input-marca" placeholder="Ex: Lander Gold" 
+                                class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-500">
+                        </div>
+                    </div>
+
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block text-xs font-medium text-slate-400 mb-1" id="label-conc-1">Total (mg)</label>
@@ -275,7 +289,7 @@
                                 class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-slate-400 mb-1" id="label-conc-2">por Volume (ml)</label>
+                            <label class="block text-xs font-medium text-slate-400 mb-1" id="label-conc-2">Volume (ml)</label>
                             <input type="number" id="conc-ml" value="" placeholder="Ex: 1 ml" min="0.01" step="any" 
                                 class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500">
                         </div>
@@ -283,32 +297,29 @@
                 </div>
 
                 <!-- Bloco 2: Tipo de Seringa e Via de Aplicação -->
-                <div class="bg-slate-950 p-4 sm:p-5 rounded-xl border border-slate-800 flex flex-col justify-between space-y-4">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-sm font-semibold text-brand-400 flex items-center gap-2 mb-2">
-                                <i class="fa-solid fa-ruler-horizontal"></i> Seringa
-                            </label>
-                            <select id="seringa" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500">
-                                <option value="0.5" selected>Seringa (50 UI - 0.5 ml)</option>
-                                <option value="1.0">Seringa (100 UI - 1.0 ml)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <div class="flex items-center justify-between mb-2">
-                                <label class="block text-sm font-semibold text-brand-400 flex items-center gap-2">
-                                    <i class="fa-solid fa-syringe"></i> Via
-                                </label>
-                                <button type="button" onclick="openInfoModal()" class="text-brand-400 hover:text-brand-300 text-xs flex items-center gap-1 bg-brand-500/10 px-2 py-0.5 rounded-lg border border-brand-500/30 transition no-print" title="Ver Infográfico da Via">
-                                    <i class="fa-solid fa-circle-info"></i> <span id="btn-info-label">Info SC</span>
-                                </button>
-                            </div>
-                            <select id="via-aplicacao" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500">
-                                <option value="SC" selected>SC - Subcutânea</option>
-                            </select>
-                        </div>
+                <div class="bg-slate-950 p-4 sm:p-5 rounded-xl border border-slate-800 space-y-4 flex flex-col justify-center">
+                    <div>
+                        <label class="block text-sm font-semibold text-brand-400 flex items-center gap-2 mb-2">
+                            <i class="fa-solid fa-ruler-horizontal"></i> Seringa
+                        </label>
+                        <select id="seringa" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500">
+                            <option value="0.5">Seringa (50 UI - 0.5 ml)</option>
+                            <option value="1.0" selected>Seringa (100 UI - 1.0 ml)</option>
+                        </select>
                     </div>
-                    <p class="text-xs text-slate-400">Selecione a seringa e a via de administração</p>
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <label class="block text-sm font-semibold text-brand-400 flex items-center gap-2">
+                                <i class="fa-solid fa-syringe"></i> Via
+                            </label>
+                            <button type="button" onclick="openInfoModal()" class="text-brand-400 hover:text-brand-300 text-xs flex items-center gap-1 bg-brand-500/10 px-2 py-0.5 rounded-lg border border-brand-500/30 transition no-print" title="Ver Infográfico da Via">
+                                <i class="fa-solid fa-circle-info"></i> <span id="btn-info-label">Info SC</span>
+                            </button>
+                        </div>
+                        <select id="via-aplicacao" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500">
+                            <option value="SC" selected>SC - Subcutânea</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
@@ -332,9 +343,15 @@
                 </div>
 
                 <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 flex flex-col justify-between">
-                    <label class="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center gap-1.5">
-                        <i class="fa-solid fa-calendar-days text-amber-400"></i> Dias de Aplicação na Semana
-                    </label>
+                    <div class="flex items-center justify-between mb-1.5">
+                        <label class="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
+                            <i class="fa-solid fa-calendar-days text-amber-400"></i> Dias de Aplicação na Semana
+                        </label>
+                        <button type="button" onclick="openDateModal()" class="text-xs bg-brand-500/10 hover:bg-brand-500/20 text-brand-400 border border-brand-500/30 px-2.5 py-1 rounded-lg font-medium transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-calendar-alt"></i> <span id="btn-data-label">Definir Início</span>
+                        </button>
+                    </div>
+
                     <!-- Checkboxes dos Dias da Semana -->
                     <div class="grid grid-cols-7 gap-1 pt-1">
                         <label class="flex flex-col items-center cursor-pointer text-center bg-slate-900 p-1.5 rounded-lg border border-slate-700 hover:border-brand-500 text-xs">
@@ -376,9 +393,9 @@
         </section>
 
         <!-- Simulador Visual da Seringa (Alinhado) -->
-        <section class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl p-4 sm:p-8 flex flex-col items-center justify-center text-center page-break-pdf">
+        <section class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl p-4 sm:p-8 flex flex-col items-center justify-center text-center">
             <h2 class="text-base font-bold text-slate-300 mb-4 flex items-center gap-2" id="seringa-titulo">
-                <i class="fa-solid fa-eye text-brand-400"></i> Resultado visual (Seringa 50 UI - 0.5 ml)
+                <i class="fa-solid fa-eye text-brand-400"></i> Resultado visual (Seringa 100 UI - 1.0 ml)
             </h2>
             <div id="display-via" class="mb-4 inline-block px-3 py-1 rounded-lg bg-brand-500/10 text-brand-400 text-xs font-semibold uppercase tracking-wider">
                 Via: SUBCUTÂNEA (SC)
@@ -404,9 +421,14 @@
 
         <!-- Seção: Planejamento por Intervalo -->
         <section class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl p-4 sm:p-8 space-y-4">
-            <div class="border-b border-slate-800 pb-3">
-                <div class="inline-block px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-semibold mb-1 uppercase tracking-wider">Cronograma de Aplicações</div>
-                <p class="text-xs text-slate-400 mt-0.5">Calcule a quantidade total estimada com base na dose por aplicação e nos dias da semana selecionados.</p>
+            <div class="border-b border-slate-800 pb-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                <div>
+                    <div class="inline-block px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-semibold mb-1 uppercase tracking-wider">Cronograma de Aplicações</div>
+                    <p class="text-xs text-slate-400 mt-0.5">Calcule a quantidade total estimada com base na dose por aplicação e nos dias da semana selecionados.</p>
+                </div>
+                <div id="badge-periodo-info" class="hidden bg-slate-950 border border-slate-800 px-3 py-1.5 rounded-xl text-xs text-slate-300">
+                    <i class="fa-solid fa-calendar-days text-brand-400 mr-1"></i> Início: <strong id="info-data-inicio" class="text-white">-</strong>
+                </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -444,7 +466,10 @@
                 <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 flex flex-col justify-between space-y-3">
                     <div>
                         <div class="flex items-center justify-between mb-1">
-                            <span class="text-xs font-bold text-blue-400 uppercase tracking-wider">30 Dias</span>
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-xs font-bold text-blue-400 uppercase tracking-wider">30 Dias</span>
+                                <span id="data-fim-30-badge" class="hidden bg-blue-500/20 text-blue-300 text-[10px] px-1.5 py-0.5 rounded font-semibold">Até <span id="txt-data-fim-30">-</span></span>
+                            </div>
                             <i class="fa-solid fa-calendar text-slate-500"></i>
                         </div>
                         <p class="text-xs text-slate-400">Total de aplicações: <strong class="text-white" id="freq-30">-</strong></p>
@@ -456,14 +481,17 @@
                 </div>
             </div>
 
-            <!-- Botão de Salvar em PDF -->
-            <div class="pt-4 flex justify-center no-print">
-                <button onclick="window.print()" class="bg-brand-600 hover:bg-brand-500 text-white font-semibold px-6 py-3 rounded-xl shadow-lg shadow-brand-600/20 transition flex items-center gap-2 text-sm">
-                    <i class="fa-solid fa-file-pdf"></i> Salvar Resultados em PDF
+            <!-- Botões Copiar e WhatsApp -->
+            <div class="pt-6 flex flex-wrap items-center justify-center gap-3 no-print">
+                <button onclick="copiarTexto()" id="btn-copiar" class="bg-slate-800 hover:bg-slate-700 text-white font-semibold px-6 py-3 rounded-xl shadow-lg border border-slate-700 transition flex items-center gap-2 text-sm">
+                    <i class="fa-regular fa-copy"></i> COPIAR
+                </button>
+                <button onclick="enviarWhatsApp()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-6 py-3 rounded-xl shadow-lg shadow-emerald-600/20 transition flex items-center gap-2 text-sm">
+                    <i class="fa-brands fa-whatsapp"></i> WHATSAPP
                 </button>
             </div>
 
-            <!-- Redes Sociais / Comunidade (Abaixo do Salvar em PDF, sem imprimir) -->
+            <!-- Redes Sociais / Comunidade -->
             <div class="pt-6 border-t border-slate-800 text-center space-y-3 no-print">
                 <div>
                     <h4 class="text-sm font-bold text-white tracking-tight">Fique conectado!</h4>
@@ -481,6 +509,97 @@
         </section>
 
     </main>
+
+    <!-- POPUP MODAL: DADOS DE TESTO E EXAMES -->
+    <div id="exames-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden no-print">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl space-y-4 relative">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-flask-vial text-brand-400"></i> Dados de Testo e exames
+                </h3>
+                <button onclick="closeExamesModal()" class="text-slate-400 hover:text-white text-lg p-2">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-4 text-xs">
+                <!-- Testo Inicial -->
+                <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 space-y-2.5">
+                    <span class="font-bold text-brand-400 block uppercase tracking-wide">Testo Inicial</span>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-[10px] text-slate-400 mb-1">Data</label>
+                            <input type="date" id="exame-ini-data" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-xs text-white focus:outline-none focus:border-brand-500">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-400 mb-1">Valor (ng/dl)</label>
+                            <input type="text" id="exame-ini-val" placeholder="Ex: 1300" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-xs text-white focus:outline-none focus:border-brand-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-400 mb-1">Hematócrito Inicial % (Opcional)</label>
+                        <input type="text" id="exame-ini-hemo" placeholder="Ex: 48%" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-xs text-white focus:outline-none focus:border-brand-500">
+                    </div>
+                </div>
+
+                <!-- Testo Pós Exame -->
+                <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 space-y-2.5">
+                    <span class="font-bold text-amber-400 block uppercase tracking-wide">Testo Pós Exame</span>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-[10px] text-slate-400 mb-1">Data</label>
+                            <input type="date" id="exame-pos-data" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-xs text-white focus:outline-none focus:border-brand-500">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-400 mb-1">Valor (ng/dl)</label>
+                            <input type="text" id="exame-pos-val" placeholder="Ex: 1200" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-xs text-white focus:outline-none focus:border-brand-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-400 mb-1">Hematócrito Pós Exame % (Opcional)</label>
+                        <input type="text" id="exame-pos-hemo" placeholder="Ex: 46%" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-xs text-white focus:outline-none focus:border-brand-500">
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-3 border-t border-slate-800 flex items-center justify-end gap-2">
+                <button onclick="limparExames()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3.5 py-2 rounded-xl font-medium transition">
+                    Limpar
+                </button>
+                <button onclick="salvarExames()" class="bg-brand-600 hover:bg-brand-500 text-white font-medium px-5 py-2 rounded-xl text-xs transition shadow-lg shadow-brand-600/20">
+                    Salvar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- POPUP MODAL: SELECIONAR DATA DE INÍCIO -->
+    <div id="date-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden no-print">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-sm w-full p-5 sm:p-6 shadow-2xl space-y-4 relative">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-calendar-alt text-brand-400"></i> Data de Início do Ciclo
+                </h3>
+                <button onclick="closeDateModal()" class="text-slate-400 hover:text-white text-lg p-2">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-3">
+                <label class="block text-xs font-medium text-slate-300">Selecione o dia da primeira aplicação:</label>
+                <input type="date" id="input-data-inicio" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500">
+            </div>
+
+            <div class="pt-3 border-t border-slate-800 flex items-center justify-end gap-2">
+                <button onclick="limparDataInicio()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-4 py-2 rounded-xl font-medium transition">
+                    Remover Data
+                </button>
+                <button onclick="salvarDataInicio()" class="bg-brand-600 hover:bg-brand-500 text-white font-medium px-5 py-2 rounded-xl text-xs transition shadow-lg shadow-brand-600/20">
+                    Confirmar
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- POPUP MODAL: SOBRE -->
     <div id="about-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden no-print">
@@ -582,6 +701,9 @@
         const tipoMedida = document.getElementById('tipo-medida');
         const inputConcMg = document.getElementById('conc-mg');
         const inputConcMl = document.getElementById('conc-ml');
+        const inputEster = document.getElementById('input-ester');
+        const inputMarca = document.getElementById('input-marca');
+        
         const labelConc1 = document.getElementById('label-conc-1');
         const labelConc2 = document.getElementById('label-conc-2');
         const labelDose = document.getElementById('label-dose');
@@ -607,6 +729,23 @@
 
         const concModal = document.getElementById('conc-modal');
         const aboutModal = document.getElementById('about-modal');
+        const dateModal = document.getElementById('date-modal');
+        const examesModal = document.getElementById('exames-modal');
+
+        const inputDataInicio = document.getElementById('input-data-inicio');
+        const btnDataLabel = document.getElementById('btn-data-label');
+        const badgePeriodoInfo = document.getElementById('badge-periodo-info');
+        const infoDataInicio = document.getElementById('info-data-inicio');
+        const dataFim30Badge = document.getElementById('data-fim-30-badge');
+        const txtDataFim30 = document.getElementById('txt-data-fim-30');
+        const btnExamesStatus = document.getElementById('btn-exames-status');
+
+        const exameIniData = document.getElementById('exame-ini-data');
+        const exameIniVal = document.getElementById('exame-ini-val');
+        const exameIniHemo = document.getElementById('exame-ini-hemo');
+        const examePosData = document.getElementById('exame-pos-data');
+        const examePosVal = document.getElementById('exame-pos-val');
+        const examePosHemo = document.getElementById('exame-pos-hemo');
 
         function openAboutModal() { aboutModal.classList.remove('hidden'); }
         function closeAboutModal() { aboutModal.classList.add('hidden'); }
@@ -614,9 +753,114 @@
         function closeConcModal() { concModal.classList.add('hidden'); }
         function openInfoModal() { infoModal.classList.remove('hidden'); }
         function closeInfoModal() { infoModal.classList.add('hidden'); }
+        function openDateModal() { dateModal.classList.remove('hidden'); }
+        function closeDateModal() { dateModal.classList.add('hidden'); }
+        function openExamesModal() { examesModal.classList.remove('hidden'); }
+        function closeExamesModal() { examesModal.classList.add('hidden'); }
 
-        let capacidadeSeringa = 0.5;
+        let dataInicioSelecionada = '';
+        let dataFim30Selecionada = '';
+        let dadosExames = {
+            iniData: '',
+            iniVal: '',
+            iniHemo: '',
+            posData: '',
+            posVal: '',
+            posHemo: ''
+        };
+
+        function formatarDataBR(dataStr) {
+            if (!dataStr) return '';
+            const partes = dataStr.split('-');
+            if (partes.length === 3) {
+                return `${partes[2]}/${partes[1]}/${partes[0]}`;
+            }
+            return dataStr;
+        }
+
+        function salvarDataInicio() {
+            const val = inputDataInicio.value;
+            if (val) {
+                dataInicioSelecionada = val;
+                const d = new Date(val + 'T00:00:00');
+                d.setDate(d.getDate() + 29);
+                dataFim30Selecionada = d.toISOString().split('T')[0];
+
+                btnDataLabel.innerText = formatarDataBR(dataInicioSelecionada);
+                infoDataInicio.innerText = formatarDataBR(dataInicioSelecionada);
+                txtDataFim30.innerText = formatarDataBR(dataFim30Selecionada);
+
+                badgePeriodoInfo.classList.remove('hidden');
+                dataFim30Badge.classList.remove('hidden');
+            }
+            closeDateModal();
+            calcular();
+        }
+
+        function limparDataInicio() {
+            inputDataInicio.value = '';
+            dataInicioSelecionada = '';
+            dataFim30Selecionada = '';
+            btnDataLabel.innerText = 'Definir Início';
+            badgePeriodoInfo.classList.add('hidden');
+            dataFim30Badge.classList.add('hidden');
+            closeDateModal();
+            calcular();
+        }
+
+        function salvarExames() {
+            dadosExames.iniData = exameIniData.value ? formatarDataBR(exameIniData.value) : '';
+            dadosExames.iniVal = exameIniVal.value.trim();
+            dadosExames.iniHemo = exameIniHemo.value.trim();
+            dadosExames.posData = examePosData.value ? formatarDataBR(examePosData.value) : '';
+            dadosExames.posVal = examePosVal.value.trim();
+            dadosExames.posHemo = examePosHemo.value.trim();
+
+            if (dadosExames.iniVal || dadosExames.posVal || dadosExames.iniHemo || dadosExames.posHemo) {
+                btnExamesStatus.innerHTML = `🧪 Exames Salvos <i class="fa-solid fa-check text-emerald-400 ml-1"></i>`;
+            } else {
+                btnExamesStatus.innerHTML = `🧪 Dados de Testo e exames`;
+            }
+            closeExamesModal();
+            calcular();
+        }
+
+        function limparExames() {
+            exameIniData.value = '';
+            exameIniVal.value = '';
+            exameIniHemo.value = '';
+            examePosData.value = '';
+            examePosVal.value = '';
+            examePosHemo.value = '';
+            dadosExames = { iniData: '', iniVal: '', iniHemo: '', posData: '', posVal: '', posHemo: '' };
+            btnExamesStatus.innerHTML = `🧪 Dados de Testo e exames`;
+            closeExamesModal();
+            calcular();
+        }
+
+        let capacidadeSeringa = 1.0;
         let activeInput = 'dose';
+
+        let dadosCalculados = {
+            totalMg: '0',
+            totalMl: '0',
+            ester: '',
+            marca: '',
+            seringaUI: '100',
+            diasStr: '',
+            doseMg: '0',
+            volumeMl: '0',
+            volumeUI: '0',
+            app7: '0',
+            acum7Mg: '0',
+            acum7Ml: '0',
+            app15: '0',
+            acum15Mg: '0',
+            acum15Ml: '0',
+            app30: '0',
+            acum30Mg: '0',
+            acum30Ml: '0'
+        };
 
         function drawRealMarkings(maxMl) {
             markingsReal.innerHTML = '';
@@ -677,10 +921,28 @@
             return selecionados;
         }
 
+        function getDiasAbreviadosText() {
+            const mapDias = { 1: 'Seg', 2: 'Ter', 3: 'Qua', 4: 'Qui', 5: 'Sex', 6: 'Sáb', 0: 'Dom' };
+            let selecionados = [];
+            checkboxesDias.forEach(cb => {
+                if (cb.checked) selecionados.push(mapDias[parseInt(cb.value)]);
+            });
+            return selecionados.length > 0 ? selecionados.join('.') : 'Nenhum';
+        }
+
         function atualizarPlanejamento(doseUnitaria, volumeUnitario) {
-            const unidade = 'mg';
             const diasMarcados = getDiasSelecionados();
             const dosesPorSemana = diasMarcados.length;
+
+            dadosCalculados.totalMg = inputConcMg.value || '0';
+            dadosCalculados.totalMl = inputConcMl.value || '1';
+            dadosCalculados.ester = inputEster.value.trim();
+            dadosCalculados.marca = inputMarca.value.trim();
+            dadosCalculados.seringaUI = selectSeringa.value == '0.5' ? '50' : '100';
+            dadosCalculados.diasStr = getDiasAbreviadosText();
+            dadosCalculados.doseMg = doseUnitaria ? doseUnitaria.toFixed(0) : '0';
+            dadosCalculados.volumeMl = volumeUnitario ? volumeUnitario.toFixed(2) : '0.00';
+            dadosCalculados.volumeUI = volumeUnitario ? (volumeUnitario * 100).toFixed(1) : '0.0';
 
             if (!doseUnitaria || doseUnitaria <= 0 || dosesPorSemana === 0) {
                 document.getElementById('total-7').innerText = '-';
@@ -704,15 +966,110 @@
             const totalMl15 = volumeUnitario * aplicacoes15;
             const totalMl30 = volumeUnitario * aplicacoes30;
 
-            const textoAplicacao = (qtd) => qtd === 1 ? '1 aplicação' : `${qtd} aplicações`;
+            dadosCalculados.app7 = aplicacoes7;
+            dadosCalculados.acum7Mg = totalDose7.toFixed(1);
+            dadosCalculados.acum7Ml = totalMl7.toFixed(2);
 
-            document.getElementById('freq-7').innerText = textoAplicacao(aplicacoes7);
-            document.getElementById('freq-15').innerText = textoAplicacao(aplicacoes15);
-            document.getElementById('freq-30').innerText = textoAplicacao(aplicacoes30);
+            dadosCalculados.app15 = aplicacoes15;
+            dadosCalculados.acum15Mg = totalDose15.toFixed(1);
+            dadosCalculados.acum15Ml = totalMl15.toFixed(2);
 
-            document.getElementById('total-7').innerText = `${totalDose7.toFixed(1)} ${unidade} (${totalMl7.toFixed(2)} ml)`;
-            document.getElementById('total-15').innerText = `${totalDose15.toFixed(1)} ${unidade} (${totalMl15.toFixed(2)} ml)`;
-            document.getElementById('total-30').innerText = `${totalDose30.toFixed(1)} ${unidade} (${totalMl30.toFixed(2)} ml)`;
+            dadosCalculados.app30 = aplicacoes30;
+            dadosCalculados.acum30Mg = totalDose30.toFixed(1);
+            dadosCalculados.acum30Ml = totalMl30.toFixed(2);
+
+            document.getElementById('freq-7').innerText = `${aplicacoes7} aplicações`;
+            document.getElementById('freq-15').innerText = `${aplicacoes15} aplicações`;
+            document.getElementById('freq-30').innerText = `${aplicacoes30} aplicações`;
+
+            document.getElementById('total-7').innerText = `${totalDose7.toFixed(1)} mg (${totalMl7.toFixed(2)} ml)`;
+            document.getElementById('total-15').innerText = `${totalDose15.toFixed(1)} mg (${totalMl15.toFixed(2)} ml)`;
+            document.getElementById('total-30').innerText = `${totalDose30.toFixed(1)} mg (${totalMl30.toFixed(2)} ml)`;
+        }
+
+        function gerarTextoFormatado() {
+            let blocoExames = '';
+            if (dadosExames.iniVal || dadosExames.iniHemo) {
+                if (dadosExames.iniVal) {
+                    let dataIniStr = dadosExames.iniData ? dadosExames.iniData + ' - ' : '';
+                    blocoExames += `Testo Inicial: ${dataIniStr}${dadosExames.iniVal} ng/dl\n`;
+                }
+                if (dadosExames.iniHemo) {
+                    let hemoIni = dadosExames.iniHemo.replace('%', '');
+                    blocoExames += `Hematócrito Inicial: ${hemoIni}%\n`;
+                }
+                blocoExames += `━━━━━━━━━━━━━━━━━━━━━\n`;
+            }
+
+            if (dadosExames.posVal || dadosExames.posHemo) {
+                if (dadosExames.posVal) {
+                    let dataPosStr = dadosExames.posData ? dadosExames.posData + ' - ' : '';
+                    blocoExames += `Testo Pós Exame: ${dataPosStr}${dadosExames.posVal} ng/dl\n`;
+                }
+                if (dadosExames.posHemo) {
+                    let hemoPos = dadosExames.posHemo.replace('%', '');
+                    blocoExames += `Hematócrito Pós Exame: ${hemoPos}%\n`;
+                }
+                blocoExames += `━━━━━━━━━━━━━━━━━━━━━\n`;
+            }
+
+            let esterMarcaStr = '';
+            if (dadosCalculados.ester || dadosCalculados.marca) {
+                esterMarcaStr = `🌡 Éster: ${dadosCalculados.ester}${dadosCalculados.ester && dadosCalculados.marca ? ' - ' : ''}${dadosCalculados.marca}\n`;
+            }
+
+            let linhaInicio = formatarDataBR(dataInicioSelecionada);
+            let linhaFim30 = formatarDataBR(dataFim30Selecionada);
+
+            return `💉 DOSE CERTA
+━━━━━━━━━━━━━━━━━━━━━
+${blocoExames}${esterMarcaStr}🧪 Total (mg): ${dadosCalculados.totalMg}mg 
+💧 Volume (ml): ${dadosCalculados.totalMl}ml
+🔬 Seringa: ${dadosCalculados.seringaUI} unidades
+🗓 Aplicação: ${dadosCalculados.diasStr}
+━━━━━━━━━━━━━━━━━━━━━
+Dose(mg): ${dadosCalculados.doseMg}mg
+Volume: ${dadosCalculados.volumeMl}ml
+Volume estimado: ${dadosCalculados.volumeMl} ml (${dadosCalculados.volumeUI} UI)
+━━━━━━━━━━━━━━━━━━━━━
+📊 Cronograma
+
+${linhaInicio ? 'Incio ' + linhaInicio + '\n' : ''}7 Dias (1 semana)
+${dadosCalculados.app7} aplicações
+Consumo Acumulado
+${dadosCalculados.acum7Mg} mg (${dadosCalculados.acum7Ml} ml)
+━━━━━━━━━━━━━━━━━━━━━
+15 Dias
+${dadosCalculados.app15} aplicações
+Consumo Acumulado
+${dadosCalculados.acum15Mg} mg (${dadosCalculados.acum15Ml} ml)
+━━━━━━━━━━━━━━━━━━━━━
+30 Dias ${linhaFim30 ? linhaFim30 : ''}
+${dadosCalculados.app30} aplicações
+Consumo Acumulado
+${dadosCalculados.acum30Mg} mg (${dadosCalculados.acum30Ml} ml)
+━━━━━━━━━━━━━━━━━━━━━
+CONSULTE SUA DOSE:
+🌐 https://calculadoradosecerta.com`;
+        }
+
+        function copiarTexto() {
+            const texto = gerarTextoFormatado();
+            navigator.clipboard.writeText(texto).then(() => {
+                const btn = document.getElementById('btn-copiar');
+                btn.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i> COPIADO!`;
+                setTimeout(() => {
+                    btn.innerHTML = `<i class="fa-regular fa-copy"></i> COPIAR`;
+                }, 2000);
+            }).catch(err => {
+                alert('Erro ao copiar texto.');
+            });
+        }
+
+        function enviarWhatsApp() {
+            const texto = gerarTextoFormatado();
+            const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`;
+            window.open(url, '_blank');
         }
 
         function calcular() {
@@ -755,6 +1112,8 @@
 
         inputConcMg.addEventListener('input', calcular);
         inputConcMl.addEventListener('input', calcular);
+        inputEster.addEventListener('input', calcular);
+        inputMarca.addEventListener('input', calcular);
         inputMg.addEventListener('input', () => { activeInput = 'dose'; calcular(); });
         inputMl.addEventListener('input', () => { activeInput = 'ml'; calcular(); });
         checkboxesDias.forEach(cb => { cb.addEventListener('change', calcular); });
