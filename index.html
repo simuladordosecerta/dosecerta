@@ -289,7 +289,7 @@
                                 class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-slate-400 mb-1" id="label-conc-2">Volume (ml)</label>
+                            <label class="block text-xs font-medium text-slate-400 mb-1" id="label-conc-2">por Volume (ml)</label>
                             <input type="number" id="conc-ml" value="" placeholder="Ex: 1 ml" min="0.01" step="any" 
                                 class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500">
                         </div>
@@ -998,7 +998,7 @@
                     let hemoIni = dadosExames.iniHemo.replace('%', '');
                     blocoExames += `Hematócrito Inicial: ${hemoIni}%\n`;
                 }
-                blocoExames += `━━━━━━━━━━━━━━━━━━━━━\n`;
+                blocoExames += `━━━━━━━━━━━━━\n`;
             }
 
             if (dadosExames.posVal || dadosExames.posHemo) {
@@ -1010,7 +1010,7 @@
                     let hemoPos = dadosExames.posHemo.replace('%', '');
                     blocoExames += `Hematócrito Pós Exame: ${hemoPos}%\n`;
                 }
-                blocoExames += `━━━━━━━━━━━━━━━━━━━━━\n`;
+                blocoExames += `━━━━━━━━━━━━━\n`;
             }
 
             let esterMarcaStr = '';
@@ -1022,33 +1022,33 @@
             let linhaFim30 = formatarDataBR(dataFim30Selecionada);
 
             return `💉 DOSE CERTA
-━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━
 ${blocoExames}${esterMarcaStr}🧪 Total (mg): ${dadosCalculados.totalMg}mg 
 💧 Volume (ml): ${dadosCalculados.totalMl}ml
 🔬 Seringa: ${dadosCalculados.seringaUI} unidades
 🗓 Aplicação: ${dadosCalculados.diasStr}
-━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━
 Dose(mg): ${dadosCalculados.doseMg}mg
 Volume: ${dadosCalculados.volumeMl}ml
 Volume estimado: ${dadosCalculados.volumeMl} ml (${dadosCalculados.volumeUI} UI)
-━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━
 📊 Cronograma
 
-${linhaInicio ? 'Incio ' + linhaInicio + '\n' : ''}7 Dias (1 semana)
+${linhaInicio ? 'Início ' + linhaInicio + '\n' : ''}7 Dias (1 semana)
 ${dadosCalculados.app7} aplicações
 Consumo Acumulado
 ${dadosCalculados.acum7Mg} mg (${dadosCalculados.acum7Ml} ml)
-━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━
 15 Dias
 ${dadosCalculados.app15} aplicações
 Consumo Acumulado
 ${dadosCalculados.acum15Mg} mg (${dadosCalculados.acum15Ml} ml)
-━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━
 30 Dias ${linhaFim30 ? linhaFim30 : ''}
 ${dadosCalculados.app30} aplicações
 Consumo Acumulado
 ${dadosCalculados.acum30Mg} mg (${dadosCalculados.acum30Ml} ml)
-━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━
 CONSULTE SUA DOSE:
 🌐 https://calculadoradosecerta.com`;
         }
