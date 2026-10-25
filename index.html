@@ -1,22 +1,16 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="h-full">
+<html lang="pt-BR" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora e Simulador de Seringa</title>
+    <title>Cardápio Fitness & Planejador Nutricional</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts Outfit & Inter para máxima modernidade -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <!-- FontAwesome para ícones -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Outfit', 'Inter', 'sans-serif'],
-                    },
                     colors: {
                         brand: {
                             50: '#ecfdf5',
@@ -24,1192 +18,755 @@
                             500: '#10b981',
                             600: '#059669',
                             700: '#047857',
+                            900: '#064e3b',
                         }
                     }
                 }
             }
         }
     </script>
+    <!-- Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            font-family: 'Outfit', 'Inter', sans-serif;
-            background: radial-gradient(circle at top, #1e293b 0%, #090d16 100%);
-            color: #f8fafc;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-        .glass-card {
-            background: rgba(15, 23, 42, 0.75);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.07);
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
-        }
-        .input-modern {
-            background: rgba(2, 6, 23, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.25s ease;
-        }
-        .input-modern:focus {
-            border-color: #10b981;
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
-        }
-        .syringe-wrapper {
-            position: relative;
-            width: 100%;
-            max-width: 100%;
-            height: 90px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow-x: auto;
-        }
-        .syringe-img-container {
-            position: relative;
-            width: 540px;
-            min-width: 540px;
-            height: 75px;
-            background: rgba(240, 245, 250, 0.95);
-            border: 2px solid #94a3b8;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-            display: flex;
-            align-items: center;
-            overflow: hidden;
-        }
-        .syringe-plunger-left {
-            position: absolute;
-            left: -45px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 50px;
-            height: 45px;
-            background: #cbd5e1;
-            border: 2px solid #64748b;
-            border-radius: 6px;
-            z-index: 30;
-        }
-        .syringe-plunger-left::before {
-            content: '';
-            position: absolute;
-            left: -12px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 12px;
-            height: 25px;
-            background: #94a3b8;
-            border-radius: 3px;
-        }
-        .syringe-plunger-left::after {
-            content: '';
-            position: absolute;
-            left: -20px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 8px;
-            height: 55px;
-            background: #cbd5e1;
-            border: 2px solid #64748b;
-            border-radius: 6px;
-        }
-        .syringe-needle-right {
-            position: absolute;
-            right: -75px;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            align-items: center;
-            z-index: 30;
-        }
-        .needle-hub {
-            width: 15px;
-            height: 18px;
-            background: #cbd5e1;
-            border: 1px solid #64748b;
-        }
-        .needle-cap {
-            width: 60px;
-            height: 24px;
-            background: linear-gradient(to bottom, #f97316, #c2410c);
-            border-radius: 4px 12px 12px 4px;
-            border: 1px solid #9a3412;
-            box-shadow: 2px 2px 8px rgba(0,0,0,0.4);
-        }
-        .liquid-real {
-            position: absolute;
-            left: 20px;
-            top: 4px;
-            height: calc(100% - 8px);
-            background: rgba(234, 179, 8, 0.75);
-            border-radius: 4px;
-            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 10;
-            box-shadow: inset 0 0 10px rgba(202, 138, 4, 0.5);
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-        }
-        .markings-real {
-            position: absolute;
-            top: 0;
-            left: 20px;
-            right: 20px;
-            height: 100%;
-            pointer-events: none;
-            z-index: 20;
-        }
-        .r-mark {
-            position: absolute;
-            top: 4px;
-            height: 14px;
-            border-right: 1.5px solid #475569;
-        }
-        .r-mark.mid {
-            height: 22px;
-        }
-        .r-mark.long {
-            height: 30px;
-            border-right: 2px solid #1e293b;
-        }
-        .r-label {
-            position: absolute;
-            top: 36px;
-            font-size: 10px;
-            font-weight: 700;
-            color: #334155;
-            transform: translateX(-50%);
-            text-align: center;
-        }
-        /* Estilo para links gerados no pop-up de produtos */
-        .produtos-content a {
-            color: #34d399;
-            text-decoration: underline;
-        }
-        .produtos-content a:hover {
-            color: #6ee7b7;
-        }
-        @media print {
-            body {
-                background: #0f172a !important;
-                color: #f8fafc !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            .no-print {
-                display: none !important;
-            }
-            header, footer {
-                display: none !important;
-            }
-            main {
-                padding: 0 !important;
-                margin: 0 !important;
-                max-width: 100% !important;
-                gap: 12px !important;
-            }
-            section {
-                border: 1px solid #334155 !important;
-                background-color: #1e293b !important;
-                box-shadow: none !important;
-            }
-        }
+        body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body class="min-h-full flex flex-col">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-emerald-500 selection:text-white">
 
-    <!-- Header Moderno -->
-    <header class="border-b border-slate-800/80 bg-slate-900/40 backdrop-blur-md sticky top-0 z-40 no-print">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3.5 flex items-center justify-between">
-            <div class="flex items-center space-x-3.5">
-                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-brand-600 to-emerald-400 flex items-center justify-center shadow-lg shadow-brand-500/25 shrink-0">
-                    <i class="fa-solid fa-syringe text-white text-xl"></i>
+    <!-- Top Header / Dashboard Navbar -->
+    <header class="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-900/30">
+                    <i class="fa-solid fa-utensils text-white text-lg"></i>
                 </div>
                 <div>
-                    <h1 class="font-bold text-lg sm:text-xl tracking-tight text-white flex items-center gap-2">
-                        Dose Certa <span class="text-[10px] bg-brand-500/20 text-brand-400 px-2 py-0.5 rounded-full font-medium tracking-wide">PRO</span>
-                    </h1>
-                    <p class="text-xs text-slate-400 font-medium">Calculadora de precisão subcutânea</p>
+                    <h1 class="font-bold text-lg tracking-tight bg-gradient-to-r from-emerald-400 to-teal-200 bg-clip-text text-transparent">NutriPlan Pro</h1>
+                    <p class="text-xs text-slate-400">Cardápio Inteligente & Substituições</p>
                 </div>
             </div>
 
-            <!-- Botões de Ação no Cabeçalho -->
-            <div class="flex items-center gap-2.5">
-                <!-- Botão Produtos Adicionado -->
-                <button type="button" onclick="openProdutosModal()" class="bg-slate-800/80 hover:bg-slate-800 text-brand-400 border border-brand-500/20 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all flex items-center gap-2 shadow-sm hover:scale-[1.02]">
-                    <i class="fa-solid fa-box-open"></i> Produtos
-                </button>
-
-                <button type="button" onclick="openAboutModal()" class="bg-slate-800/80 hover:bg-slate-800 text-brand-400 border border-brand-500/20 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all flex items-center gap-2 shadow-sm hover:scale-[1.02]">
-                    <i class="fa-solid fa-circle-info"></i> <span class="hidden sm:inline">Sobre</span>
-                </button>
-
-                <button onclick="location.reload()" class="bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700/60 px-3.5 py-2 rounded-xl text-xs font-medium transition-all flex items-center gap-2 hover:scale-[1.02]">
-                    <i class="fa-solid fa-rotate-left"></i> <span class="hidden sm:inline">Limpar</span>
-                </button>
+            <!-- Status -->
+            <div class="flex items-center space-x-3">
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 mr-2 animate-pulse"></span>
+                    Ativo & Atualizado
+                </span>
             </div>
         </div>
     </header>
 
-    <!-- Main Container -->
-    <main class="flex-grow max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+    <!-- Main Navigation Tabs -->
+    <nav class="bg-slate-900/50 border-b border-slate-800 sticky top-16 z-40 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-2 sm:space-x-4 overflow-x-auto py-3 no-scrollbar">
+            <button onclick="switchTab('breakfast')" id="btn-breakfast" class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all flex items-center space-x-2 whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white">
+                <i class="fa-solid fa-mug-hot"></i>
+                <span>Café & Lanche (36)</span>
+            </button>
+            <button onclick="switchTab('lunch')" id="btn-lunch" class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all flex items-center space-x-2 whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white">
+                <i class="fa-solid fa-bowl-food"></i>
+                <span>Almoço & Jantar (17)</span>
+            </button>
+            <button onclick="switchTab('fast-snacks')" id="btn-fast-snacks" class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all flex items-center space-x-2 whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white">
+                <i class="fa-solid fa-pen-nib text-amber-400"></i>
+                <span>Dicas Canetinha</span>
+            </button>
+            <button onclick="switchTab('substitutions')" id="btn-substitutions" class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all flex items-center space-x-2 whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white">
+                <i class="fa-solid fa-arrows-rotate"></i>
+                <span>Tabelas de Substituição</span>
+            </button>
+            <!-- NOVO BOTÃO SOLICITADO -->
+            <button onclick="switchTab('gist-snacks')" id="btn-gist-snacks" class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all flex items-center space-x-2 whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white">
+                <i class="fa-solid fa-bolt text-teal-400"></i>
+                <span>Lanches Rápidos & Proteicos</span>
+            </button>
+            <button onclick="switchTab('home')" id="btn-home" class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all flex items-center space-x-2 whitespace-nowrap bg-emerald-600 text-white shadow-lg shadow-emerald-900/40">
+                <i class="fa-solid fa-house"></i>
+                <span>Início</span>
+            </button>
+        </div>
+    </nav>
 
-        <!-- Card Principal de Controles -->
-        <section class="glass-card rounded-3xl p-5 sm:p-8 space-y-6">
-            
-            <div class="border-b border-slate-800/80 pb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/10 text-brand-400 text-xs font-semibold uppercase tracking-wider border border-brand-500/20">
-                    <i class="fa-solid fa-sliders text-xs"></i> Configuração e Parâmetros
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- TELA INICIAL / BOAS-VINDAS -->
+        <section id="tab-home" class="tab-content space-y-6 text-center py-16">
+            <div class="max-w-2xl mx-auto space-y-4 bg-slate-900 border border-slate-800 p-8 rounded-3xl shadow-2xl">
+                <div class="w-16 h-16 bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center mx-auto text-2xl border border-emerald-500/20">
+                    <i class="fa-solid fa-utensils"></i>
                 </div>
-                
-                <button type="button" onclick="openExamesModal()" class="bg-slate-950/80 hover:bg-slate-900 text-brand-400 border border-brand-500/40 px-4 py-2.5 rounded-2xl text-xs font-semibold transition-all flex items-center gap-2 shadow-lg shadow-brand-500/5 hover:border-brand-500">
-                    <i class="fa-solid fa-flask-vial text-sm"></i> <span id="btn-exames-status">Dados de Testo e Exames</span>
-                </button>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Bloco 1: Concentração, Éster, Marca -->
-                <div class="bg-slate-950/50 p-5 rounded-2xl border border-slate-800/80 space-y-4">
-                    <div class="flex justify-between items-center">
-                        <label class="block text-sm font-semibold text-brand-400 flex items-center gap-2">
-                            <i class="fa-solid fa-flask"></i> Concentração
-                        </label>
-                        <div class="flex items-center gap-2">
-                            <button type="button" onclick="openConcModal()" class="text-brand-400 hover:text-brand-300 text-xs flex items-center gap-1 bg-brand-500/10 px-2.5 py-1 rounded-xl border border-brand-500/25 transition" title="Guia de Concentração">
-                                <i class="fa-solid fa-circle-info"></i> Info
-                            </button>
-                            <select id="tipo-medida" class="input-modern p-1.5 px-2.5 rounded-xl text-xs font-semibold text-brand-400 focus:outline-none">
-                                <option value="mg">mg / ml</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Campos Éster e Marca -->
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-xs font-medium text-slate-400 mb-1.5">Éster</label>
-                            <input type="text" id="input-ester" placeholder="Ex: Enantato" 
-                                class="input-modern w-full rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-600">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-slate-400 mb-1.5">Marca</label>
-                            <input type="text" id="input-marca" placeholder="Ex: Lander Gold" 
-                                class="input-modern w-full rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-600">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-xs font-medium text-slate-400 mb-1.5" id="label-conc-1">Total (mg)</label>
-                            <input type="number" id="conc-mg" value="" placeholder="Ex: 250" min="0.1" step="any" 
-                                class="input-modern w-full rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-slate-600">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-slate-400 mb-1.5" id="label-conc-2">Volume (ml)</label>
-                            <input type="number" id="conc-ml" value="" placeholder="Ex: 1 ml" min="0.01" step="any" 
-                                class="input-modern w-full rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-slate-600">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Bloco 2: Tipo de Seringa e Via de Aplicação -->
-                <div class="bg-slate-950/50 p-5 rounded-2xl border border-slate-800/80 space-y-4 flex flex-col justify-center">
-                    <div>
-                        <label class="block text-sm font-semibold text-brand-400 flex items-center gap-2 mb-2">
-                            <i class="fa-solid fa-ruler-horizontal"></i> Seringa
-                        </label>
-                        <select id="seringa" class="input-modern w-full rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none">
-                            <option value="0.5">Seringa (50 UI - 0.5 ml)</option>
-                            <option value="1.0" selected>Seringa (100 UI - 1.0 ml)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <label class="block text-sm font-semibold text-brand-400 flex items-center gap-2">
-                                <i class="fa-solid fa-syringe"></i> Via
-                            </label>
-                            <button type="button" onclick="openInfoModal()" class="text-brand-400 hover:text-brand-300 text-xs flex items-center gap-1 bg-brand-500/10 px-2.5 py-1 rounded-xl border border-brand-500/25 transition" title="Infográfico da Via">
-                                <i class="fa-solid fa-circle-info"></i> <span id="btn-info-label">Info SC</span>
-                            </button>
-                        </div>
-                        <select id="via-aplicacao" class="input-modern w-full rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none">
-                            <option value="SC" selected>SC - Subcutânea</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Bloco 3: Inserção de Dose / Volume e Seleção de Dias -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
-                <div class="grid grid-cols-2 gap-3">
-                    <div class="bg-slate-950/50 p-4.5 rounded-2xl border border-slate-800/80">
-                        <label class="block text-xs font-semibold text-slate-300 mb-2 flex items-center gap-1.5" id="label-dose">
-                            <i class="fa-solid fa-bullseye text-blue-400"></i> Dose (mg)
-                        </label>
-                        <input type="number" id="input-mg" value="" placeholder="0" 
-                            class="input-modern w-full rounded-xl px-3.5 py-2.5 font-bold text-base text-blue-400 placeholder-slate-600">
-                    </div>
-                    <div class="bg-slate-950/50 p-4.5 rounded-2xl border border-slate-800/80">
-                        <label class="block text-xs font-semibold text-slate-300 mb-2 flex items-center gap-1.5" id="label-volume">
-                            <i class="fa-solid fa-droplet text-emerald-400"></i> Volume (ml)
-                        </label>
-                        <input type="number" id="input-ml" value="" placeholder="0.00" step="0.01" 
-                            class="input-modern w-full rounded-xl px-3.5 py-2.5 font-bold text-base text-emerald-400 placeholder-slate-600">
-                    </div>
-                </div>
-
-                <div class="bg-slate-950/50 p-4.5 rounded-2xl border border-slate-800/80 flex flex-col justify-between">
-                    <div class="flex items-center justify-between mb-2">
-                        <label class="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
-                            <i class="fa-solid fa-calendar-days text-amber-400"></i> Dias de Aplicação na Semana
-                        </label>
-                        <button type="button" onclick="openDateModal()" class="text-xs bg-brand-500/10 hover:bg-brand-500/20 text-brand-400 border border-brand-500/30 px-3 py-1.5 rounded-xl font-medium transition flex items-center gap-1.5">
-                            <i class="fa-solid fa-calendar-alt"></i> <span id="btn-data-label">Definir Início</span>
-                        </button>
-                    </div>
-
-                    <!-- Checkboxes dos Dias da Semana -->
-                    <div class="grid grid-cols-7 gap-1.5 pt-1">
-                        <label class="flex flex-col items-center cursor-pointer text-center bg-slate-900/80 p-2 rounded-xl border border-slate-800 hover:border-brand-500/60 transition text-xs">
-                            <span class="text-slate-400 font-medium">Seg</span>
-                            <input type="checkbox" name="dias-semana" value="1" class="mt-1.5 accent-brand-500 rounded cursor-pointer">
-                        </label>
-                        <label class="flex flex-col items-center cursor-pointer text-center bg-slate-900/80 p-2 rounded-xl border border-slate-800 hover:border-brand-500/60 transition text-xs">
-                            <span class="text-slate-400 font-medium">Ter</span>
-                            <input type="checkbox" name="dias-semana" value="2" class="mt-1.5 accent-brand-500 rounded cursor-pointer">
-                        </label>
-                        <label class="flex flex-col items-center cursor-pointer text-center bg-slate-900/80 p-2 rounded-xl border border-slate-800 hover:border-brand-500/60 transition text-xs">
-                            <span class="text-slate-400 font-medium">Qua</span>
-                            <input type="checkbox" name="dias-semana" value="3" class="mt-1.5 accent-brand-500 rounded cursor-pointer">
-                        </label>
-                        <label class="flex flex-col items-center cursor-pointer text-center bg-slate-900/80 p-2 rounded-xl border border-slate-800 hover:border-brand-500/60 transition text-xs">
-                            <span class="text-slate-400 font-medium">Qui</span>
-                            <input type="checkbox" name="dias-semana" value="4" class="mt-1.5 accent-brand-500 rounded cursor-pointer">
-                        </label>
-                        <label class="flex flex-col items-center cursor-pointer text-center bg-slate-900/80 p-2 rounded-xl border border-slate-800 hover:border-brand-500/60 transition text-xs">
-                            <span class="text-slate-400 font-medium">Sex</span>
-                            <input type="checkbox" name="dias-semana" value="5" class="mt-1.5 accent-brand-500 rounded cursor-pointer">
-                        </label>
-                        <label class="flex flex-col items-center cursor-pointer text-center bg-slate-900/80 p-2 rounded-xl border border-slate-800 hover:border-brand-500/60 transition text-xs">
-                            <span class="text-slate-400 font-medium">Sáb</span>
-                            <input type="checkbox" name="dias-semana" value="6" class="mt-1.5 accent-brand-500 rounded cursor-pointer">
-                        </label>
-                        <label class="flex flex-col items-center cursor-pointer text-center bg-slate-900/80 p-2 rounded-xl border border-slate-800 hover:border-brand-500/60 transition text-xs">
-                            <span class="text-slate-400 font-medium">Dom</span>
-                            <input type="checkbox" name="dias-semana" value="0" class="mt-1.5 accent-brand-500 rounded cursor-pointer">
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <div id="aviso" class="hidden bg-rose-950/60 border border-rose-800/80 text-rose-200 p-3.5 rounded-2xl text-xs font-medium flex items-center gap-2.5">
-                <i class="fa-solid fa-triangle-exclamation text-rose-400 text-base"></i>
-                Atenção: A dose desejada excedeu a capacidade máxima da seringa selecionada!
+                <h2 class="text-3xl font-bold tracking-tight text-white">Bem-vindo ao NutriPlan Pro</h2>
+                <p class="text-slate-400 text-sm leading-relaxed">
+                    Selecione uma das categorias no menu acima para abrir os cardápios, conferir as Dicas Canetinha, visualizar os Lanches Rápidos atualizados via Gist ou consultar as Tabelas de Substituição.
+                </p>
             </div>
         </section>
 
-        <!-- Simulador Visual da Seringa -->
-        <section class="glass-card rounded-3xl p-5 sm:p-8 flex flex-col items-center justify-center text-center">
-            <h2 class="text-sm sm:text-base font-bold text-slate-200 mb-3 flex items-center gap-2" id="seringa-titulo">
-                <i class="fa-solid fa-eye text-brand-400"></i> Resultado visual (Seringa 100 UI - 1.0 ml)
-            </h2>
-            <div id="display-via" class="mb-4 inline-block px-3.5 py-1 rounded-xl bg-brand-500/10 text-brand-400 text-xs font-semibold uppercase tracking-wider border border-brand-500/20">
-                Via: SUBCUTÂNEA (SC)
-            </div>
-            
-            <div class="syringe-wrapper my-2">
-                <div class="syringe-img-container">
-                    <div class="syringe-plunger-left"></div>
-                    <div class="markings-real" id="markings-real"></div>
-                    <div class="liquid-real" id="liquid-real" style="width: 0%;"></div>
-                    <div class="syringe-needle-right">
-                        <div class="needle-hub"></div>
-                        <div class="needle-cap"></div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="mt-4 bg-slate-950/60 px-6 py-3 rounded-2xl border border-slate-800 inline-block shadow-inner">
-                <p class="text-[11px] text-slate-400 uppercase tracking-wider font-semibold">Volume Alvo na Seringa (por aplicação)</p>
-                <p class="text-xl sm:text-2xl font-extrabold text-brand-400 mt-0.5 tracking-tight" id="display-volume">0.00 ml</p>
-            </div>
-        </section>
-
-        <!-- Seção: Planejamento por Intervalo -->
-        <section class="glass-card rounded-3xl p-5 sm:p-8 space-y-5">
-            <div class="border-b border-slate-800/80 pb-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <!-- TAB 1: CAFÉ DA MANHÃ E LANCHE DA TARDE -->
+        <section id="tab-breakfast" class="tab-content space-y-6 hidden">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-slate-900 to-slate-900/60 p-6 rounded-2xl border border-slate-800">
                 <div>
-                    <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-semibold mb-1 uppercase tracking-wider border border-blue-500/20">
-                        <i class="fa-solid fa-chart-line"></i> Cronograma de Aplicações
-                    </div>
-                    <p class="text-xs text-slate-400 mt-0.5">Quantidade total estimada com base na dose e dias selecionados.</p>
+                    <h2 class="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+                        <i class="fa-solid fa-sun text-amber-400"></i> Café da Manhã e Lanche da Tarde
+                    </h2>
+                    <p class="text-slate-400 text-sm mt-1">36 opções versáteis que podem ser utilizadas tanto no café da manhã quanto no lanche da tarde.</p>
                 </div>
-                <div id="badge-periodo-info" class="hidden bg-slate-950/80 border border-slate-800 px-3.5 py-2 rounded-2xl text-xs text-slate-300 shadow-sm">
-                    <i class="fa-solid fa-calendar-days text-brand-400 mr-1.5"></i> Início: <strong id="info-data-inicio" class="text-white">-</strong>
+                <div class="flex items-center gap-2">
+                    <span class="px-3 py-1 rounded-lg bg-slate-800 text-xs font-medium text-slate-300 border border-slate-700">Páginas 3 a 12</span>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <!-- Card 7 Dias -->
-                <div class="bg-slate-950/50 p-4.5 rounded-2xl border border-slate-800/80 flex flex-col justify-between space-y-3">
-                    <div>
-                        <div class="flex items-center justify-between mb-1.5">
-                            <span class="text-xs font-bold text-brand-400 uppercase tracking-wider">7 Dias (1 Semana)</span>
-                            <i class="fa-solid fa-calendar-week text-slate-500"></i>
-                        </div>
-                        <p class="text-xs text-slate-400">Total: <strong class="text-white" id="freq-7">-</strong></p>
-                    </div>
-                    <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800/60 space-y-0.5">
-                        <div class="text-[11px] text-slate-400">Consumo Acumulado:</div>
-                        <div class="text-sm sm:text-base font-bold text-brand-400" id="total-7">-</div>
+            <div id="breakfast-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </section>
+
+        <!-- TAB 2: ALMOÇO E JANTAR -->
+        <section id="tab-lunch" class="tab-content space-y-6 hidden">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-slate-900 to-slate-900/60 p-6 rounded-2xl border border-slate-800">
+                <div>
+                    <h2 class="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+                        <i class="fa-solid fa-moon text-indigo-400"></i> Almoço e Jantar
+                    </h2>
+                    <p class="text-slate-400 text-sm mt-1">17 opções completas e equilibradas para as principais refeições do dia.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="px-3 py-1 rounded-lg bg-slate-800 text-xs font-medium text-slate-300 border border-slate-700">Páginas 13 a 16</span>
+                </div>
+            </div>
+
+            <div id="lunch-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </section>
+
+        <!-- TAB 3: DICAS CANETINHA -->
+        <section id="tab-fast-snacks" class="tab-content space-y-6 hidden">
+            <div class="bg-gradient-to-r from-slate-900 to-slate-900/60 p-6 rounded-2xl border border-slate-800">
+                <h2 class="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+                    <i class="fa-solid fa-pen-nib text-amber-400"></i> Protocolo Nutricional & Dicas Canetinha
+                </h2>
+                <p class="text-slate-400 text-sm mt-1">O passo a passo completo do porquê a nutrição importa até quando ajustar a dose.</p>
+            </div>
+
+            <div class="space-y-6">
+                <!-- 1. Como a caneta age -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+                    <h3 class="text-xl font-bold text-white flex items-center gap-2 text-emerald-400">
+                        <i class="fa-solid fa-syringe"></i> 1. Como a Caneta Age
+                    </h3>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        As canetas GLP-1 agem nos receptores do hormônio GLP-1 (algumas também no GIP), o que significa: mais saciedade 🙌, esvaziamento gástrico lento 🐢, controle da fome 🍽️, diminuição da fome física e emocional 🧠, redução da velocidade de digestão, possível alteração da motilidade intestinal, melhoria do controle glicêmico 📉 e déficit calórico espontâneo mas também risco de colaterais gastrointestinais ⚠️.
+                    </p>
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Por isso o foco nutricional deve ser:</p>
+                        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-slate-300">
+                            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>🥩 Alta proteína</li>
+                            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>🍽️ Digestibilidade</li>
+                            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>⏰ Fracionamento das refeições</li>
+                            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>💧 Hidratação</li>
+                            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>💪 Prevenção de perda muscular</li>
+                        </ul>
                     </div>
                 </div>
 
-                <!-- Card 15 Dias -->
-                <div class="bg-slate-950/50 p-4.5 rounded-2xl border border-slate-800/80 flex flex-col justify-between space-y-3">
-                    <div>
-                        <div class="flex items-center justify-between mb-1.5">
-                            <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">15 Dias</span>
-                            <i class="fa-solid fa-calendar-days text-slate-500"></i>
-                        </div>
-                        <p class="text-xs text-slate-400">Total: <strong class="text-white" id="freq-15">-</strong></p>
+                <!-- 2. Quanto de proteína você precisa -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+                    <h3 class="text-xl font-bold text-white flex items-center gap-2 text-emerald-400">
+                        <i class="fa-solid fa-drumstick-bite"></i> 2. Quanto de Proteína Você Precisa
+                    </h3>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        A recomendação geral para quem usa caneta GLP-1 é <strong>1,8 a 2 g de proteína por kg de peso</strong> para preservar massa muscular 💪, controlar a fome 🍽️, acelerar recuperação muscular 🔄 e manter o metabolismo ativo 🔥 (em pessoas com IMC até 30).
+                    </p>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        Se o seu IMC for 30 ou mais, calcular pelo peso atual pode superestimar bastante sua necessidade proteica, já que o excesso de gordura não precisa de proteína para ser mantido, por isso usamos o peso ajustado ⚖️.
+                    </p>
+                </div>
+
+                <!-- 3. Hidratação diária -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+                    <h3 class="text-xl font-bold text-white flex items-center gap-2 text-cyan-400">
+                        <i class="fa-solid fa-droplet"></i> 3. Hidratação Diária
+                    </h3>
+                    <p class="text-slate-300 text-sm font-medium text-emerald-400">Hidratação correta = menos colaterais + mais resultado.</p>
+                    <p class="text-slate-300 text-sm">Multiplique o seu peso por <strong>30 a 40 ml</strong> para achar a sua meta diária.</p>
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-1">
+                        <p class="font-bold text-slate-200">Exemplos:</p>
+                        <p>90 x 30 = 2.700 litros</p>
+                        <p>90 x 40 = 3.600 litros</p>
                     </div>
-                    <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800/60 space-y-0.5">
-                        <div class="text-[11px] text-slate-400">Consumo Acumulado:</div>
-                        <div class="text-sm sm:text-base font-bold text-amber-400" id="total-15">-</div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+                            <p class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-2">Sinais de pouca água:</p>
+                            <ul class="space-y-1 text-xs text-slate-300">
+                                <li>😴 Dor de cabeça</li>
+                                <li>🥱 Cansaço excessivo</li>
+                                <li>🔒 Intestino preso</li>
+                                <li>🤢 Náusea frequente</li>
+                                <li>🌵 Boca seca</li>
+                                <li>🟡 Urina escura</li>
+                                <li>😵‍💫 Sensação de fraqueza</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+                            <p class="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2">Como beber sem passar mal:</p>
+                            <p class="text-xs text-slate-300 leading-relaxed">Evite grandes volumes de uma vez. Prefira pequenos goles ao longo do dia, 200–300ml por vez, líquidos entre as refeições (não junto da comida) — beber muita água junto da refeição pode piorar o empachamento e o refluxo.</p>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Card 30 Dias -->
-                <div class="bg-slate-950/50 p-4.5 rounded-2xl border border-slate-800/80 flex flex-col justify-between space-y-3">
-                    <div>
-                        <div class="flex items-center justify-between mb-1.5">
-                            <div class="flex items-center gap-1.5 flex-wrap">
-                                <span class="text-xs font-bold text-blue-400 uppercase tracking-wider">30 Dias</span>
-                                <span id="data-fim-30-badge" class="hidden bg-blue-500/20 text-blue-300 text-[10px] px-2 py-0.5 rounded-lg font-semibold border border-blue-500/30">Até <span id="txt-data-fim-30">-</span></span>
+                <!-- 4. Como potenciar a resposta -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+                    <h3 class="text-xl font-bold text-white flex items-center gap-2 text-emerald-400">
+                        <i class="fa-solid fa-rocket"></i> 4. Como Potenciar a Resposta ao Medicamento
+                    </h3>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        A caneta não faz milagre sozinha; ela cria um ambiente hormonal favorável, mas o resultado real depende de como o corpo é conduzido. Estes são os <strong>cinco pilares inegociáveis</strong>:
+                    </p>
+                    <div class="space-y-3 text-sm text-slate-300">
+                        <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                            <strong class="text-emerald-400">1. 💪 Massa muscular:</strong> sem estímulo adequado, o corpo perde gordura e músculo em conjunto. O treino de força não é opcional: faça de 3 a 5 vezes por semana, consuma hidratos de carbono antes de treinar (para mais energia) e movimente-se todos os dias para melhorar a sensibilidade à insulina.
+                        </div>
+                        <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                            <strong class="text-emerald-400">2. 😴 Sono:</strong> dormir mal piora a resistência à insulina, aumenta a inflamação, reduz a preservação muscular e diminui a eficácia metabólica da caneta. Um sono regulado potencializa o emagrecimento e reduz os efeitos colaterais.
+                        </div>
+                        <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                            <strong class="text-emerald-400">3. 🌱 Intestino regulado:</strong> quando o intestino não funciona bem, há mais inflamação, pior absorção de nutrientes e mais desconforto. Ajuste as fibras, beba água suficiente e mantenha uma rotina alimentar previsível.
+                        </div>
+                        <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                            <strong class="text-emerald-400">4. ⌛ Respeitar o tempo de adaptação:</strong> nem toda a semana precisa de um ajuste de dose. Subir a dose sem necessidade apenas aumenta os efeitos colaterais; mais dose não é igual a mais resultado.
+                        </div>
+                        <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                            <strong class="text-emerald-400">5. 🧘 Gerenciar o stresse:</strong> o stresse crónico mantém o cortisol elevado, o que dificulta a mobilização de gordura, favorece a retenção hídrica e piora a resistência à insulina. Tenha uma rotina mínima de desaceleração diária e pausas reais entre tarefas.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Quando ajustar a dose -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+                    <h3 class="text-xl font-bold text-white flex items-center gap-2 text-amber-400">
+                        <i class="fa-solid fa-scale-balanced"></i> 5. Quando Ajustar a Dose
+                    </h3>
+                    <p class="text-slate-300 text-sm leading-relaxed">Ajuste a dose apenas se, ao mesmo tempo:</p>
+                    <ul class="space-y-2 text-sm text-slate-300">
+                        <li class="flex items-center gap-2">🍽️ O apetite continua alto.</li>
+                        <li class="flex items-center gap-2">⏸️ A perda de peso estagnou por 4–6 semanas.</li>
+                        <li class="flex items-center gap-2">✅ Você está sem colaterais fortes.</li>
+                        <li class="flex items-center gap-2">🥩 Sua ingesta proteica já está adequada.</li>
+                    </ul>
+                </div>
+
+                <!-- Cardápio Ideal em Uso de Canetas -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
+                    <h3 class="text-xl font-bold text-white flex items-center gap-2 text-emerald-400">
+                        <i class="fa-solid fa-utensils"></i> Cardápio Ideal em Uso de Canetas
+                    </h3>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        Base de 130g de proteína/dia, ideal para preservar massa muscular durante o uso da caneta. Pense no cardápio como blocos: cada refeição contém 1 fonte de proteína (obrigatória) + 1 carboidrato (conforme fome) + fibras/vegetais sempre que possível. O peso indicado é sempre do alimento pronto, nunca cru, use a balança de cozinha.
+                    </p>
+
+                    <div class="space-y-4 pt-2">
+                        <h4 class="font-bold text-white text-base border-b border-slate-800 pb-2">Sugestões de Alimentação</h4>
+                        
+                        <!-- Café da manhã -->
+                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+                            <h5 class="font-semibold text-amber-400 text-sm">☀️ Café da Manhã</h5>
+                            <p class="text-xs font-bold text-slate-300">🍳 OPÇÃO 1</p>
+                            <ul class="text-xs text-slate-300 space-y-1">
+                                <li>• Pão integral (1 fatia)</li>
+                                <li>• Ovos (2 unidades)</li>
+                                <li>• Queijo (1 fatia) cottage, ricota ou mussarela</li>
+                                <li>• Mamão (120 g) ou outra fruta</li>
+                                <li>• Café preto</li>
+                            </ul>
+                        </div>
+
+                        <!-- Almoço -->
+                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+                            <h5 class="font-semibold text-indigo-400 text-sm">🍗 Almoço</h5>
+                            <ul class="text-xs text-slate-300 space-y-1">
+                                <li>• Peito de frango (120 g) ou tilápia</li>
+                                <li>• Arroz (80g) ou puré de batata inglesa (110g) ou puré de moranga (130g)</li>
+                                <li>• Saladas à vontade</li>
+                            </ul>
+                        </div>
+
+                        <!-- Vegetais -->
+                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+                            <h5 class="font-semibold text-emerald-400 text-sm">🥦 Vegetais</h5>
+                            <p class="text-xs text-slate-300"><strong>Priorize cozidos</strong> (melhor tolerância digestiva, crus fermentam mais e podem gerar gases/estufamento): brócolis, couve-flor, couve, cenoura, abobrinha, vagem, espinafre, repolho, beterraba, pimentão.</p>
+                            <p class="text-xs text-slate-300 pt-1"><strong>Podem ser crus</strong> (leves, baixa fermentação): alface, tomate, pepino sem casca, rúcula, agrião, acelga.</p>
+                            <p class="text-xs text-slate-400 pt-1"><em>Atenção individual:</em> cebola e alho (melhor cozidos), milho (porções pequenas), leguminosas como ervilha/lentilha/feijão (sempre bem cozidas).</p>
+                        </div>
+
+                        <!-- Lanche da tarde -->
+                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
+                            <h5 class="font-semibold text-amber-400 text-sm">🍎 Lanche da Tarde</h5>
+                            <div>
+                                <p class="text-xs font-bold text-slate-300">🥪 OPÇÃO 1 SANDUÍCHE DE FRANGO</p>
+                                <ul class="text-xs text-slate-300 space-y-1">
+                                    <li>• Pão integral (2 fatias)</li>
+                                    <li>• Queijo (1 fatia)</li>
+                                    <li>• Frango desfiado ou carne moída (60g)</li>
+                                    <li>• Requeijão light (15g) + alface, tomate</li>
+                                </ul>
                             </div>
-                            <i class="fa-solid fa-calendar text-slate-500"></i>
+                            <div class="pt-2 border-t border-slate-800">
+                                <p class="text-xs font-bold text-slate-300">OPÇÃO 2 IOGURTE COM WHEY E FRUTAS</p>
+                                <ul class="text-xs text-slate-300 space-y-1">
+                                    <li>• Iogurte zero (170 ml)</li>
+                                    <li>• Whey (1 dose 30g)</li>
+                                    <li>• Frutas picadas</li>
+                                    <li>• 20g de granola ou aveia</li>
+                                </ul>
+                            </div>
+                            <p class="text-xs text-slate-400 pt-1"><strong>🍓 Frutas preferidas (Baixa carga glicêmica + alta saciedade + menos risco de desconforto):</strong> Morango, Mirtilo, Framboesa, Amora, Kiwi, Maçã, Pêra, Melão, Abacate, Mamão.</p>
                         </div>
-                        <p class="text-xs text-slate-400">Total: <strong class="text-white" id="freq-30">-</strong></p>
-                    </div>
-                    <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800/60 space-y-0.5">
-                        <div class="text-[11px] text-slate-400">Consumo Acumulado:</div>
-                        <div class="text-sm sm:text-base font-bold text-blue-400" id="total-30">-</div>
+
+                        <!-- Jantar -->
+                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
+                            <h5 class="font-semibold text-indigo-400 text-sm">🌙 Jantar</h5>
+                            <div>
+                                <p class="text-xs font-bold text-slate-300">OPÇÃO 1</p>
+                                <ul class="text-xs text-slate-300 space-y-1">
+                                    <li>• Peito de frango (120g) ou tilápia</li>
+                                    <li>• Arroz (80g) ou puré de batata (110g)</li>
+                                    <li>• Saladas à vontade</li>
+                                </ul>
+                            </div>
+                            <div class="pt-2 border-t border-slate-800">
+                                <p class="text-xs font-bold text-slate-300">OPÇÃO 2 CREPIOCA</p>
+                                <ul class="text-xs text-slate-300 space-y-1">
+                                    <li>• Ovos (2 unidades)</li>
+                                    <li>• Tapioca (20g)</li>
+                                    <li>• 1 pitada de sal</li>
+                                    <li>• Recheio: frango desfiado com molho natural (80g) ou carne bovina picada + queijo mussarela (1 fatia) + saladas à vontade</li>
+                                </ul>
+                                <p class="text-xs text-slate-400 mt-2"><strong>Modo de preparo:</strong> bata os ovos com a tapioca e a pitada de sal até formar uma massa homogênea. Leve à frigideira antiaderente em fogo baixo, deixe firmar dos dois lados e recheie com o frango desfiado (ou a carne) e o queijo. Dobre ao meio e sirva quente.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-emerald-950/30 p-4 rounded-xl border border-emerald-900/50 text-xs text-slate-300 space-y-1">
+                            <p class="font-bold text-emerald-400">💡 Regras de Ouro:</p>
+                            <p>Priorize sempre a proteína, se não tiver fome, coma pelo menos a carne. Preparo livre (molho de tomate, assado, ao bafo, air fryer); só não frita nem molhos brancos. Carne vermelha no máximo 2x na semana.</p>
+                        </div>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <!-- Botões Copiar e WhatsApp -->
-            <div class="pt-4 flex flex-wrap items-center justify-center gap-3.5 no-print">
-                <button onclick="copiarTexto()" id="btn-copiar" class="bg-slate-800 hover:bg-slate-700 text-white font-semibold px-6 py-3.5 rounded-2xl shadow-lg border border-slate-700 transition-all flex items-center gap-2 text-xs sm:text-sm hover:scale-[1.02]">
-                    <i class="fa-regular fa-copy"></i> COPIAR RESUMO
-                </button>
-                <button onclick="enviarWhatsApp()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-6 py-3.5 rounded-2xl shadow-lg shadow-emerald-600/25 transition-all flex items-center gap-2 text-xs sm:text-sm hover:scale-[1.02]">
-                    <i class="fa-brands fa-whatsapp text-base"></i> ENVIAR WHATSAPP
-                </button>
+        <!-- TAB 4: TABELAS DE SUBSTITUIÇÕES -->
+        <section id="tab-substitutions" class="tab-content space-y-8 hidden">
+            <div class="bg-gradient-to-r from-slate-900 to-slate-900/60 p-6 rounded-2xl border border-slate-800">
+                <h2 class="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+                    <i class="fa-solid fa-scale-balanced text-emerald-400"></i> Guias e Tabelas de Substituição
+                </h2>
+                <p class="text-slate-400 text-sm mt-1">Consulte equivalências exatas de saladas, carnes, tubérculos, frutas e sucos para personalizar suas refeições.</p>
             </div>
 
-            <!-- Redes Sociais / Comunidade -->
-            <div class="pt-6 border-t border-slate-800/80 text-center space-y-3 no-print">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Saladas e Vegetais -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col">
+                    <h3 class="font-bold text-lg text-white flex items-center gap-2 mb-4">
+                        <i class="fa-solid fa-carrot text-orange-400"></i> Saladas e Vegetais
+                    </h3>
+                    <div class="overflow-x-auto flex-grow">
+                        <table class="w-full text-left text-sm text-slate-300">
+                            <thead class="bg-slate-800/50 text-slate-400 uppercase text-xs">
+                                <tr>
+                                    <th class="px-4 py-3 rounded-l-lg">Opção / Alimento</th>
+                                    <th class="px-4 py-3 rounded-r-lg">Quantidade</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-salads" class="divide-y divide-slate-800"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Carnes -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col">
+                    <h3 class="font-bold text-lg text-white flex items-center gap-2 mb-4">
+                        <i class="fa-solid fa-drumstick-bite text-red-400"></i> Substituições de Carnes (Base: 100g)
+                    </h3>
+                    <div class="overflow-x-auto flex-grow">
+                        <table class="w-full text-left text-sm text-slate-300">
+                            <thead class="bg-slate-800/50 text-slate-400 uppercase text-xs">
+                                <tr>
+                                    <th class="px-4 py-3 rounded-l-lg">Categoria</th>
+                                    <th class="px-4 py-3">Alimento</th>
+                                    <th class="px-4 py-3 rounded-r-lg">Equivalente</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-meats" class="divide-y divide-slate-800"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tubérculos -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col">
+                    <h3 class="font-bold text-lg text-white flex items-center gap-2 mb-4">
+                        <i class="fa-solid fa-seedling text-amber-500"></i> Tubérculos (1 Porção)
+                    </h3>
+                    <div class="overflow-x-auto flex-grow">
+                        <table class="w-full text-left text-sm text-slate-300">
+                            <thead class="bg-slate-800/50 text-slate-400 uppercase text-xs">
+                                <tr>
+                                    <th class="px-4 py-3 rounded-l-lg">Alimento</th>
+                                    <th class="px-4 py-3 rounded-r-lg">Quantidade Cozida</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-tubers" class="divide-y divide-slate-800"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Frutas e Sucos -->
+                <div class="space-y-8 flex flex-col">
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col">
+                        <h3 class="font-bold text-lg text-white flex items-center gap-2 mb-4">
+                            <i class="fa-solid fa-apple-whole text-emerald-400"></i> Frutas (1 Porção)
+                        </h3>
+                        <div class="overflow-x-auto max-h-72 overflow-y-auto">
+                            <table class="w-full text-left text-sm text-slate-300">
+                                <thead class="bg-slate-800/50 text-slate-400 uppercase text-xs sticky top-0 bg-slate-900">
+                                    <tr>
+                                        <th class="px-4 py-3 rounded-l-lg">Fruta</th>
+                                        <th class="px-4 py-3 rounded-r-lg">Quantidade</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-fruits" class="divide-y divide-slate-800"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col">
+                        <h3 class="font-bold text-lg text-white flex items-center gap-2 mb-4">
+                            <i class="fa-solid fa-glass-water text-cyan-400"></i> Substituição de Frutas por Sucos
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm text-slate-300">
+                                <thead class="bg-slate-800/50 text-slate-400 uppercase text-xs">
+                                    <tr>
+                                        <th class="px-4 py-3 rounded-l-lg">Suco / Polpa</th>
+                                        <th class="px-4 py-3 rounded-r-lg">Equivalência</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-juices" class="divide-y divide-slate-800"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: LANCHES RÁPIDOS DINÂMICOS (VIA GIST) -->
+        <section id="tab-gist-snacks" class="tab-content space-y-6 hidden">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-slate-900 to-slate-900/60 p-6 rounded-2xl border border-slate-800">
                 <div>
-                    <h4 class="text-xs font-bold text-slate-300 tracking-tight uppercase">Comunidade & Suporte</h4>
-                    <p class="text-[11px] text-slate-400 mt-0.5">Siga-nos no Instagram e participe do nosso canal no Telegram</p>
+                    <h2 class="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+                        <i class="fa-solid fa-bolt text-teal-400"></i> Lanches Rápidos & Proteicos (Atualizado Automaticamente)
+                    </h2>
+                    <p class="text-slate-400 text-sm mt-1">Carregado em tempo real direto do repositório remoto.</p>
                 </div>
-                <div class="flex flex-wrap items-center justify-center gap-3">
-                    <a href="https://www.instagram.com/guiadatestosc" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-r from-rose-600 to-pink-600 hover:opacity-90 text-white font-semibold py-2 px-4 rounded-xl text-xs transition-all shadow-md flex items-center gap-2">
-                        <i class="fa-brands fa-instagram text-sm"></i> Instagram
-                    </a>
-                    <a href="https://t.me/+jHLCI-JnhL5lNGQ5" target="_blank" rel="noopener noreferrer" class="bg-sky-600 hover:bg-sky-500 text-white font-semibold py-2 px-4 rounded-xl text-xs transition-all shadow-md flex items-center gap-2">
-                        <i class="fa-brands fa-telegram text-sm"></i> Telegram
-                    </a>
+                <div class="flex items-center gap-2">
+                    <button onclick="loadGistSnacks()" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-medium transition-all flex items-center gap-1.5">
+                        <i class="fa-solid fa-rotate"></i> Atualizar Agora
+                    </button>
+                </div>
+            </div>
+
+            <div id="gist-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Conteúdo carregado dinamicamente -->
+                <div class="col-span-full text-center py-12 text-slate-400">
+                    <i class="fa-solid fa-spinner fa-spin text-2xl text-emerald-400 mb-2"></i>
+                    <p>Carregando cardápios do Gist...</p>
                 </div>
             </div>
         </section>
 
     </main>
 
-    <!-- POPUP MODAL: PRODUTOS (Carrega via Gist com links clicáveis) -->
-    <div id="produtos-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden no-print">
-        <div class="glass-card rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-4 relative max-h-[90vh] overflow-y-auto border border-slate-700/50">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-3.5">
-                <h3 class="text-base font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-box-open text-brand-400"></i> Lista de Produtos
-                </h3>
-                <button onclick="closeProdutosModal()" class="text-slate-400 hover:text-white text-base p-1.5 transition">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            
-            <div id="produtos-loading" class="text-center py-8 text-slate-400 text-xs">
-                <i class="fa-solid fa-spinner fa-spin text-brand-400 text-lg mb-2"></i>
-                <p>Carregando lista atualizada...</p>
-            </div>
-
-            <div id="produtos-container" class="produtos-content space-y-2 text-xs text-slate-300 leading-relaxed whitespace-pre-wrap hidden">
-                <!-- O conteúdo do Gist será injetado aqui dinamicamente -->
-            </div>
-
-            <div class="pt-3 border-t border-slate-800 flex justify-end">
-                <button onclick="closeProdutosModal()" class="bg-brand-600 hover:bg-brand-500 text-white font-medium px-6 py-2.5 rounded-xl text-xs transition shadow-md">
-                    Fechar
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- POPUP MODAL: DADOS DE TESTO E EXAMES -->
-    <div id="exames-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden no-print">
-        <div class="glass-card rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-5 relative border border-slate-700/50">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-3.5">
-                <h3 class="text-sm sm:text-base font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-flask-vial text-brand-400"></i> Dados de Testo e Exames
-                </h3>
-                <button onclick="closeExamesModal()" class="text-slate-400 hover:text-white text-base p-1.5 transition">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            
-            <div class="space-y-4 text-xs">
-                <!-- Testo Inicial -->
-                <div class="bg-slate-950/60 p-4 rounded-2xl border border-slate-800 space-y-3">
-                    <span class="font-bold text-brand-400 block uppercase tracking-wide text-[11px]">Testo Inicial</span>
-                    <div class="grid grid-cols-2 gap-2.5">
-                        <div>
-                            <label class="block text-[10px] text-slate-400 mb-1 font-medium">Data</label>
-                            <input type="date" id="exame-ini-data" class="input-modern w-full rounded-xl px-2.5 py-2 text-xs text-white">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] text-slate-400 mb-1 font-medium">Valor (ng/dl)</label>
-                            <input type="text" id="exame-ini-val" placeholder="Ex: 1300" class="input-modern w-full rounded-xl px-2.5 py-2 text-xs text-white placeholder-slate-600">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-[10px] text-slate-400 mb-1 font-medium">Hematócrito Inicial % (Opcional)</label>
-                        <input type="text" id="exame-ini-hemo" placeholder="Ex: 48%" class="input-modern w-full rounded-xl px-2.5 py-2 text-xs text-white placeholder-slate-600">
-                    </div>
-                </div>
-
-                <!-- Testo Pós Exame -->
-                <div class="bg-slate-950/60 p-4 rounded-2xl border border-slate-800 space-y-3">
-                    <span class="font-bold text-amber-400 block uppercase tracking-wide text-[11px]">Testo Pós Exame</span>
-                    <div class="grid grid-cols-2 gap-2.5">
-                        <div>
-                            <label class="block text-[10px] text-slate-400 mb-1 font-medium">Data</label>
-                            <input type="date" id="exame-pos-data" class="input-modern w-full rounded-xl px-2.5 py-2 text-xs text-white">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] text-slate-400 mb-1 font-medium">Valor (ng/dl)</label>
-                            <input type="text" id="exame-pos-val" placeholder="Ex: 1200" class="input-modern w-full rounded-xl px-2.5 py-2 text-xs text-white placeholder-slate-600">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-[10px] text-slate-400 mb-1 font-medium">Hematócrito Pós Exame % (Opcional)</label>
-                        <input type="text" id="exame-pos-hemo" placeholder="Ex: 46%" class="input-modern w-full rounded-xl px-2.5 py-2 text-xs text-white placeholder-slate-600">
-                    </div>
-                </div>
-            </div>
-
-            <div class="pt-2 border-t border-slate-800 flex items-center justify-end gap-2.5">
-                <button onclick="limparExames()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-4 py-2.5 rounded-xl font-medium transition">
-                    Limpar
-                </button>
-                <button onclick="salvarExames()" class="bg-brand-600 hover:bg-brand-500 text-white font-medium px-5 py-2.5 rounded-xl text-xs transition shadow-lg shadow-brand-600/25">
-                    Salvar Exames
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- POPUP MODAL: SELECIONAR DATA DE INÍCIO -->
-    <div id="date-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden no-print">
-        <div class="glass-card rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-4 relative border border-slate-700/50">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-3.5">
-                <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-calendar-alt text-brand-400"></i> Data de Início do Ciclo
-                </h3>
-                <button onclick="closeDateModal()" class="text-slate-400 hover:text-white text-base p-1.5 transition">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            
-            <div class="space-y-3">
-                <label class="block text-xs font-medium text-slate-300">Selecione o dia da primeira aplicação:</label>
-                <input type="date" id="input-data-inicio" class="input-modern w-full rounded-xl px-3.5 py-3 text-sm text-white focus:outline-none">
-            </div>
-
-            <div class="pt-2 border-t border-slate-800 flex items-center justify-end gap-2">
-                <button onclick="limparDataInicio()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3.5 py-2.5 rounded-xl font-medium transition">
-                    Remover
-                </button>
-                <button onclick="salvarDataInicio()" class="bg-brand-600 hover:bg-brand-500 text-white font-medium px-5 py-2.5 rounded-xl text-xs transition shadow-lg shadow-brand-600/25">
-                    Confirmar
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- POPUP MODAL: SOBRE -->
-    <div id="about-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden no-print">
-        <div class="glass-card rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-4 relative max-h-[90vh] overflow-y-auto border border-slate-700/50">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-3.5">
-                <h3 class="text-base font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-circle-info text-brand-400"></i> Sobre o Dose Certa
-                </h3>
-                <button onclick="closeAboutModal()" class="text-slate-400 hover:text-white text-base p-1.5 transition">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            
-            <div class="space-y-3 text-xs sm:text-sm text-slate-300 leading-relaxed">
-                <p><strong class="text-white">💉 Nunca mais erre a dose dos seus hormônios!</strong></p>
-                <p>Tenha mais clareza, segurança e controle absoluto na hora de calcular suas doses de via subcutânea.</p>
-                
-                <div>
-                    <strong class="text-brand-400 block mb-1.5 font-semibold">📍 Recursos principais:</strong>
-                    <ul class="list-disc pl-5 space-y-1 text-slate-400 text-xs">
-                        <li>Simulador gráfico interativo de seringas (50 UI e 100 UI).</li>
-                        <li>Controle detalhado de exames (Testo Inicial, Pós-Exame e Hematócrito).</li>
-                        <li>Planejamento automático para cronogramas de 7, 15 e 30 dias.</li>
-                        <li>Exportação rápida formatada para cópia direta ou WhatsApp.</li>
-                    </ul>
-                </div>
-
-                <div class="bg-amber-950/40 border border-amber-800/50 p-3.5 rounded-2xl text-amber-200 text-xs flex items-start gap-2.5 mt-3">
-                    <i class="fa-solid fa-triangle-exclamation text-amber-400 text-sm mt-0.5"></i>
-                    <div>
-                        <strong class="block font-semibold mb-0.5">Aviso Importante:</strong>
-                        Esta ferramenta é estritamente educativa e de apoio ao controle pessoal, não substituindo jamais orientação médica ou farmacêutica.
-                    </div>
-                </div>
-            </div>
-
-            <div class="pt-3 border-t border-slate-800 flex justify-end">
-                <button onclick="closeAboutModal()" class="bg-brand-600 hover:bg-brand-500 text-white font-medium px-6 py-2.5 rounded-xl text-xs transition shadow-md">
-                    Entendido
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- POPUP MODAL: GUIA DE CONCENTRAÇÃO -->
-    <div id="conc-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden no-print">
-        <div class="glass-card rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-4 relative max-h-[90vh] overflow-y-auto border border-slate-700/50">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-3.5">
-                <h3 class="text-base font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-flask text-brand-400"></i> Guia de Concentração / Medida
-                </h3>
-                <button onclick="closeConcModal()" class="text-slate-400 hover:text-white text-base p-1.5 transition">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            <div class="flex justify-center bg-slate-950/60 p-4 rounded-2xl border border-slate-800">
-                <img src="https://i.imgur.com/BXfI0Wq.png" alt="Guia de Concentração" class="max-w-full h-auto rounded-xl shadow-md">
-            </div>
-            <div class="pt-2 border-t border-slate-800 flex justify-end">
-                <button onclick="closeConcModal()" class="bg-brand-600 hover:bg-brand-500 text-white font-medium px-6 py-2.5 rounded-xl text-xs transition">
-                    Fechar
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- POPUP MODAL: INFOGRÁFICO DA VIA -->
-    <div id="info-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden no-print">
-        <div class="glass-card rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-4 relative max-h-[90vh] overflow-y-auto border border-slate-700/50">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-3.5">
-                <h3 class="text-base font-bold text-white flex items-center gap-2" id="modal-title">
-                    <i class="fa-solid fa-syringe text-brand-400"></i> Infográfico de Aplicação Subcutânea (SC)
-                </h3>
-                <button onclick="closeInfoModal()" class="text-slate-400 hover:text-white text-base p-1.5 transition">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            <div class="flex justify-center bg-slate-950/60 p-4 rounded-2xl border border-slate-800">
-                <img id="modal-img" src="https://i.imgur.com/7KP7dVc.png" alt="Infográfico de aplicação" class="max-w-full h-auto rounded-xl shadow-md">
-            </div>
-            <div class="pt-2 border-t border-slate-800 flex justify-end">
-                <button onclick="closeInfoModal()" class="bg-brand-600 hover:bg-brand-500 text-white font-medium px-6 py-2.5 rounded-xl text-xs transition">
-                    Fechar
-                </button>
-            </div>
-        </div>
-    </div>
-
     <!-- Footer -->
-    <footer class="border-t border-slate-800/80 bg-slate-900/30 mt-12 py-6 text-center text-xs text-slate-500 no-print">
-        <div class="max-w-5xl mx-auto px-4">
-            <p>Dose Certa PRO • Simulador Interativo de Precisão para Injetáveis.</p>
-        </div>
+    <footer class="bg-slate-900 border-t border-slate-800 mt-12 py-6 text-center text-xs text-slate-500">
+        <p>NutriPlan Pro • Desenvolvido com base no seu material nutricional personalizado.</p>
     </footer>
 
-    <!-- Script de Lógica -->
+    <!-- JavaScript Application Logic -->
     <script>
-        const tipoMedida = document.getElementById('tipo-medida');
-        const inputConcMg = document.getElementById('conc-mg');
-        const inputConcMl = document.getElementById('conc-ml');
-        const inputEster = document.getElementById('input-ester');
-        const inputMarca = document.getElementById('input-marca');
-        
-        const labelConc1 = document.getElementById('label-conc-1');
-        const labelConc2 = document.getElementById('label-conc-2');
-        const labelDose = document.getElementById('label-dose');
-        
-        const selectSeringa = document.getElementById('seringa');
-        const selectVia = document.getElementById('via-aplicacao');
-        const displayVia = document.getElementById('display-via');
-        const btnInfoLabel = document.getElementById('btn-info-label');
-        const inputMg = document.getElementById('input-mg');
-        const inputMl = document.getElementById('input-ml');
-        const checkboxesDias = document.querySelectorAll('input[name="dias-semana"]');
-        const aviso = document.getElementById('aviso');
-        
-        const liquidReal = document.getElementById('liquid-real');
-        const displayVolume = document.getElementById('display-volume');
-        const markingsReal = document.getElementById('markings-real');
-        const seringaTitulo = document.getElementById('seringa-titulo');
-        const labelVolume = document.getElementById('label-volume');
+        const breakfastData = [
+            { id: 1, title: "Pão com ovo, queijo, alface e tomate acompanhado de frutas", ingredients: ["1 pão francês (50g) ou 2 fatias de pão de forma (50g).", "3 ovos inteiros.", "30g de queijo muçarela.", "Alface e tomate à vontade.", "1 porção de fruta."], prep: null, tag: "Café ou Lanche" },
+            { id: 2, title: "Sanduíche de frango acompanhado de frutas", ingredients: ["1,5 pão francês (75g) ou 3 fatias de pão de forma (75g).", "85g de peito de frango desfiado.", "40g de creme de ricota light.", "Alface e tomate à vontade.", "3 porções de fruta."], prep: null, tag: "Café ou Lanche" },
+            { id: 3, title: "Sanduíche de carne magra acompanhado de frutas", ingredients: ["1,5 pão francês (75g) ou 3 fatias de pão de forma (75g).", "70g de carne magra.", "30g de creme de ricota light.", "Alface e tomate à vontade.", "3,5 porções de fruta."], prep: null, tag: "Café ou Lanche" },
+            { id: 4, title: "Sanduíche de atum acompanhado de frutas", ingredients: ["2 pães franceses (100g) ou 4 fatias de pão de forma (100g).", "100g de atum em água.", "35g de creme de ricota light.", "Alface e tomate à vontade.", "2,5 porções de fruta."], prep: null, tag: "Café ou Lanche" },
+            { id: 5, title: "Ovos cremosos com torrada de pão e frutas", ingredients: ["1 pão francês (50g) ou 2 fatias de pão de forma (50g).", "2 ovos inteiros.", "25g de queijo muçarela.", "30g de creme de ricota light.", "3 porções de fruta."], prep: "Mexa os ovos em frigideira antiaderente, em fogo baixo. Quando começarem a firmar, acrescente a muçarela e o creme de ricota. Sirva com o pão torrado.", tag: "Café ou Lanche" },
+            { id: 6, title: "Cuscuz com ovos acompanhado de frutas", ingredients: ["180g de cuscuz cozido (55g cru).", "3 ovos inteiros.", "2,5 porções de fruta."], prep: null, tag: "Café ou Lanche" },
+            { id: 7, title: "Cuscuz com frango acompanhado de frutas", ingredients: ["190g de cuscuz cozido (60g cru).", "90g de frango desfiado.", "40g de creme de ricota light.", "Tomate a gosto.", "3 porções de fruta."], prep: null, tag: "Café ou Lanche" },
+            { id: 8, title: "Vitamina de frutas com whey protein e leite desnatado", ingredients: ["300ml de leite desnatado.", "40g de whey protein.", "25g de aveia em flocos.", "5 porções de fruta."], prep: "Bata os ingredientes no liquidificador.", tag: "Café ou Lanche" },
+            { id: 9, title: "Shake de whey com leite desnatado e frutas", ingredients: ["400ml de leite desnatado.", "40g de whey protein.", "6,5 porções de fruta."], prep: "Bata o leite com o whey e consuma as frutas à parte.", tag: "Café ou Lanche" },
+            { id: 10, title: "Shake proteico com paçoca e frutas", ingredients: ["300ml de leite desnatado.", "40g de whey protein.", "1 paçoca (22g) ou 20g de pasta de amendoim.", "4 porções de fruta."], prep: "Bata os ingredientes no liquidificador.", tag: "Café ou Lanche" },
+            { id: 11, title: "Caldinha de whey protein com frutas", ingredients: ["9,5 porções de fruta.", "45g de whey protein.", "60ml de leite desnatado."], prep: "Acrescente o leite aos poucos ao whey até formar uma calda. Despeje sobre as frutas.", tag: "Café ou Lanche" },
+            { id: 12, title: "Sorvete de frutas congeladas com whey protein", ingredients: ["40g de whey protein.", "30g de leite desnatado em pó.", "7,5 porções de fruta congelada."], prep: "Bata as frutas congeladas com o whey e o leite em pó no mixer.", tag: "Café ou Lanche" },
+            { id: 13, title: "Pipoca com shake de whey, leite desnatado e frutas", ingredients: ["45g de milho de pipoca cru.", "10g de margarina light ou 3g de óleo.", "290ml de leite desnatado.", "40g de whey protein.", "2 porções de fruta."], prep: "Estoure o milho. Misture o leite com o whey para fazer o shake.", tag: "Café ou Lanche" },
+            { id: 14, title: "Sucrilhos com leite desnatado, frutas e whey protein", ingredients: ["45g de Sucrilhos.", "170ml de leite desnatado.", "40g de whey protein.", "4 porções de fruta."], prep: null, tag: "Café ou Lanche" },
+            { id: 15, title: "Mingau proteico de aveia e maçã", ingredients: ["45g de aveia em flocos.", "300ml de leite desnatado.", "200g de maçã em cubinhos.", "35g de whey protein.", "Canela a gosto."], prep: null, tag: "Café ou Lanche" },
+            { id: 16, title: "Panqueca de chocolate com caldinha de whey e frutas", ingredients: ["1 ovo.", "30g de aveia em flocos finos.", "20g de cacau em pó 50%.", "35g de whey de chocolate.", "40ml de leite desnatado.", "3 porções de fruta."], prep: "Misture ovo, aveia, cacau e fermento. Cozinhe na frigideira. Faça a calda com whey e leite.", tag: "Café ou Lanche" },
+            { id: 17, title: "Panqueca de banana com calda de whey e frutas", ingredients: ["100g de banana amassada.", "25g de farinha de aveia.", "1 ovo.", "40g de whey de chocolate.", "40ml de leite desnatado.", "2 porções de fruta."], prep: "Misture banana, farinha e ovo. Cozinhe e cubra com a calda de whey.", tag: "Café ou Lanche" },
+            { id: 18, title: "Pão de queijo de frigideira acompanhado de frutas", ingredients: ["2 ovos.", "50g de goma de tapioca.", "35g de queijo muçarela.", "10g de fermento químico.", "3,5 porções de fruta."], prep: "Misture os ingredientes e leve à frigideira em fogo baixo.", tag: "Café ou Lanche" },
+            { id: 19, title: "Wrap de carne magra acompanhado de frutas", ingredients: ["2 unidades de Rap10 (80g).", "70g de carne magra.", "30g de queijo muçarela.", "Alface e tomate à vontade.", "1,5 porção de fruta."], prep: null, tag: "Café ou Lanche" },
+            { id: 20, title: "Iogurte com frutas, whey e aveia ou granola", ingredients: ["1 pote de iogurte natural desnatado (160g).", "4,5 porções de fruta.", "40g de whey protein.", "40g de aveia ou granola sem açúcar."], prep: null, tag: "Café ou Lanche" },
+            { id: 21, title: "YoPRO Danone com torrada e geleia, acompanhado de frutas", ingredients: ["1 unidade de YoPRO Danone (250ml).", "1 pacote de torrada de cacau e cereais (19g).", "60g de geleia light.", "6 porções de fruta."], prep: null, tag: "Café ou Lanche" },
+            { id: 22, title: "Tapioca de frango com queijo e frutas", ingredients: ["70g de goma de tapioca.", "30g de queijo muçarela.", "90g de peito de frango cozido e desfiado.", "Tomate e orégano.", "2,5 porções de fruta."], prep: null, tag: "Café ou Lanche" },
+            { id: 23, title: "Crepioca recheada com frango e frutas", ingredients: ["2 ovos.", "50g de goma de tapioca.", "70g de peito de frango desfiado.", "30g de ricota light.", "3 porções de fruta."], prep: "Misture ovos e tapioca, cozinhe na frigideira e recheie.", tag: "Café ou Lanche" },
+            { id: 24, title: "Barrinha de proteína Bold acompanhada de frutas", ingredients: ["2 barrinhas de proteína Bold.", "3 porções de fruta."], prep: null, tag: "Café ou Lanche" },
+            { id: 25, title: "Pasteizinhos de frango com queijo na Air Fryer e frutas", ingredients: ["2 massas de pastel Massa Leve (60g).", "70g de frango desfiado.", "30g de ricota light.", "30g de muçarela.", "2 porções de fruta."], prep: "Asse na Air Fryer a 200°C por 4-5 minutos.", tag: "Café ou Lanche" },
+            { id: 26, title: "Açaí com whey protein acompanhado de frutas", ingredients: ["230g de açaí Paletitas ou similar.", "40g de whey protein.", "2 porções de fruta."], prep: null, tag: "Café ou Lanche" },
+            { id: 27, title: "Banana-da-terra cozida com ovos", ingredients: ["170g de banana-da-terra.", "4 ovos inteiros."], prep: null, tag: "Café ou Lanche" },
+            { id: 28, title: "Tubérculos com ovos e frutas", ingredients: ["4 porções de tubérculos.", "3 ovos inteiros.", "2,5 porções de fruta."], prep: "Consulte equivalências na tabela de substituições.", tag: "Café ou Lanche" },
+            { id: 29, title: "Bolo de caneca no micro-ondas com frutas", ingredients: ["1 ovo.", "70g de banana-prata amassada.", "30g de aveia.", "35g de whey protein.", "3 porções de fruta."], prep: "Leve ao micro-ondas por 3-4 minutos. Sirva com calda de whey.", tag: "Café ou Lanche" },
+            { id: 30, title: "Cappuccino proteico com torrada e geleia, com frutas", ingredients: ["250ml de leite desnatado.", "15g de cacau em pó.", "30g de whey.", "1 pão francês (50g) ou torrada.", "40g de geleia light.", "1,5 porção de fruta."], prep: null, tag: "Café ou Lanche" },
+            { id: 31, title: "Cappuccino com torrada recheada e frutas", ingredients: ["180ml de leite desnatado, cacau e whey.", "1 pão francês (50g).", "20g de passata e 20g de ricota light.", "1 ovo.", "1 porção de fruta."], prep: null, tag: "Café ou Lanche" },
+            { id: 32, title: "Pizza de pão sírio acompanhada de frutas", ingredients: ["1 pão sírio pita (50g).", "60g de passata de tomate.", "30g de muçarela.", "80g de frango desfiado.", "4 porções de fruta."], prep: "Asse na Air Fryer por 10 minutos.", tag: "Café ou Lanche" },
+            { id: 33, title: "Ovos napolitanos acompanhados de frutas", ingredients: ["3 ovos inteiros.", "170g de molho de tomate.", "40g de muçarela.", "3,5 porções de fruta."], prep: "Aqueça o molho, adicione os ovos e finalize com muçarela.", tag: "Café ou Lanche" },
+            { id: 34, title: "Esfiha saudável acompanhada de frutas", ingredients: ["270g de batata inglesa.", "20g de farinha de aveia.", "80g de frango desfiado.", "1 clara de ovo.", "3 porções de fruta."], prep: "Modele as esfihas e asse a 180°C por 15-20 min.", tag: "Café ou Lanche" },
+            { id: 35, title: "Bolo de limão fit acompanhado de frutas", ingredients: ["1 ovo, 70g de iogurte natural.", "40g de farinha de aveia, suco de meio limão.", "35g de whey protein.", "3,5 porções de fruta."], prep: "Leve ao micro-ondas por 2 minutos.", tag: "Café ou Lanche" },
+            { id: 36, title: "Doritos fit com patê de frango e frutas", ingredients: ["2 unidades de Rap10 (80g).", "85g de frango desfiado, 40g de ricota light.", "2 porções de fruta."], prep: "Corte o Rap10 em triângulos e asse na Air Fryer a 200°C por 10 min.", tag: "Café ou Lanche" }
+        ];
 
-        const infoModal = document.getElementById('info-modal');
-        const modalTitle = document.getElementById('modal-title');
-        const modalImg = document.getElementById('modal-img');
+        const lunchData = [
+            { id: 1, title: "Arroz, feijão, carne magra grelhada e salada", ingredients: ["140g de arroz cozido.", "140g de feijão carioca cozido.", "90g de carne magra grelhada.", "250g de salada mista."], prep: "Grelhe a carne e sirva com os grãos e salada.", tag: "Almoço ou Jantar" },
+            { id: 2, title: "Arroz, frango e salada", ingredients: ["190g de arroz cozido.", "120g de filé de frango.", "300g de salada mista."], prep: "Grelhe o frango com temperos naturais.", tag: "Almoço ou Jantar" },
+            { id: 3, title: "Arroz, feijão, tubérculos, carne magra e salada", ingredients: ["100g de arroz cozido, 100g de feijão cozido.", "90g de carne magra grelhada.", "1,5 porção de tubérculos.", "250g de salada."], prep: null, tag: "Almoço ou Jantar" },
+            { id: 4, title: "Tubérculos com carne magra e salada", ingredients: ["5 porções de tubérculos.", "100g de carne magra.", "250g de salada mista."], prep: "Pode preparar em purê ou assados na Air Fryer.", tag: "Almoço ou Jantar" },
+            { id: 5, title: "Caldinho de tubérculos e legumes", ingredients: ["4,5 porções de tubérculos.", "100g de carne magra, 30g de ricota light.", "120g de cenoura cozida."], prep: "Bata os tubérculos e cenoura cozidos, acrescente a carne.", tag: "Almoço ou Jantar" },
+            { id: 6, title: "Hambúrguer de carne magra com batata frita na Air Fryer", ingredients: ["1 pão de hambúrguer ou francês (50g).", "90g de carne magra.", "25g de muçarela.", "70g de batata congelada ou 140g natural na Air Fryer."], prep: null, tag: "Almoço ou Jantar" },
+            { id: 7, title: "Saladão mata-fome com molho de iogurte natural", ingredients: ["600g de vegetais variados.", "70g de milho, 65g de grão-de-bico.", "100g de frango, 160g de iogurte natural."], prep: "Misture os vegetais e prepare o molho com iogurte.", tag: "Almoço ou Jantar" },
+            { id: 8, title: "Frango com quiabo e polenta acompanhado de salada", ingredients: ["120g de frango sem pele.", "120g de quiabo, 250g de polenta.", "300g de salada."], prep: null, tag: "Almoço ou Jantar" },
+            { id: 9, title: "Moela de frango com tubérculos e salada", ingredients: ["135g de moela de frango cozida.", "5 porções de tubérculos.", "250g de salada."], prep: null, tag: "Almoço ou Jantar" },
+            { id: 10, title: "Bucho com tubérculos acompanhado de salada", ingredients: ["150g de bucho.", "5 porções de tubérculos.", "250g de salada."], prep: null, tag: "Almoço ou Jantar" },
+            { id: 11, title: "Estrogonofe de frango fit com arroz, batata palha e brócolis", ingredients: ["100g de peito de frango, 120g de arroz.", "30g de ricota light, 150g de brócolis.", "20g de batata palha."], prep: "Grelhe o frango, adicione ricota para dar o ponto de estrogonofe.", tag: "Almoço ou Jantar" },
+            { id: 12, title: "Macarrão ao molho bolonhesa com salada", ingredients: ["165g de macarrão cozido.", "90g de carne bovina moída.", "100g de passata de tomate.", "250g de salada."], prep: null, tag: "Almoço ou Jantar" },
+            { id: 13, title: "Coxa de frango assada com batatas rústicas, arroz e salada", ingredients: ["120g de coxa ou peito de frango.", "120g de arroz, 200g de batata inglesa.", "250g de salada."], prep: null, tag: "Almoço ou Jantar" },
+            { id: 14, title: "Pizza de frango com requeijão Seara Gourmet e salada", ingredients: ["230g de pizza de frango Seara Gourmet.", "12g de ketchup.", "250g de salada."], prep: null, tag: "Almoço ou Jantar" },
+            { id: 15, title: "Lasanha gourmet à bolonhesa Seara com salada", ingredients: ["280g de lasanha à bolonhesa Menu Gourmet Seara.", "250g de salada."], prep: null, tag: "Almoço ou Jantar" },
+            { id: 16, title: "Churrasquinho de frango com arroz, farofa e vinagrete", ingredients: ["120g de frango.", "150g de vinagrete, 100g de arroz, 25g de farofa."], prep: null, tag: "Almoço ou Jantar" },
+            { id: 17, title: "Coxinha fit de batata inglesa acompanhada de salada", ingredients: ["250g de batata inglesa, 100g de frango desfiado.", "40g de ricota light, 15g de farinha de aveia, 20g de muçarela.", "200g de salada."], prep: "Modele as coxinhas e asse na Air Fryer a 200°C por 15 min.", tag: "Almoço ou Jantar" }
+        ];
 
-        const concModal = document.getElementById('conc-modal');
-        const aboutModal = document.getElementById('about-modal');
-        const dateModal = document.getElementById('date-modal');
-        const examesModal = document.getElementById('exames-modal');
-        const produtosModal = document.getElementById('produtos-modal');
+        const substitutionSalads = [
+            ["Alface, tomate, pepino e cenoura", "250g"],
+            ["Rúcula com tomate", "250g"],
+            ["Abobrinha italiana", "200g"],
+            ["Couve-flor", "200g"],
+            ["Chuchu", "200g"],
+            ["Pepino, tomate e cebola", "150g"],
+            ["Cenoura e vagem", "150g"],
+            ["Cenoura e beterraba ralada", "100g"],
+            ["Repolho roxo", "100g"],
+            ["Seleta de legumes", "70g"],
+            ["Brócolis", "150g"],
+            ["Milho verde", "70g"]
+        ];
 
-        const inputDataInicio = document.getElementById('input-data-inicio');
-        const btnDataLabel = document.getElementById('btn-data-label');
-        const badgePeriodoInfo = document.getElementById('badge-periodo-info');
-        const infoDataInicio = document.getElementById('info-data-inicio');
-        const dataFim30Badge = document.getElementById('data-fim-30-badge');
-        const txtDataFim30 = document.getElementById('txt-data-fim-30');
-        const btnExamesStatus = document.getElementById('btn-exames-status');
+        const substitutionMeats = [
+            ["Frango", "Peito de frango", "100g"],
+            ["Frango", "Coxa de frango", "100g"],
+            ["Frango", "Moela de frango", "110g"],
+            ["Frango", "Coração de frango", "80g"],
+            ["Frango", "Sobrecoxa sem pele", "70g"],
+            ["Bovinos", "Músculo bovino", "90g"],
+            ["Bovinos", "Contrafilé bovino", "90g"],
+            ["Bovinos", "Paleta bovina", "90g"],
+            ["Bovinos", "Filé mignon bovino", "80g"],
+            ["Bovinos", "Patinho bovino", "80g"],
+            ["Bovinos", "Coxão mole", "80g"],
+            ["Bovinos", "Acém bovino", "80g"],
+            ["Bovinos", "Alcatra", "70g"],
+            ["Suínos", "Filé mignon suíno", "80g"],
+            ["Suínos", "Lombo suíno", "80g"],
+            ["Pescados", "Atum em água", "180g"],
+            ["Pescados", "Camarão", "180g"],
+            ["Pescados", "Cação", "140g"],
+            ["Pescados", "Merluza", "135g"],
+            ["Pescados", "Filé de tilápia", "130g"],
+            ["Pescados", "Bacalhau", "120g"],
+            ["Pescados", "Filé de salmão", "70g"],
+            ["Pescados", "Sardinha enlatada", "60g"]
+        ];
 
-        const exameIniData = document.getElementById('exame-ini-data');
-        const exameIniVal = document.getElementById('exame-ini-val');
-        const exameIniHemo = document.getElementById('exame-ini-hemo');
-        const examePosData = document.getElementById('exame-pos-data');
-        const examePosVal = document.getElementById('exame-pos-val');
-        const examePosHemo = document.getElementById('exame-pos-hemo');
+        const substitutionTubers = [
+            ["Abóbora moranga", "170g"],
+            ["Cenoura", "170g"],
+            ["Beterraba", "160g"],
+            ["Abóbora cabotiá", "100g"],
+            ["Batata inglesa", "100g"],
+            ["Batata-baroa", "70g"],
+            ["Batata-doce", "70g"],
+            ["Inhame (cará)", "60g"],
+            ["Mandioca (aipim)", "40g"]
+        ];
 
-        function openAboutModal() { aboutModal.classList.remove('hidden'); }
-        function closeAboutModal() { aboutModal.classList.add('hidden'); }
-        function openConcModal() { concModal.classList.remove('hidden'); }
-        function closeConcModal() { concModal.classList.add('hidden'); }
-        function openInfoModal() { infoModal.classList.remove('hidden'); }
-        function closeInfoModal() { infoModal.classList.add('hidden'); }
-        function openDateModal() { dateModal.classList.remove('hidden'); }
-        function closeDateModal() { dateModal.classList.add('hidden'); }
-        function openExamesModal() { examesModal.classList.remove('hidden'); }
-        function closeExamesModal() { examesModal.classList.add('hidden'); }
+        const substitutionFruits = [
+            ["Melancia", "100g"], ["Melão", "100g"], ["Morango", "100g"], ["Jambo", "100g"],
+            ["Acerola", "100g"], ["Pêssego", "90g"], ["Mexerica poncã", "80g"], ["Mamão papaia", "80g"],
+            ["Pitanga", "70g"], ["Mamão formosa", "70g"], ["Figo", "70g"], ["Caju", "70g"],
+            ["Laranja", "70g"], ["Uva", "60g"], ["Kiwi", "60g"], ["Pitaya", "60g"],
+            ["Ameixa", "60g"], ["Maçã", "60g"], ["Abacaxi", "60g"], ["Goiaba", "60g"],
+            ["Manga Tommy", "60g"], ["Manga Palmer", "50g"], ["Pera", "50g"], ["Graviola", "50g"],
+            ["Amora", "50g"], ["Abacate", "30g"], ["Banana", "30g"], ["Banana-da-terra", "25g"]
+        ];
 
-        // Função para abrir o modal de Produtos e carregar o Gist automaticamente
-        async function openProdutosModal() {
-            produtosModal.classList.remove('hidden');
-            const container = document.getElementById('produtos-container');
-            const loading = document.getElementById('produtos-loading');
-            
-            loading.classList.remove('hidden');
-            container.classList.add('hidden');
+        const substitutionJuices = [
+            ["Abacaxi (100ml)", "2 porções de fruta"],
+            ["Laranja (100ml)", "1,5 porção"],
+            ["Morango (100ml)", "1 porção"],
+            ["Uva integral (100ml)", "2 porções"],
+            ["Acerola (100g de polpa)", "1 porção"],
+            ["Caju (100g de polpa)", "1,5 porção"],
+            ["Limão (100g de polpa)", "1 porção"],
+            ["Maracujá natural (100g de polpa)", "1 porção"]
+        ];
+
+        function renderCards(data, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = "";
+
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between hover:border-emerald-500/50 transition-all shadow-xl group";
+                
+                let ingredientsList = item.ingredients.map(ing => `<li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-2 flex-shrink-0"></span><span>${ing}</span></li>`).join('');
+                
+                let prepHtml = item.prep ? `
+                    <div class="mt-4 pt-3 border-t border-slate-800/80 text-xs text-slate-400">
+                        <span class="font-semibold text-emerald-400 flex items-center gap-1 mb-1"><i class="fa-solid fa-fire-burner"></i> Modo de Preparo:</span>
+                        <p class="leading-relaxed">${item.prep}</p>
+                    </div>
+                ` : '';
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Opção ${item.id}</span>
+                            <span class="text-xs text-slate-500">${item.tag}</span>
+                        </div>
+                        <h3 class="font-bold text-base text-white group-hover:text-emerald-300 transition-colors mb-3">${item.title}</h3>
+                        <ul class="space-y-1.5 text-sm text-slate-300">
+                            ${ingredientsList}
+                        </ul>
+                    </div>
+                    ${prepHtml}
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Função para buscar e renderizar os dados do Gist automaticamente
+        async function loadGistSnacks() {
+            const container = document.getElementById('gist-grid');
+            container.innerHTML = `
+                <div class="col-span-full text-center py-12 text-slate-400">
+                    <i class="fa-solid fa-spinner fa-spin text-2xl text-emerald-400 mb-2"></i>
+                    <p>Atualizando cardápios do Gist...</p>
+                </div>
+            `;
 
             try {
-                // Adicionamos um parâmetro de timestamp para evitar cache do navegador
-                const response = await fetch('https://gist.githubusercontent.com/simuladordosecerta/ae4fe7fbcab71e21577448f9a1f02dd2/raw/Material.txt?t=' + new Date().getTime());
-                if (!response.ok) throw new Error('Erro ao carregar');
-                let texto = await response.text();
+                const response = await fetch('https://gist.githubusercontent.com/simuladordosecerta/babacd8fa898b6680f9059e3ab5d5461/raw/Lanches%2520R%25C3%25A1pidos.txt');
+                if (!response.ok) throw new Error('Erro ao carregar o Gist');
+                const text = await response.text();
 
-                // Converte URLs normais em links HTML clicáveis abrindo em nova aba
-                const urlRegex = /(https?:\/\/[^\s]+)/g;
-                texto = texto.replace(urlRegex, function(url) {
-                    return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+                // Processamento simples do texto bruto do Gist em itens estruturados
+                // (Divide por blocos de linhas ou quebras duplas)
+                const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+                const parsedItems = [];
+                let currentItem = { id: 1, title: "Lanche Rápido", ingredients: [], prep: null, tag: "Lanche Rápido" };
+
+                lines.forEach((line, index) => {
+                    if (line.toLowerCase().startsWith('opção') || line.startsWith('#') || (line.length < 50 && !line.includes('-') && !line.includes('g') && index > 0 && parsedItems.length < lines.length / 3)) {
+                        if (currentItem.ingredients.length > 0) {
+                            parsedItems.push(currentItem);
+                            currentItem = { id: parsedItems.length + 1, title: line, ingredients: [], prep: null, tag: "Lanche Rápido" };
+                        } else {
+                            currentItem.title = line;
+                        }
+                    } else if (line.toLowerCase().includes('preparo') || line.toLowerCase().includes('modo:')) {
+                        currentItem.prep = line;
+                    } else {
+                        currentItem.ingredients.substitutions ? null : currentItem.ingredients.push(line.replace(/^[•\-\*]\s*/, ''));
+                    }
                 });
+                if (currentItem.ingredients.length > 0) {
+                    parsedItems.push(currentItem);
+                }
 
-                container.innerHTML = texto;
-                loading.classList.add('hidden');
-                container.classList.remove('hidden');
+                // Se o formato do texto for livre, caso prefira exibir como blocos genéricos limpos caso o parsing automático varie:
+                if (parsedItems.length === 0) {
+                    // Fallback se o texto vier em outro formato: exibe blocos por linhas
+                    container.innerHTML = `<div class="col-span-full bg-slate-900 border border-slate-800 rounded-2xl p-6 text-slate-300 whitespace-pre-line text-sm">${text}</div>`;
+                } else {
+                    renderCards(parsedItems, 'gist-grid');
+                }
             } catch (error) {
-                loading.innerHTML = `<p class="text-rose-400">Não foi possível carregar a lista de produtos no momento.</p>`;
+                // Caso ocorra bloqueio de CORS direto do Gist via fetch simples no browser, exibe o conteúdo via iframe ou mensagem amigável de fallback
+                container.innerHTML = `
+                    <div class="col-span-full bg-slate-900 border border-slate-800 rounded-2xl p-6 text-center space-y-3">
+                        <p class="text-amber-400 font-semibold text-sm"><i class="fa-solid fa-triangle-exclamation"></i> Nota de Carregamento Direto</p>
+                        <p class="text-slate-300 text-xs">O navegador bloqueou o acesso direto (CORS) ao Gist por políticas de segurança. Para ver o conteúdo atualizado diretamente, acesse o link abaixo ou utilize um proxy CORS:</p>
+                        <a href="https://gist.githubusercontent.com/simuladordosecerta/babacd8fa898b6680f9059e3ab5d5461/raw/Lanches%2520R%25C3%25A1pidos.txt" target="_blank" class="inline-block px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold transition-all">Abrir Gist Original Externamente</a>
+                    </div>
+                `;
             }
         }
 
-        function closeProdutosModal() {
-            produtosModal.classList.add('hidden');
+        function renderTables() {
+            document.getElementById('table-salads').innerHTML = substitutionSalads.map(row => `
+                <tr class="hover:bg-slate-800/40"><td class="px-4 py-2.5">${row[0]}</td><td class="px-4 py-2.5 font-semibold text-emerald-400">${row[1]}</td></tr>
+            `).join('');
+
+            document.getElementById('table-meats').innerHTML = substitutionMeats.map(row => `
+                <tr class="hover:bg-slate-800/40"><td class="px-4 py-2.5 text-slate-400">${row[0]}</td><td class="px-4 py-2.5">${row[1]}</td><td class="px-4 py-2.5 font-semibold text-emerald-400">${row[2]}</td></tr>
+            `).join('');
+
+            document.getElementById('table-tubers').innerHTML = substitutionTubers.map(row => `
+                <tr class="hover:bg-slate-800/40"><td class="px-4 py-2.5">${row[0]}</td><td class="px-4 py-2.5 font-semibold text-emerald-400">${row[1]}</td></tr>
+            `).join('');
+
+            document.getElementById('table-fruits').innerHTML = substitutionFruits.map(row => `
+                <tr class="hover:bg-slate-800/40"><td class="px-4 py-2.5">${row[0]}</td><td class="px-4 py-2.5 font-semibold text-emerald-400">${row[1]}</td></tr>
+            `).join('');
+
+            document.getElementById('table-juices').innerHTML = substitutionJuices.map(row => `
+                <tr class="hover:bg-slate-800/40"><td class="px-4 py-2.5">${row[0]}</td><td class="px-4 py-2.5 font-semibold text-emerald-400">${row[1]}</td></tr>
+            `).join('');
         }
 
-        let dataInicioSelecionada = '';
-        let dataFim30Selecionada = '';
-        let dadosExames = {
-            iniData: '',
-            iniVal: '',
-            iniHemo: '',
-            posData: '',
-            posVal: '',
-            posHemo: ''
-        };
-
-        function formatarDataBR(dataStr) {
-            if (!dataStr) return '';
-            const partes = dataStr.split('-');
-            if (partes.length === 3) {
-                return `${partes[2]}/${partes[1]}/${partes[0]}`;
-            }
-            return dataStr;
-        }
-
-        function salvarDataInicio() {
-            const val = inputDataInicio.value;
-            if (val) {
-                dataInicioSelecionada = val;
-                const d = new Date(val + 'T00:00:00');
-                d.setDate(d.getDate() + 29);
-                dataFim30Selecionada = d.toISOString().split('T')[0];
-
-                btnDataLabel.innerText = formatarDataBR(dataInicioSelecionada);
-                infoDataInicio.innerText = formatarDataBR(dataInicioSelecionada);
-                txtDataFim30.innerText = formatarDataBR(dataFim30Selecionada);
-
-                badgePeriodoInfo.classList.remove('hidden');
-                dataFim30Badge.classList.remove('hidden');
-            }
-            closeDateModal();
-            calcular();
-        }
-
-        function limparDataInicio() {
-            inputDataInicio.value = '';
-            dataInicioSelecionada = '';
-            dataFim30Selecionada = '';
-            btnDataLabel.innerText = 'Definir Início';
-            badgePeriodoInfo.classList.add('hidden');
-            dataFim30Badge.classList.add('hidden');
-            closeDateModal();
-            calcular();
-        }
-
-        function salvarExames() {
-            dadosExames.iniData = exameIniData.value ? formatarDataBR(exameIniData.value) : '';
-            dadosExames.iniVal = exameIniVal.value.trim();
-            dadosExames.iniHemo = exameIniHemo.value.trim();
-            dadosExames.posData = examePosData.value ? formatarDataBR(examePosData.value) : '';
-            dadosExames.posVal = examePosVal.value.trim();
-            dadosExames.posHemo = examePosHemo.value.trim();
-
-            if (dadosExames.iniVal || dadosExames.posVal || dadosExames.iniHemo || dadosExames.posHemo) {
-                btnExamesStatus.innerHTML = `Exames Salvos <i class="fa-solid fa-check text-emerald-400 ml-1"></i>`;
-            } else {
-                btnExamesStatus.innerHTML = `Dados de Testo e Exames`;
-            }
-            closeExamesModal();
-            calcular();
-        }
-
-        function limparExames() {
-            exameIniData.value = '';
-            exameIniVal.value = '';
-            exameIniHemo.value = '';
-            examePosData.value = '';
-            examePosVal.value = '';
-            examePosHemo.value = '';
-            dadosExames = { iniData: '', iniVal: '', iniHemo: '', posData: '', posVal: '', posHemo: '' };
-            btnExamesStatus.innerHTML = `Dados de Testo e Exames`;
-            closeExamesModal();
-            calcular();
-        }
-
-        let capacidadeSeringa = 1.0;
-        let activeInput = 'dose';
-
-        let dadosCalculados = {
-            totalMg: '0',
-            totalMl: '0',
-            ester: '',
-            marca: '',
-            seringaUI: '100',
-            diasStr: '',
-            doseMg: '0',
-            volumeMl: '0',
-            volumeUI: '0',
-            app7: '0',
-            acum7Mg: '0',
-            acum7Ml: '0',
-            app15: '0',
-            acum15Mg: '0',
-            acum15Ml: '0',
-            app30: '0',
-            acum30Mg: '0',
-            acum30Ml: '0'
-        };
-
-        function drawRealMarkings(maxMl) {
-            markingsReal.innerHTML = '';
-            let totalDivisoes = (maxMl === 0.5) ? 5 : 10;
-            const subDivs = 5;
-            const totalMarks = totalDivisoes * subDivs;
-
-            for (let i = 0; i <= totalMarks; i++) {
-                const percent = (i / totalMarks) * 100;
-                const mark = document.createElement('div');
-                mark.className = 'r-mark';
-                mark.style.left = `${percent}%`;
-
-                if (i % subDivs === 0) {
-                    mark.classList.add('long');
-                    const label = document.createElement('div');
-                    label.className = 'r-label';
-                    label.style.left = `${percent}%`;
-
-                    let valorLabel = (i / totalMarks) * maxMl;
-                    label.innerText = Math.round(valorLabel * 100);
-
-                    if (i !== 0) markingsReal.appendChild(label);
-                } else if (i % (subDivs / 2) === 0) {
-                    mark.classList.add('mid');
-                }
-
-                markingsReal.appendChild(mark);
-            }
-        }
-
-        function getFatorProporcao() {
-            const val1 = parseFloat(inputConcMg.value) || 0;
-            let val2 = parseFloat(inputConcMl.value);
-            if (isNaN(val2) || val2 <= 0) val2 = 1.0;
-            return val2 > 0 ? val1 / val2 : 0;
-        }
-
-        function updateVisual(volumeMl) {
-            let percentual = (volumeMl / capacidadeSeringa) * 100;
-            if (percentual > 100) {
-                percentual = 100;
-                aviso.classList.remove('hidden');
-            } else {
-                aviso.classList.add('hidden');
-            }
-
-            const larguraFinal = percentual * (500 / 540);
-            liquidReal.style.width = `${larguraFinal}%`;
-
-            const uis = (volumeMl * 100).toFixed(1);
-            displayVolume.innerText = `${volumeMl.toFixed(2)} ml (${uis} UI)`;
-        }
-
-        function getDiasSelecionados() {
-            let selecionados = [];
-            checkboxesDias.forEach(cb => { if (cb.checked) selecionados.push(parseInt(cb.value)); });
-            return selecionados;
-        }
-
-        function getDiasAbreviadosText() {
-            const mapDias = { 1: 'Seg', 2: 'Ter', 3: 'Qua', 4: 'Qui', 5: 'Sex', 6: 'Sáb', 0: 'Dom' };
-            let selecionados = [];
-            checkboxesDias.forEach(cb => {
-                if (cb.checked) selecionados.push(mapDias[parseInt(cb.value)]);
+        // Tab switching logic
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all flex items-center space-x-2 whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white";
             });
-            return selecionados.length > 0 ? selecionados.join('.') : 'Nenhum';
-        }
 
-        function atualizarPlanejamento(doseUnitaria, volumeUnitario) {
-            const diasMarcados = getDiasSelecionados();
-            const dosesPorSemana = diasMarcados.length;
-
-            dadosCalculados.totalMg = inputConcMg.value || '0';
-            dadosCalculados.totalMl = inputConcMl.value || '1';
-            dadosCalculados.ester = inputEster.value.trim();
-            dadosCalculados.marca = inputMarca.value.trim();
-            dadosCalculados.seringaUI = selectSeringa.value == '0.5' ? '50' : '100';
-            dadosCalculados.diasStr = getDiasAbreviadosText();
-            dadosCalculados.doseMg = doseUnitaria ? doseUnitaria.toFixed(0) : '0';
-            dadosCalculados.volumeMl = volumeUnitario ? volumeUnitario.toFixed(2) : '0.00';
-            dadosCalculados.volumeUI = volumeUnitario ? (volumeUnitario * 100).toFixed(1) : '0.0';
-
-            if (!doseUnitaria || doseUnitaria <= 0 || dosesPorSemana === 0) {
-                document.getElementById('total-7').innerText = '-';
-                document.getElementById('total-15').innerText = '-';
-                document.getElementById('total-30').innerText = '-';
-                document.getElementById('freq-7').innerText = '-';
-                document.getElementById('freq-15').innerText = '-';
-                document.getElementById('freq-30').innerText = '-';
-                return;
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`btn-${tabName}`);
+            if (activeBtn) {
+                activeBtn.className = "tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all flex items-center space-x-2 whitespace-nowrap bg-emerald-600 text-white shadow-lg shadow-emerald-900/40";
             }
 
-            const aplicacoes7 = dosesPorSemana;
-            const aplicacoes15 = Math.round(dosesPorSemana * (15 / 7));
-            const aplicacoes30 = Math.round(dosesPorSemana * (30 / 7));
-
-            const totalDose7 = doseUnitaria * aplicacoes7;
-            const totalDose15 = doseUnitaria * aplicacoes15;
-            const totalDose30 = doseUnitaria * aplicacoes30;
-
-            const totalMl7 = volumeUnitario * aplicacoes7;
-            const totalMl15 = volumeUnitario * aplicacoes15;
-            const totalMl30 = volumeUnitario * aplicacoes30;
-
-            dadosCalculados.app7 = aplicacoes7;
-            dadosCalculados.acum7Mg = totalDose7.toFixed(1);
-            dadosCalculados.acum7Ml = totalMl7.toFixed(2);
-
-            dadosCalculados.app15 = aplicacoes15;
-            dadosCalculados.acum15Mg = totalDose15.toFixed(1);
-            dadosCalculados.acum15Ml = totalMl15.toFixed(2);
-
-            dadosCalculados.app30 = aplicacoes30;
-            dadosCalculados.acum30Mg = totalDose30.toFixed(1);
-            dadosCalculados.acum30Ml = totalMl30.toFixed(2);
-
-            document.getElementById('freq-7').innerText = `${aplicacoes7} aplicações`;
-            document.getElementById('freq-15').innerText = `${aplicacoes15} aplicações`;
-            document.getElementById('freq-30').innerText = `${aplicacoes30} aplicações`;
-
-            document.getElementById('total-7').innerText = `${totalDose7.toFixed(1)} mg (${totalMl7.toFixed(2)} ml)`;
-            document.getElementById('total-15').innerText = `${totalDose15.toFixed(1)} mg (${totalMl15.toFixed(2)} ml)`;
-            document.getElementById('total-30').innerText = `${totalDose30.toFixed(1)} mg (${totalMl30.toFixed(2)} ml)`;
+            if (tabName === 'gist-snacks') {
+                loadGistSnacks();
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function gerarTextoFormatado() {
-            let blocoExames = '';
-            if (dadosExames.iniVal || dadosExames.iniHemo) {
-                if (dadosExames.iniVal) {
-                    let dataIniStr = dadosExames.iniData ? dadosExames.iniData + ' - ' : '';
-                    blocoExames += `Testo Inicial: ${dataIniStr}${dadosExames.iniVal} ng/dl\n`;
-                }
-                if (dadosExames.iniHemo) {
-                    let hemoIni = dadosExames.iniHemo.replace('%', '');
-                    blocoExames += `Hematócrito Inicial: ${hemoIni}%\n`;
-                }
-                blocoExames += `━━━━━━━━━━━━━\n`;
-            }
-
-            if (dadosExames.posVal || dadosExames.posHemo) {
-                if (dadosExames.posVal) {
-                    let dataPosStr = dadosExames.posData ? dadosExames.posData + ' - ' : '';
-                    blocoExames += `Testo Pós Exame: ${dataPosStr}${dadosExames.posVal} ng/dl\n`;
-                }
-                if (dadosExames.posHemo) {
-                    let hemoPos = dadosExames.posHemo.replace('%', '');
-                    blocoExames += `Hematócrito Pós Exame: ${hemoPos}%\n`;
-                }
-                blocoExames += `━━━━━━━━━━━━━\n`;
-            }
-
-            let esterMarcaStr = '';
-            if (dadosCalculados.ester || dadosCalculados.marca) {
-                esterMarcaStr = `🌡 Éster: ${dadosCalculados.ester}${dadosCalculados.ester && dadosCalculados.marca ? ' - ' : ''}${dadosCalculados.marca}\n`;
-            }
-
-            let linhaInicio = formatarDataBR(dataInicioSelecionada);
-            let linhaFim30 = formatarDataBR(dataFim30Selecionada);
-
-            return `💉 DOSE CERTA
-━━━━━━━━━━━━━
-${blocoExames}${esterMarcaStr}🧪 Total (mg): ${dadosCalculados.totalMg}mg 
-💧 Volume (ml): ${dadosCalculados.totalMl}ml
-🔬 Seringa: ${dadosCalculados.seringaUI} unidades
-🗓 Aplicação: ${dadosCalculados.diasStr}
-━━━━━━━━━━━━━
-Dose(mg): ${dadosCalculados.doseMg}mg
-Volume: ${dadosCalculados.volumeMl}ml
-Volume estimado: ${dadosCalculados.volumeMl} ml (${dadosCalculados.volumeUI} UI)
-━━━━━━━━━━━━━
-📊 Cronograma
-
-${linhaInicio ? 'Início ' + linhaInicio + '\n' : ''}7 Dias (1 semana)
-${dadosCalculados.app7} aplicações
-Consumo Acumulado
-${dadosCalculados.acum7Mg} mg (${dadosCalculados.acum7Ml} ml)
-━━━━━━━━━━━━━
-15 Dias
-${dadosCalculados.app15} aplicações
-Consumo Acumulado
-${dadosCalculados.acum15Mg} mg (${dadosCalculados.acum15Ml} ml)
-━━━━━━━━━━━━━
-30 Dias ${linhaFim30 ? linhaFim30 : ''}
-${dadosCalculados.app30} aplicações
-Consumo Acumulado
-${dadosCalculados.acum30Mg} mg (${dadosCalculados.acum30Ml} ml)
-━━━━━━━━━━━━━
-CONSULTE SUA DOSE:
-🌐 https://calculadoradosecerta.com`;
-        }
-
-        function copiarTexto() {
-            const texto = gerarTextoFormatado();
-            navigator.clipboard.writeText(texto).then(() => {
-                const btn = document.getElementById('btn-copiar');
-                btn.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i> COPIADO!`;
-                setTimeout(() => {
-                    btn.innerHTML = `<i class="fa-regular fa-copy"></i> COPIAR RESUMO`;
-                }, 2000);
-            }).catch(err => {
-                alert('Erro ao copiar texto.');
-            });
-        }
-
-        function enviarWhatsApp() {
-            const texto = gerarTextoFormatado();
-            const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`;
-            window.open(url, '_blank');
-        }
-
-        function calcular() {
-            const fator = getFatorProporcao();
-            if (fator <= 0) {
-                updateVisual(0);
-                atualizarPlanejamento(0, 0);
-                return;
-            }
-            let dose = 0;
-            let ml = 0;
-
-            if (activeInput === 'ml') {
-                ml = parseFloat(inputMl.value);
-                if (isNaN(ml) || ml <= 0) {
-                    inputMg.value = '';
-                    updateVisual(0);
-                    atualizarPlanejamento(0, 0);
-                    return;
-                } else {
-                    dose = ml * fator;
-                    inputMg.value = dose.toFixed(2);
-                    updateVisual(ml);
-                }
-            } else {
-                dose = parseFloat(inputMg.value);
-                if (isNaN(dose) || dose <= 0) {
-                    inputMl.value = '';
-                    updateVisual(0);
-                    atualizarPlanejamento(0, 0);
-                    return;
-                } else {
-                    ml = dose / fator;
-                    inputMl.value = ml.toFixed(2);
-                    updateVisual(ml);
-                }
-            }
-            atualizarPlanejamento(dose, ml);
-        }
-
-        inputConcMg.addEventListener('input', calcular);
-        inputConcMl.addEventListener('input', calcular);
-        inputEster.addEventListener('input', calcular);
-        inputMarca.addEventListener('input', calcular);
-        inputMg.addEventListener('input', () => { activeInput = 'dose'; calcular(); });
-        inputMl.addEventListener('input', () => { activeInput = 'ml'; calcular(); });
-        checkboxesDias.forEach(cb => { cb.addEventListener('change', calcular); });
-        
-        selectSeringa.addEventListener('change', () => {
-            capacidadeSeringa = parseFloat(selectSeringa.value);
-            seringaTitulo.innerHTML = `<i class="fa-solid fa-eye text-brand-400"></i> Resultado visual (${selectSeringa.options[selectSeringa.selectedIndex].text})`;
-            drawRealMarkings(capacidadeSeringa);
-            calcular();
-        });
-
-        window.addEventListener('DOMContentLoaded', () => {
-            capacidadeSeringa = parseFloat(selectSeringa.value);
-            drawRealMarkings(capacidadeSeringa);
-            activeInput = 'dose';
-            updateVisual(0);
-            atualizarPlanejamento(0, 0);
-        });
+        // Initial load
+        window.onload = function() {
+            renderCards(breakfastData, 'breakfast-grid');
+            renderCards(lunchData, 'lunch-grid');
+            renderTables();
+            switchTab('home'); // Abre na tela inicial por padrão
+        };
     </script>
 </body>
 </html>
