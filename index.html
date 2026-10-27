@@ -179,7 +179,6 @@
             transform: translateX(-50%);
             text-align: center;
         }
-        /* Estilo para links gerados no pop-up de produtos */
         .produtos-content a {
             color: #34d399;
             text-decoration: underline;
@@ -233,7 +232,10 @@
 
             <!-- Botões de Ação no Cabeçalho -->
             <div class="flex items-center gap-2.5">
-                <!-- Botão Produtos Adicionado -->
+                <a href="https://www.instagram.com/guiadatestosc" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-r from-rose-600 to-pink-600 hover:opacity-90 text-white px-3.5 py-2 rounded-xl text-xs font-semibold transition-all flex items-center gap-2 shadow-sm hover:scale-[1.02]">
+                    <i class="fa-brands fa-instagram"></i> Comunidade
+                </a>
+
                 <button type="button" onclick="openProdutosModal()" class="bg-slate-800/80 hover:bg-slate-800 text-brand-400 border border-brand-500/20 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all flex items-center gap-2 shadow-sm hover:scale-[1.02]">
                     <i class="fa-solid fa-box-open"></i> Produtos
                 </button>
@@ -260,7 +262,8 @@
                     <i class="fa-solid fa-sliders text-xs"></i> Configuração e Parâmetros
                 </div>
                 
-                <button type="button" onclick="openExamesModal()" class="bg-slate-950/80 hover:bg-slate-900 text-brand-400 border border-brand-500/40 px-4 py-2.5 rounded-2xl text-xs font-semibold transition-all flex items-center gap-2 shadow-lg shadow-brand-500/5 hover:border-brand-500">
+                <!-- Botão Dados de Testo e Exames em Vermelho Destacado -->
+                <button type="button" onclick="openExamesModal()" class="bg-rose-600 hover:bg-rose-500 text-white border border-rose-400/50 px-4 py-2.5 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 shadow-lg shadow-rose-600/30 hover:scale-[1.02]">
                     <i class="fa-solid fa-flask-vial text-sm"></i> <span id="btn-exames-status">Dados de Testo e Exames</span>
                 </button>
             </div>
@@ -282,30 +285,52 @@
                         </div>
                     </div>
 
-                    <!-- Campos Éster e Marca -->
+                    <!-- Campos Éster e Marca com Seleção -->
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block text-xs font-medium text-slate-400 mb-1.5">Éster</label>
-                            <input type="text" id="input-ester" placeholder="Ex: Enantato" 
-                                class="input-modern w-full rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-600">
+                            <select id="select-ester" onchange="handleEsterChange()" class="input-modern w-full rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none mb-2">
+                                <option value="Enanthate" selected>Enanthate</option>
+                                <option value="Outros">Outros</option>
+                            </select>
+                            <input type="text" id="input-ester" placeholder="Digite o Éster" style="display: none;"
+                                class="input-modern w-full rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-600">
                         </div>
                         <div>
                             <label class="block text-xs font-medium text-slate-400 mb-1.5">Marca</label>
-                            <input type="text" id="input-marca" placeholder="Ex: Lander Gold" 
-                                class="input-modern w-full rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-600">
+                            <select id="select-marca" onchange="handleMarcaChange()" class="input-modern w-full rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none mb-2">
+                                <option value="Lander Gold" selected>Lander Gold</option>
+                                <option value="Lander">Lander</option>
+                                <option value="King">King</option>
+                                <option value="Cooper">Cooper</option>
+                                <option value="Zphc">Zphc</option>
+                                <option value="Outros">Outros</option>
+                            </select>
+                            <input type="text" id="input-marca" placeholder="Digite a Marca" style="display: none;"
+                                class="input-modern w-full rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-600">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block text-xs font-medium text-slate-400 mb-1.5" id="label-conc-1">Total (mg)</label>
-                            <input type="number" id="conc-mg" value="" placeholder="Ex: 250" min="0.1" step="any" 
-                                class="input-modern w-full rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-slate-600">
+                            <select id="select-conc-mg" onchange="handleConcMgChange()" class="input-modern w-full rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none mb-2">
+                                <option value="200">200mg</option>
+                                <option value="250" selected>250mg</option>
+                                <option value="Outros">Outros</option>
+                            </select>
+                            <input type="number" id="conc-mg" value="250" placeholder="Ex: 250" min="0.1" step="any" 
+                                class="input-modern w-full rounded-xl px-3.5 py-2 text-sm text-white placeholder-slate-600" style="display: none;">
                         </div>
                         <div>
                             <label class="block text-xs font-medium text-slate-400 mb-1.5" id="label-conc-2">Volume (ml)</label>
-                            <input type="number" id="conc-ml" value="" placeholder="Ex: 1 ml" min="0.01" step="any" 
-                                class="input-modern w-full rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-slate-600">
+                            <select id="select-conc-ml" onchange="handleConcMlChange()" class="input-modern w-full rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none mb-2">
+                                <option value="1" selected>1</option>
+                                <option value="2">2</option>
+                                <option value="Outros">Outros</option>
+                            </select>
+                            <input type="number" id="conc-ml" value="1" placeholder="Ex: 1 ml" min="0.01" step="any" 
+                                class="input-modern w-full rounded-xl px-3.5 py-2 text-sm text-white placeholder-slate-600" style="display: none;">
                         </div>
                     </div>
                 </div>
@@ -361,7 +386,8 @@
                         <label class="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
                             <i class="fa-solid fa-calendar-days text-amber-400"></i> Dias de Aplicação na Semana
                         </label>
-                        <button type="button" onclick="openDateModal()" class="text-xs bg-brand-500/10 hover:bg-brand-500/20 text-brand-400 border border-brand-500/30 px-3 py-1.5 rounded-xl font-medium transition flex items-center gap-1.5">
+                        <!-- Botão Definir Início em Vermelho Destacado -->
+                        <button type="button" onclick="openDateModal()" class="text-xs bg-rose-600 hover:bg-rose-500 text-white border border-rose-400/50 px-3.5 py-2 rounded-xl font-bold transition shadow-md shadow-rose-600/30 flex items-center gap-1.5">
                             <i class="fa-solid fa-calendar-alt"></i> <span id="btn-data-label">Definir Início</span>
                         </button>
                     </div>
@@ -506,27 +532,11 @@
                     <i class="fa-brands fa-whatsapp text-base"></i> ENVIAR WHATSAPP
                 </button>
             </div>
-
-            <!-- Redes Sociais / Comunidade -->
-            <div class="pt-6 border-t border-slate-800/80 text-center space-y-3 no-print">
-                <div>
-                    <h4 class="text-xs font-bold text-slate-300 tracking-tight uppercase">Comunidade & Suporte</h4>
-                    <p class="text-[11px] text-slate-400 mt-0.5">Siga-nos no Instagram e participe do nosso canal no Telegram</p>
-                </div>
-                <div class="flex flex-wrap items-center justify-center gap-3">
-                    <a href="https://www.instagram.com/guiadatestosc" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-r from-rose-600 to-pink-600 hover:opacity-90 text-white font-semibold py-2 px-4 rounded-xl text-xs transition-all shadow-md flex items-center gap-2">
-                        <i class="fa-brands fa-instagram text-sm"></i> Instagram
-                    </a>
-                    <a href="https://t.me/+jHLCI-JnhL5lNGQ5" target="_blank" rel="noopener noreferrer" class="bg-sky-600 hover:bg-sky-500 text-white font-semibold py-2 px-4 rounded-xl text-xs transition-all shadow-md flex items-center gap-2">
-                        <i class="fa-brands fa-telegram text-sm"></i> Telegram
-                    </a>
-                </div>
-            </div>
         </section>
 
     </main>
 
-    <!-- POPUP MODAL: PRODUTOS (Carrega via Gist com links clicáveis) -->
+    <!-- POPUP MODAL: PRODUTOS -->
     <div id="produtos-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden no-print">
         <div class="glass-card rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-4 relative max-h-[90vh] overflow-y-auto border border-slate-700/50">
             <div class="flex items-center justify-between border-b border-slate-800 pb-3.5">
@@ -543,9 +553,7 @@
                 <p>Carregando lista atualizada...</p>
             </div>
 
-            <div id="produtos-container" class="produtos-content space-y-2 text-xs text-slate-300 leading-relaxed whitespace-pre-wrap hidden">
-                <!-- O conteúdo do Gist será injetado aqui dinamicamente -->
-            </div>
+            <div id="produtos-container" class="produtos-content space-y-2 text-xs text-slate-300 leading-relaxed whitespace-pre-wrap hidden"></div>
 
             <div class="pt-3 border-t border-slate-800 flex justify-end">
                 <button onclick="closeProdutosModal()" class="bg-brand-600 hover:bg-brand-500 text-white font-medium px-6 py-2.5 rounded-xl text-xs transition shadow-md">
@@ -743,14 +751,14 @@
     <!-- Script de Lógica -->
     <script>
         const tipoMedida = document.getElementById('tipo-medida');
-        const inputConcMg = document.getElementById('conc-mg');
-        const inputConcMl = document.getElementById('conc-ml');
+        const selectEster = document.getElementById('select-ester');
         const inputEster = document.getElementById('input-ester');
+        const selectMarca = document.getElementById('select-marca');
         const inputMarca = document.getElementById('input-marca');
-        
-        const labelConc1 = document.getElementById('label-conc-1');
-        const labelConc2 = document.getElementById('label-conc-2');
-        const labelDose = document.getElementById('label-dose');
+        const selectConcMg = document.getElementById('select-conc-mg');
+        const inputConcMg = document.getElementById('conc-mg');
+        const selectConcMl = document.getElementById('select-conc-ml');
+        const inputConcMl = document.getElementById('conc-ml');
         
         const selectSeringa = document.getElementById('seringa');
         const selectVia = document.getElementById('via-aplicacao');
@@ -765,12 +773,8 @@
         const displayVolume = document.getElementById('display-volume');
         const markingsReal = document.getElementById('markings-real');
         const seringaTitulo = document.getElementById('seringa-titulo');
-        const labelVolume = document.getElementById('label-volume');
 
         const infoModal = document.getElementById('info-modal');
-        const modalTitle = document.getElementById('modal-title');
-        const modalImg = document.getElementById('modal-img');
-
         const concModal = document.getElementById('conc-modal');
         const aboutModal = document.getElementById('about-modal');
         const dateModal = document.getElementById('date-modal');
@@ -803,7 +807,54 @@
         function openExamesModal() { examesModal.classList.remove('hidden'); }
         function closeExamesModal() { examesModal.classList.add('hidden'); }
 
-        // Função para abrir o modal de Produtos e carregar o Gist automaticamente
+        function handleEsterChange() {
+            if (selectEster.value === 'Outros') {
+                inputEster.style.display = 'block';
+                inputEster.value = '';
+                inputEster.focus();
+            } else {
+                inputEster.style.display = 'none';
+                inputEster.value = selectEster.value;
+            }
+            calcular();
+        }
+
+        function handleMarcaChange() {
+            if (selectMarca.value === 'Outros') {
+                inputMarca.style.display = 'block';
+                inputMarca.value = '';
+                inputMarca.focus();
+            } else {
+                inputMarca.style.display = 'none';
+                inputMarca.value = selectMarca.value;
+            }
+            calcular();
+        }
+
+        function handleConcMgChange() {
+            if (selectConcMg.value === 'Outros') {
+                inputConcMg.style.display = 'block';
+                inputConcMg.value = '';
+                inputConcMg.focus();
+            } else {
+                inputConcMg.style.display = 'none';
+                inputConcMg.value = selectConcMg.value;
+            }
+            calcular();
+        }
+
+        function handleConcMlChange() {
+            if (selectConcMl.value === 'Outros') {
+                inputConcMl.style.display = 'block';
+                inputConcMl.value = '';
+                inputConcMl.focus();
+            } else {
+                inputConcMl.style.display = 'none';
+                inputConcMl.value = selectConcMl.value;
+            }
+            calcular();
+        }
+
         async function openProdutosModal() {
             produtosModal.classList.remove('hidden');
             const container = document.getElementById('produtos-container');
@@ -813,12 +864,10 @@
             container.classList.add('hidden');
 
             try {
-                // Adicionamos um parâmetro de timestamp para evitar cache do navegador
                 const response = await fetch('https://gist.githubusercontent.com/simuladordosecerta/ae4fe7fbcab71e21577448f9a1f02dd2/raw/Material.txt?t=' + new Date().getTime());
                 if (!response.ok) throw new Error('Erro ao carregar');
                 let texto = await response.text();
 
-                // Converte URLs normais em links HTML clicáveis abrindo em nova aba
                 const urlRegex = /(https?:\/\/[^\s]+)/g;
                 texto = texto.replace(urlRegex, function(url) {
                     return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
@@ -838,14 +887,7 @@
 
         let dataInicioSelecionada = '';
         let dataFim30Selecionada = '';
-        let dadosExames = {
-            iniData: '',
-            iniVal: '',
-            iniHemo: '',
-            posData: '',
-            posVal: '',
-            posHemo: ''
-        };
+        let dadosExames = { iniData: '', iniVal: '', iniHemo: '', posData: '', posVal: '', posHemo: '' };
 
         function formatarDataBR(dataStr) {
             if (!dataStr) return '';
@@ -920,10 +962,10 @@
         let activeInput = 'dose';
 
         let dadosCalculados = {
-            totalMg: '0',
-            totalMl: '0',
-            ester: '',
-            marca: '',
+            totalMg: '250',
+            totalMl: '1',
+            ester: 'Enanthate',
+            marca: 'Lander Gold',
             seringaUI: '100',
             diasStr: '',
             doseMg: '0',
@@ -971,8 +1013,8 @@
         }
 
         function getFatorProporcao() {
-            const val1 = parseFloat(inputConcMg.value) || 0;
-            let val2 = parseFloat(inputConcMl.value);
+            let val1 = selectConcMg.value === 'Outros' ? (parseFloat(inputConcMg.value) || 0) : (parseFloat(selectConcMg.value) || 0);
+            let val2 = selectConcMl.value === 'Outros' ? (parseFloat(inputConcMl.value) || 0) : (parseFloat(selectConcMl.value) || 0);
             if (isNaN(val2) || val2 <= 0) val2 = 1.0;
             return val2 > 0 ? val1 / val2 : 0;
         }
@@ -1012,10 +1054,15 @@
             const diasMarcados = getDiasSelecionados();
             const dosesPorSemana = diasMarcados.length;
 
-            dadosCalculados.totalMg = inputConcMg.value || '0';
-            dadosCalculados.totalMl = inputConcMl.value || '1';
-            dadosCalculados.ester = inputEster.value.trim();
-            dadosCalculados.marca = inputMarca.value.trim();
+            let mgVal = selectConcMg.value === 'Outros' ? inputConcMg.value : selectConcMg.value;
+            let mlVal = selectConcMl.value === 'Outros' ? inputConcMl.value : selectConcMl.value;
+            let esterVal = selectEster.value === 'Outros' ? inputEster.value : selectEster.value;
+            let marcaVal = selectMarca.value === 'Outros' ? inputMarca.value : selectMarca.value;
+
+            dadosCalculados.totalMg = mgVal || '0';
+            dadosCalculados.totalMl = mlVal || '1';
+            dadosCalculados.ester = esterVal || '';
+            dadosCalculados.marca = marcaVal || '';
             dadosCalculados.seringaUI = selectSeringa.value == '0.5' ? '50' : '100';
             dadosCalculados.diasStr = getDiasAbreviadosText();
             dadosCalculados.doseMg = doseUnitaria ? doseUnitaria.toFixed(0) : '0';
@@ -1188,10 +1235,10 @@ CONSULTE SUA DOSE:
             atualizarPlanejamento(dose, ml);
         }
 
-        inputConcMg.addEventListener('input', calcular);
-        inputConcMl.addEventListener('input', calcular);
         inputEster.addEventListener('input', calcular);
         inputMarca.addEventListener('input', calcular);
+        inputConcMg.addEventListener('input', calcular);
+        inputConcMl.addEventListener('input', calcular);
         inputMg.addEventListener('input', () => { activeInput = 'dose'; calcular(); });
         inputMl.addEventListener('input', () => { activeInput = 'ml'; calcular(); });
         checkboxesDias.forEach(cb => { cb.addEventListener('change', calcular); });
