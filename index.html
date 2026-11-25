@@ -225,8 +225,9 @@
         .peps-scope .result-head { display:flex;align-items:flex-start;justify-content:space-between;gap:8px; }
         .peps-scope .live { white-space:nowrap;background:var(--pep-pale);color:var(--pep-green);padding:5px 8px;border-radius:6px;font-size:9px;letter-spacing:1px;font-weight:850;border:1px solid #065f46; }
         .peps-scope .visual { min-height:200px;display:grid;grid-template-columns:minmax(0,1fr);align-items:center;gap:12px;padding:4px 0 6px; }
-        .peps-scope .syringe-box { min-width:0; overflow-x: auto; }
-        .peps-scope svg.syringe { width:100%; min-width: 480px; height:auto; overflow:visible; display:block; }
+        .peps-scope .syringe-box { min-width:0; overflow:hidden; scrollbar-width:none; }
+        .peps-scope .syringe-box::-webkit-scrollbar { display:none; }
+        .peps-scope svg.syringe { width:100%; max-width:100%; min-width:0; height:auto; overflow:visible; display:block; }
         .peps-scope .labels { display:flex;justify-content:space-between;color:#64748b;font-size:10px;font-weight:850;letter-spacing:1px;padding:4px 5px 0 20px; }
         .peps-scope .result { border-top:1px solid var(--pep-line);padding:12px 0 0 0; }
         .peps-scope .eyebrow { color:var(--pep-green);font-size:10px;letter-spacing:1.5px;font-weight:900; }
@@ -271,8 +272,8 @@
 
             <!-- Botões de Ação no Cabeçalho Adaptados para Telemóvel -->
             <div class="grid grid-cols-2 sm:flex flex-wrap items-center gap-1.5 sm:gap-2 w-full sm:w-auto">
-                <a href="https://www.instagram.com/guiadatestosc" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-r from-rose-600 to-pink-600 hover:opacity-90 text-white px-3 py-2 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-1.5 shadow-sm">
-                    <i class="fa-brands fa-instagram"></i> Comunidade
+                <a href="https://chat.whatsapp.com/FvHvrioQNgfLaPsyh7qB1t?s=cl&p=i&iam=2" target="_blank" rel="noopener noreferrer" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-2 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-1.5 shadow-sm">
+                    <i class="fa-brands fa-whatsapp"></i> Grupo WhatsApp
                 </a>
 
                 <button type="button" onclick="openPepsModal()" class="bg-slate-800/90 hover:bg-slate-800 text-emerald-400 border border-emerald-500/30 px-3 py-2 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-1.5 shadow-sm">
@@ -311,7 +312,7 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <!-- Bloco 1: Concentração, Éster, Marca -->
+                <!-- Bloco 1: Concentração -->
                 <div class="bg-slate-950/50 p-4 sm:p-5 rounded-2xl border border-slate-800/80 space-y-4">
                     <div class="flex justify-between items-center">
                         <label class="block text-sm font-semibold text-brand-400 flex items-center gap-2">
@@ -324,31 +325,6 @@
                             <select id="tipo-medida" class="input-modern p-1.5 px-2.5 rounded-xl text-xs font-semibold text-brand-400 focus:outline-none">
                                 <option value="mg">mg / ml</option>
                             </select>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-xs font-medium text-slate-400 mb-1.5">Éster</label>
-                            <select id="select-ester" onchange="handleEsterChange()" class="input-modern w-full rounded-xl px-3 py-2 text-xs text-white focus:outline-none mb-2">
-                                <option value="Enanthate" selected>Enanthate</option>
-                                <option value="Outros">Outros</option>
-                            </select>
-                            <input type="text" id="input-ester" placeholder="Digite o Éster" style="display: none;"
-                                class="input-modern w-full rounded-xl px-3 py-2 text-xs text-white placeholder-slate-600">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-slate-400 mb-1.5">Marca</label>
-                            <select id="select-marca" onchange="handleMarcaChange()" class="input-modern w-full rounded-xl px-3 py-2 text-xs text-white focus:outline-none mb-2">
-                                <option value="Lander Gold" selected>Lander Gold</option>
-                                <option value="Lander">Lander</option>
-                                <option value="King">King</option>
-                                <option value="Cooper">Cooper</option>
-                                <option value="Zphc">Zphc</option>
-                                <option value="Outros">Outros</option>
-                            </select>
-                            <input type="text" id="input-marca" placeholder="Digite a Marca" style="display: none;"
-                                class="input-modern w-full rounded-xl px-3 py-2 text-xs text-white placeholder-slate-600">
                         </div>
                     </div>
 
@@ -376,7 +352,7 @@
                     </div>
                 </div>
 
-                <!-- Bloco 2: Tipo de Seringa e Via de Aplicação -->
+                <!-- Bloco 2: Tipo de Seringa -->
                 <div class="bg-slate-950/50 p-4 sm:p-5 rounded-2xl border border-slate-800/80 space-y-4 flex flex-col justify-center">
                     <div>
                         <label class="block text-sm font-semibold text-brand-400 flex items-center gap-2 mb-2">
@@ -385,19 +361,7 @@
                         <select id="seringa" class="input-modern w-full rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none">
                             <option value="0.5">Seringa (50 UI - 0.5 ml)</option>
                             <option value="1.0" selected>Seringa (100 UI - 1.0 ml)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <label class="block text-sm font-semibold text-brand-400 flex items-center gap-2">
-                                <i class="fa-solid fa-syringe"></i> Via
-                            </label>
-                            <button type="button" onclick="openInfoModal()" class="text-brand-400 hover:text-brand-300 text-xs flex items-center gap-1 bg-brand-500/10 px-2.5 py-1 rounded-xl border border-brand-500/25 transition" title="Infográfico da Via">
-                                <i class="fa-solid fa-circle-info"></i> <span id="btn-info-label">Info SC</span>
-                            </button>
-                        </div>
-                        <select id="via-aplicacao" class="input-modern w-full rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none">
-                            <option value="SC" selected>SC - Subcutânea</option>
+                            <option value="3.0">Seringa (3.0 ml)</option>
                         </select>
                     </div>
                 </div>
@@ -417,7 +381,7 @@
                         <label class="block text-xs font-semibold text-slate-300 mb-2 flex items-center gap-1.5" id="label-volume">
                             <i class="fa-solid fa-droplet text-emerald-400"></i> Volume (ml)
                         </label>
-                        <input type="number" id="input-ml" value="" placeholder="0.00" step="0.01" 
+                        <input type="text" id="input-ml" inputmode="numeric" value="" placeholder="Ex: 05 ou 010" 
                             class="input-modern w-full rounded-xl px-3 py-2.5 font-bold text-base text-emerald-400 placeholder-slate-600">
                     </div>
                 </div>
@@ -474,12 +438,9 @@
 
         <!-- Simulador Visual da Seringa -->
         <section class="glass-card rounded-3xl p-4 sm:p-8 flex flex-col items-center justify-center text-center">
-            <h2 class="text-sm sm:text-base font-bold text-slate-200 mb-3 flex items-center gap-2" id="seringa-titulo">
+            <h2 class="text-sm sm:text-base font-bold text-slate-200 mb-4 flex items-center gap-2" id="seringa-titulo">
                 <i class="fa-solid fa-eye text-brand-400"></i> Resultado visual (Seringa 100 UI - 1.0 ml)
             </h2>
-            <div id="display-via" class="mb-4 inline-block px-3.5 py-1 rounded-xl bg-brand-500/10 text-brand-400 text-xs font-semibold uppercase tracking-wider border border-brand-500/20">
-                Via: SUBCUTÂNEA (SC)
-            </div>
             
             <div class="syringe-wrapper my-2">
                 <div class="syringe-img-container">
@@ -523,7 +484,7 @@
                     Restante = Dose $\times$ $(0,5)^{\frac{\text{Dias Decorridos}}{\text{Meia-Vida}}}$
                 </div>
                 <p class="text-[11px] text-slate-500 pt-1">
-                    <strong>Fonte de Referência:</strong> Estudo clínico sobre perfis farmacocinéticos de enantato de testosterona subcutâneo publicado no PubMed Central (PMC): <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4721027/" target="_blank" rel="noopener noreferrer" class="text-brand-400 underline font-medium hover:text-brand-300">Pharmacokinetic Profile of Subcutaneous Testosterone Enanthate Delivered via a Novel, Prefilled Single-Use Autoinjector: A Phase II Study.</a>[cite: 13]
+                    <strong>Fonte de Referência:</strong> Estudo clínico sobre perfis farmacocinéticos de enantato de testosterona subcutâneo publicado no PubMed Central (PMC): <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4721027/" target="_blank" rel="noopener noreferrer" class="text-brand-400 underline font-medium hover:text-brand-300">Pharmacokinetic Profile of Subcutaneous Testosterone Enanthate Delivered via a Novel, Prefilled Single-Use Autoinjector: A Phase II Study.</a>
                 </p>
             </div>
         </section>
@@ -601,7 +562,7 @@
             <!-- Botão Fornecedor Oficial em Amarelo -->
             <div class="pt-2 flex justify-center no-print">
                 <a href="https://kingshape.fit/?ref=KSAPHIKMAG" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold px-6 py-3 rounded-2xl shadow-lg shadow-amber-500/20 transition-all flex items-center justify-center gap-2 text-xs sm:text-sm hover:scale-[1.02]">
-                    <i class=""></i>FORNECEDOR OFICIAL 🧃
+                    PRODUTOS PREMIUM
                 </a>
             </div>
         </section>
@@ -857,16 +818,16 @@
             </div>
             
             <div class="space-y-3 text-xs sm:text-sm text-slate-300 leading-relaxed">
-                <p><strong class="text-white">💉 Nunca mais erre a dose dos seus hormônios!</strong>[cite: 1]</p>
+                <p><strong class="text-white">💉 Nunca mais erre a dose dos seus hormônios!</strong></p>
                 <p>Tenha mais clareza, segurança e controle absoluto na hora de calcular suas doses de via subcutânea.</p>
                 
                 <div>
                     <strong class="text-brand-400 block mb-1.5 font-semibold">📍 Recursos principais:</strong>
                     <ul class="list-disc pl-5 space-y-1 text-slate-400 text-xs">
-                        <li>Simulador gráfico interativo de seringas (50 UI e 100 UI).[cite: 1]</li>
-                        <li>Controle detalhado de exames (Testo Inicial, Pós-Exame e Hematócrito).[cite: 1]</li>
-                        <li>Planejamento automático para cronogramas de 7, 15 e 30 dias.[cite: 1]</li>
-                        <li>Exportação rápida formatada para cópia direta ou WhatsApp.[cite: 1]</li>
+                        <li>Simulador gráfico interativo de seringas (50 UI, 100 UI e 3.0 ml).</li>
+                        <li>Controle detalhado de exames (Testo Inicial, Pós-Exame e Hematócrito).</li>
+                        <li>Planejamento automático para cronogramas de 7, 15 e 30 dias.</li>
+                        <li>Exportação rápida formatada para cópia direta ou WhatsApp.</li>
                     </ul>
                 </div>
 
@@ -874,7 +835,7 @@
                     <i class="fa-solid fa-triangle-exclamation text-amber-400 text-sm mt-0.5"></i>
                     <div>
                         <strong class="block font-semibold mb-0.5">Aviso Importante:</strong>
-                        Esta ferramenta é estritamente educativa e de apoio ao controle pessoal, não substituindo jamais orientação médica ou farmacêutica.[cite: 1]
+                        Esta ferramenta é estritamente educativa e de apoio ao controle pessoal, não substituindo jamais orientação médica ou farmacêutica.
                     </div>
                 </div>
             </div>
@@ -904,23 +865,6 @@
         </div>
     </div>
 
-    <div id="info-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden no-print">
-        <div class="glass-card rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-4 relative max-h-[90vh] overflow-y-auto border border-slate-700/50">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-3.5">
-                <h3 class="text-base font-bold text-white flex items-center gap-2" id="modal-title">
-                    <i class="fa-solid fa-syringe text-brand-400"></i> Infográfico de Aplicação Subcutânea (SC)
-                </h3>
-                <button onclick="closeInfoModal()" class="text-slate-400 hover:text-white text-base p-1.5 transition"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="flex justify-center bg-slate-950/60 p-4 rounded-2xl border border-slate-800">
-                <img id="modal-img" src="https://i.imgur.com/7KP7dVc.png" alt="Infográfico de aplicação" class="max-w-full h-auto rounded-xl shadow-md">
-            </div>
-            <div class="pt-2 border-t border-slate-800 flex justify-end">
-                <button onclick="closeInfoModal()" class="bg-brand-600 hover:bg-brand-500 text-white font-medium px-6 py-2.5 rounded-xl text-xs transition">Fechar</button>
-            </div>
-        </div>
-    </div>
-
     <!-- Footer -->
     <footer class="border-t border-slate-800/80 bg-slate-900/30 mt-12 py-6 text-center text-xs text-slate-500 no-print">
         <div class="max-w-5xl mx-auto px-4">
@@ -931,19 +875,12 @@
     <!-- Script de Lógica Principal -->
     <script>
         const tipoMedida = document.getElementById('tipo-medida');
-        const selectEster = document.getElementById('select-ester');
-        const inputEster = document.getElementById('input-ester');
-        const selectMarca = document.getElementById('select-marca');
-        const inputMarca = document.getElementById('input-marca');
         const selectConcMg = document.getElementById('select-conc-mg');
         const inputConcMg = document.getElementById('conc-mg');
         const selectConcMl = document.getElementById('select-conc-ml');
         const inputConcMl = document.getElementById('conc-ml');
         
         const selectSeringa = document.getElementById('seringa');
-        const selectVia = document.getElementById('via-aplicacao');
-        const displayVia = document.getElementById('display-via');
-        const btnInfoLabel = document.getElementById('btn-info-label');
         const inputMg = document.getElementById('input-mg');
         const inputMl = document.getElementById('input-ml');
         const checkboxesDias = document.querySelectorAll('input[name="dias-semana"]');
@@ -954,7 +891,6 @@
         const markingsReal = document.getElementById('markings-real');
         const seringaTitulo = document.getElementById('seringa-titulo');
 
-        const infoModal = document.getElementById('info-modal');
         const concModal = document.getElementById('conc-modal');
         const aboutModal = document.getElementById('about-modal');
         const dateModal = document.getElementById('date-modal');
@@ -981,38 +917,12 @@
         function closeAboutModal() { aboutModal.classList.add('hidden'); }
         function openConcModal() { concModal.classList.remove('hidden'); }
         function closeConcModal() { concModal.classList.add('hidden'); }
-        function openInfoModal() { infoModal.classList.remove('hidden'); }
-        function closeInfoModal() { infoModal.classList.add('hidden'); }
         function openDateModal() { dateModal.classList.remove('hidden'); }
         function closeDateModal() { dateModal.classList.add('hidden'); }
         function openExamesModal() { examesModal.classList.remove('hidden'); }
         function closeExamesModal() { examesModal.classList.add('hidden'); }
         function openPepsModal() { pepsModal.classList.remove('hidden'); }
         function closePepsModal() { pepsModal.classList.add('hidden'); }
-
-        function handleEsterChange() {
-            if (selectEster.value === 'Outros') {
-                inputEster.style.display = 'block';
-                inputEster.value = '';
-                inputEster.focus();
-            } else {
-                inputEster.style.display = 'none';
-                inputEster.value = selectEster.value;
-            }
-            calcular();
-        }
-
-        function handleMarcaChange() {
-            if (selectMarca.value === 'Outros') {
-                inputMarca.style.display = 'block';
-                inputMarca.value = '';
-                inputMarca.focus();
-            } else {
-                inputMarca.style.display = 'none';
-                inputMarca.value = selectMarca.value;
-            }
-            calcular();
-        }
 
         function handleConcMgChange() {
             if (selectConcMg.value === 'Outros') {
@@ -1128,10 +1038,39 @@
 
         let capacidadeSeringa = 1.0;
         let activeInput = 'dose';
-        let dadosCalculados = { totalMg: '250', totalMl: '1', ester: 'Enanthate', marca: 'Lander Gold', seringaUI: '100', diasStr: '', doseMg: '0', volumeMl: '0', volumeUI: '0', app7: '0', acum7Mg: '0', acum7Ml: '0', app15: '0', acum15Mg: '0', acum15Ml: '0', app30: '0', acum30Mg: '0', acum30Ml: '0' };
+        let dadosCalculados = { totalMg: '250', totalMl: '1', seringaLabel: '100 unidades', diasStr: '', doseMg: '0', volumeMl: '0', volumeUI: '0', app7: '0', acum7Mg: '0', acum7Ml: '0', app15: '0', acum15Mg: '0', acum15Ml: '0', app30: '0', acum30Mg: '0', acum30Ml: '0' };
 
         function drawRealMarkings(maxMl) {
             markingsReal.innerHTML = '';
+
+            if (maxMl === 3.0) {
+                const totalDivisoes = 6; // 0.5 ml por divisão principal
+                const subDivs = 5; // 0.1 ml por subdivisão
+                const totalMarks = totalDivisoes * subDivs;
+
+                for (let i = 0; i <= totalMarks; i++) {
+                    const percent = (i / totalMarks) * 100;
+                    const mark = document.createElement('div');
+                    mark.className = 'r-mark';
+                    mark.style.left = `${percent}%`;
+
+                    if (i % subDivs === 0) {
+                        mark.classList.add('long');
+                        const label = document.createElement('div');
+                        label.className = 'r-label';
+                        label.style.left = `${percent}%`;
+                        const valorMl = (i / totalMarks) * maxMl;
+                        label.innerText = `${valorMl.toFixed(1)}ml`;
+                        if (i !== 0) markingsReal.appendChild(label);
+                    } else if (i % (subDivs / 2) === 0) {
+                        mark.classList.add('mid');
+                    }
+
+                    markingsReal.appendChild(mark);
+                }
+                return;
+            }
+
             let totalDivisoes = (maxMl === 0.5) ? 5 : 10;
             const subDivs = 5;
             const totalMarks = totalDivisoes * subDivs;
@@ -1160,6 +1099,29 @@
             let val2 = selectConcMl.value === 'Outros' ? (parseFloat(inputConcMl.value) || 0) : (parseFloat(selectConcMl.value) || 0);
             if (isNaN(val2) || val2 <= 0) val2 = 1.0;
             return val2 > 0 ? val1 / val2 : 0;
+        }
+
+        function parseVolumeSemVirgula(rawValue) {
+            if (!rawValue) return NaN;
+            const limpo = String(rawValue).trim().replace(',', '.');
+            if (!limpo) return NaN;
+
+            if (limpo.includes('.')) {
+                return parseFloat(limpo);
+            }
+
+            const digitos = limpo.replace(/\D/g, '');
+            if (!digitos) return NaN;
+
+            if (digitos.startsWith('0') && digitos.length === 2) {
+                return parseFloat('0.' + digitos.slice(1));
+            }
+
+            if (digitos.startsWith('0') && digitos.length >= 3) {
+                return parseFloat('0.' + digitos.slice(1, 3));
+            }
+
+            return parseFloat(digitos);
         }
 
         function updateVisual(volumeMl) {
@@ -1196,14 +1158,16 @@
             const dosesPorSemana = diasMarcados.length;
             let mgVal = selectConcMg.value === 'Outros' ? inputConcMg.value : selectConcMg.value;
             let mlVal = selectConcMl.value === 'Outros' ? inputConcMl.value : selectConcMl.value;
-            let esterVal = selectEster.value === 'Outros' ? inputEster.value : selectEster.value;
-            let marcaVal = selectMarca.value === 'Outros' ? inputMarca.value : selectMarca.value;
 
             dadosCalculados.totalMg = mgVal || '0';
             dadosCalculados.totalMl = mlVal || '1';
-            dadosCalculados.ester = esterVal || '';
-            dadosCalculados.marca = marcaVal || '';
-            dadosCalculados.seringaUI = selectSeringa.value == '0.5' ? '50' : '100';
+            if (selectSeringa.value == '0.5') {
+                dadosCalculados.seringaLabel = '50 unidades';
+            } else if (selectSeringa.value == '3.0') {
+                dadosCalculados.seringaLabel = '3.0 ml';
+            } else {
+                dadosCalculados.seringaLabel = '100 unidades';
+            }
             dadosCalculados.diasStr = getDiasAbreviadosText();
             dadosCalculados.doseMg = doseUnitaria ? doseUnitaria.toFixed(0) : '0';
             dadosCalculados.volumeMl = volumeUnitario ? volumeUnitario.toFixed(2) : '0.00';
@@ -1362,11 +1326,10 @@
                 if (dadosExames.posHemo) blocoExames += `Hematócrito Pós Exame: ${dadosExames.posHemo.replace('%', '')}%\n`;
                 blocoExames += `━━━━━━━━━━━━━\n`;
             }
-            let esterMarcaStr = (dadosCalculados.ester || dadosCalculados.marca) ? `🌡 Éster: ${dadosCalculados.ester}${dadosCalculados.ester && dadosCalculados.marca ? ' - ' : ''}${dadosCalculados.marca}\n` : '';
             let linhaInicio = formatarDataBR(dataInicioSelecionada);
             let linhaFim30 = formatarDataBR(dataFim30Selecionada);
 
-            return `💉 DOSE CERTA\n━━━━━━━━━━━━━\n${blocoExames}${esterMarcaStr}🧪 Total (mg): ${dadosCalculados.totalMg}mg \n💧 Volume (ml): ${dadosCalculados.totalMl}ml\n🔬 Seringa: ${dadosCalculados.seringaUI} unidades\n🗓 Aplicação: ${dadosCalculados.diasStr}\n━━━━━━━━━━━━━\nDose(mg): ${dadosCalculados.doseMg}mg\nVolume: ${dadosCalculados.volumeMl}ml\nVolume estimado: ${dadosCalculados.volumeMl} ml (${dadosCalculados.volumeUI} UI)\n━━━━━━━━━━━━━\n📊 Cronograma\n\n${linhaInicio ? 'Início ' + linhaInicio + '\n' : ''}7 Dias (1 semana)\n${dadosCalculados.app7} aplicações\nConsumo Acumulado\n${dadosCalculados.acum7Mg} mg (${dadosCalculados.acum7Ml} ml)\n━━━━━━━━━━━━━\n15 Dias\n${dadosCalculados.app15} aplicações\nConsumo Acumulado\n${dadosCalculados.acum15Mg} mg (${dadosCalculados.acum15Ml} ml)\n━━━━━━━━━━━━━\n30 Dias ${linhaFim30 ? linhaFim30 : ''}\n${dadosCalculados.app30} aplicações\nConsumo Acumulado\n${dadosCalculados.acum30Mg} mg (${dadosCalculados.acum30Ml} ml)\n━━━━━━━━━━━━━\nCONSULTE SUA DOSE:\n🌐 https://calculadoradosecerta.com`;
+            return `💉 DOSE CERTA\n━━━━━━━━━━━━━\n${blocoExames}🧪 Total (mg): ${dadosCalculados.totalMg}mg \n💧 Volume (ml): ${dadosCalculados.totalMl}ml\n🔬 Seringa: ${dadosCalculados.seringaLabel}\n🗓 Aplicação: ${dadosCalculados.diasStr}\n━━━━━━━━━━━━━\nDose(mg): ${dadosCalculados.doseMg}mg\nVolume: ${dadosCalculados.volumeMl}ml\nUnidades Seringa (${dadosCalculados.volumeUI} UI)\n━━━━━━━━━━━━━\n📊 Cronograma\n\n${linhaInicio ? 'Início ' + linhaInicio + '\n' : ''}7 Dias (1 semana)\n${dadosCalculados.app7} aplicações\nConsumo Acumulado\n${dadosCalculados.acum7Mg} mg (${dadosCalculados.acum7Ml} ml)\n━━━━━━━━━━━━━\n15 Dias\n${dadosCalculados.app15} aplicações\nConsumo Acumulado\n${dadosCalculados.acum15Mg} mg (${dadosCalculados.acum15Ml} ml)\n━━━━━━━━━━━━━\n30 Dias ${linhaFim30 ? linhaFim30 : ''}\n${dadosCalculados.app30} aplicações\nConsumo Acumulado\n${dadosCalculados.acum30Mg} mg (${dadosCalculados.acum30Ml} ml)\n━━━━━━━━━━━━━\nCONSULTE SUA DOSE:\n🌐 https://calculadoradosecerta.com`;
         }
 
         function copiarTexto() {
@@ -1393,7 +1356,7 @@
             let dose = 0;
             let ml = 0;
             if (activeInput === 'ml') {
-                ml = parseFloat(inputMl.value);
+                ml = parseVolumeSemVirgula(inputMl.value);
                 if (isNaN(ml) || ml <= 0) {
                     inputMg.value = '';
                     updateVisual(0);
@@ -1401,7 +1364,7 @@
                     return;
                 } else {
                     dose = ml * fator;
-                    inputMg.value = dose.toFixed(2);
+                    inputMg.value = dose.toFixed(0);
                     updateVisual(ml);
                 }
             } else {
@@ -1420,8 +1383,6 @@
             atualizarPlanejamento(dose, ml);
         }
 
-        inputEster.addEventListener('input', calcular);
-        inputMarca.addEventListener('input', calcular);
         inputConcMg.addEventListener('input', calcular);
         inputConcMl.addEventListener('input', calcular);
         inputMg.addEventListener('input', () => { activeInput = 'dose'; calcular(); });
@@ -1492,8 +1453,14 @@
         function updatePep() {
           const d = getPepCalculatedData();
           if (!d) {
-            getPepId('pepUiResult').textContent = '—'; getPepId('pepMlResult').textContent = '— mL';
-            getPepId('pepPercent').textContent = '—'; getPepId('pepProgress').style.width = '0%';
+            getPepId('pepUiResult').textContent = '—';
+            getPepId('pepMlResult').textContent = '— mL';
+            getPepId('pepPercent').textContent = '—';
+            getPepId('pepCapLabel').textContent = pepCapacity;
+            getPepId('pepProgress').style.width = '0%';
+            getPepId('pepLiquidFill').setAttribute('x', '582');
+            getPepId('pepLiquidFill').setAttribute('width', '0');
+            getPepId('pepDoseMarker').setAttribute('transform', 'translate(0 0)');
             return;
           }
           const pct = d.units / pepCapacity * 100;
@@ -1553,24 +1520,30 @@
           window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
         });
 
-        getPepId('pepBtnResetar').addEventListener('click', () => {
-          getPepId('pepMgSelect').value = '';
-          getPepId('pepMlSelect').value = '';
-          getPepId('pepDoseSelect').value = '';
-          getPepId('pepMgFrasco').value = '';
-          getPepId('pepMlFrasco').value = '';
-          getPepId('pepDose').value = '';
-          getPepId('pepMgInputWrap').classList.add('hidden');
-          getPepId('pepMlInputWrap').classList.add('hidden');
-          getPepId('pepDoseInputWrap').classList.add('hidden');
-          document.querySelectorAll('.peps-scope .capacity').forEach((b, i) => {
-            b.classList.toggle('active', i === 2);
+        const btnResetar = getPepId('pepBtnResetar');
+        if (btnResetar) {
+          btnResetar.addEventListener('click', () => {
+            getPepId('pepMgSelect').value = '';
+            getPepId('pepMlSelect').value = '';
+            getPepId('pepDoseSelect').value = '';
+            getPepId('pepMgFrasco').value = '';
+            getPepId('pepMlFrasco').value = '';
+            getPepId('pepDose').value = '';
+            getPepId('pepMgInputWrap').classList.add('hidden');
+            getPepId('pepMlInputWrap').classList.add('hidden');
+            getPepId('pepDoseInputWrap').classList.add('hidden');
+            document.querySelectorAll('.peps-scope .capacity').forEach((b) => {
+              b.classList.toggle('active', Number(b.dataset.cap) === 100);
+            });
+            pepCapacity = 100;
+            updatePep();
+            const statusMsg = getPepId('pepStatusMsg');
+            if (statusMsg) {
+              statusMsg.textContent = 'Calculadora redefinida.';
+              setTimeout(() => { statusMsg.textContent = ''; }, 2500);
+            }
           });
-          pepCapacity = 100;
-          updatePep();
-          getPepId('pepStatusMsg').textContent = 'Calculadora redefinida.';
-          setTimeout(() => { getPepId('pepStatusMsg').textContent = ''; }, 2500);
-        });
+        }
 
         updatePep();
       })();
